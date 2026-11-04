@@ -1,7 +1,7 @@
 {
   "app": {
     "name": "Tideline",
-    "tagline": "Operator software for ferry, crew-boat and charter owners. Calm, precise and built for the water."
+    "tagline": "The operating platform for ferry, crew-boat and offshore vessel operators."
   },
   "theme": {
     "label": "Colour theme",
@@ -11,126 +11,404 @@
   },
   "nav": {
     "label": "Main",
-    "ferry": "Ferry",
-    "charter": "Charter",
-    "safety": "Safety",
-    "field": "In the field",
+    "platform": "Platform",
+    "fleet": "Fleet",
+    "process": "How it works",
+    "modes": "Modes",
+    "faq": "FAQ",
     "login": "Log in",
-    "access": "Get access",
+    "demo": "Get started",
     "menu": "Menu",
     "close": "Close"
   },
   "home": {
     "hero": {
-      "tag": "For vessel operators, worldwide",
-      "title": "Every voyage, on record.",
-      "body": "Operator software for ferry, crew-boat and charter owners. Calm, precise and built for the water.",
-      "primary": "Get early access",
-      "secondary": "See how it works",
-      "pillars": ["Record", "Rhythm", "Safety", "Connection", "Rising tide"]
+      "tag": "For ferry, crew-boat & offshore operators",
+      "title": "The operating system for your fleet",
+      "bodyStart": "Manifests, safety checks, certificates and charters in one place — on any phone, ",
+      "bodyHighlight": "even offline",
+      "bodyEnd": "."
     },
-    "preview": {
-      "tag": "Sample data",
-      "fleetStatus": "Fleet status",
-      "underwayOf": "of {total} underway",
-      "departures": "Today’s departures",
-      "columns": { "vessel": "Vessel", "route": "Route", "time": "Departs", "status": "Status" },
-      "trips": [
-        {
-          "vessel": "MV Lagoon Star",
-          "route": "Lekki → CMS",
-          "time": "06:40",
-          "status": "On schedule",
-          "tone": "success"
+    "start": {
+      "label": "Your phone number",
+      "placeholder": "Your phone number",
+      "button": "Get started",
+      "note": "Free during the pilot · No card needed"
+    },
+    "fleet": {
+      "eyebrow": "Built for",
+      "count": "{count} vessel types",
+      "types": {
+        "ferry": {
+          "name": "Passenger ferry",
+          "use": "Scheduled routes"
         },
-        { "vessel": "Blessing 2", "route": "CMS → Ikorodu", "time": "07:15", "status": "Boarding", "tone": "info" },
-        {
-          "vessel": "Marina Express",
-          "route": "Badore → Falomo",
-          "time": "07:30",
-          "status": "Delayed",
-          "tone": "warning"
+        "water_taxi": {
+          "name": "Water taxi",
+          "use": "On-demand hops"
+        },
+        "speedboat": {
+          "name": "Speedboat",
+          "use": "Fast transfers"
+        },
+        "crew_boat": {
+          "name": "Crew boat",
+          "use": "Crew change"
+        },
+        "osv": {
+          "name": "Supply vessel",
+          "use": "Platform supply"
+        },
+        "fsv": {
+          "name": "Fast support",
+          "use": "Crew + cargo"
+        },
+        "tug": {
+          "name": "Tug",
+          "use": "Harbour towage"
+        },
+        "barge": {
+          "name": "Barge",
+          "use": "Bulk cargo"
+        },
+        "landing_craft": {
+          "name": "Landing craft",
+          "use": "Site access"
+        },
+        "pilot_boat": {
+          "name": "Pilot boat",
+          "use": "Port pilotage"
         }
-      ],
-      "card": {
-        "vessel": "MV Lagoon Star",
-        "title": "Underway · 07:40 ETA",
-        "body": "312 passengers · Lekki → CMS",
-        "chip": "On schedule"
+      }
+    },
+    "platform": {
+      "title": "Your whole operation, in one calm place",
+      "body": "One record for every boat, crew member, trip and certificate — shared by the owner, the office and the captain at the jetty.",
+      "crew": {
+        "title": "Captains in the loop",
+        "body": "Captains log trips from their phone or a WhatsApp voice note, and you see it as it happens.",
+        "demo": {
+          "initials": "TA",
+          "name": "Capt. Tunde Adeyemi",
+          "role": "MV Lagoon Star · On duty",
+          "live": "Live",
+          "rows": [
+            {
+              "event": "Safety check passed",
+              "source": "06:31"
+            },
+            {
+              "event": "Manifest locked · 42 pax",
+              "source": "App"
+            },
+            {
+              "event": "Trip 4 logged",
+              "source": "Voice note"
+            },
+            {
+              "event": "Fuel 40,000 recorded",
+              "source": "WhatsApp"
+            }
+          ]
+        }
       },
       "safety": {
-        "eyebrow": "Safety check · 06:31",
-        "result": "Pass",
-        "rows": [
-          { "label": "Wind gusts", "value": "18 km/h", "limit": "limit 35" },
-          { "label": "Daylight", "value": "until 18:52", "limit": "arrives 07:40" },
-          { "label": "Seats", "value": "312 of 320", "limit": "life jackets ✓" },
-          { "label": "Documents", "value": "valid", "limit": "licence · captain" }
-        ]
+        "title": "A safety lock on every departure",
+        "body": "Weather, daylight, capacity and documents are checked before a boat can leave the jetty.",
+        "demo": {
+          "aria": "Four check layers stacked under a trip: weather, daylight, capacity and documents",
+          "top": "CLEARED TO DEPART",
+          "layers": ["WEATHER", "DAYLIGHT", "CAPACITY", "DOCUMENTS"]
+        }
+      },
+      "connect": {
+        "title": "Connected where you work",
+        "body": "WhatsApp, SMS, card and transfer payments, live weather and maps — already wired in.",
+        "demo": {
+          "items": {
+            "whatsapp": "WhatsApp",
+            "payments": "Payments",
+            "weather": "Weather",
+            "documents": "Documents",
+            "sms": "SMS",
+            "maps": "Maps"
+          }
+        }
       }
+    },
+    "process": {
+      "title": "How a voyage runs on Tideline",
+      "body": "Every trip follows the same loop: plan it, check it, sail it, close it. The record builds itself as you go.",
+      "demo": {
+        "loopTop": "Check before departure",
+        "loopBottom": "Log every voyage",
+        "columns": {
+          "vessel": "Vessel",
+          "pax": "Pax",
+          "load": "Load"
+        },
+        "trips": [
+          {
+            "vessel": "Lagoon Star",
+            "pax": "42/50",
+            "load": 3
+          },
+          {
+            "vessel": "Blessing 2",
+            "pax": "31/40",
+            "load": 3
+          },
+          {
+            "vessel": "Marina Express",
+            "pax": "18/36",
+            "load": 2
+          },
+          {
+            "vessel": "Ocean Pride",
+            "pax": "9/30",
+            "load": 1
+          }
+        ],
+        "sources": "Sources",
+        "events": [
+          {
+            "vessel": "Blessing 2",
+            "text": "Check passed · 06:58"
+          },
+          {
+            "vessel": "Lagoon Star",
+            "text": "Departed · 07:15"
+          },
+          {
+            "vessel": "Marina Express",
+            "text": "Arrived · 08:02"
+          }
+        ],
+        "takingsTitle": "Takings",
+        "today": "Today",
+        "takings": [
+          {
+            "label": "Cash",
+            "amount": "₦412,000"
+          },
+          {
+            "label": "Transfer",
+            "amount": "₦298,500"
+          },
+          {
+            "label": "Online tickets",
+            "amount": "₦176,000"
+          }
+        ],
+        "next": "Next",
+        "suggestion": "Add a 17:30 sailing"
+      },
+      "steps": [
+        {
+          "title": "Plan the day",
+          "body": "Routes, schedules and crew are set once. Captains open today’s trips on their phone."
+        },
+        {
+          "title": "Check before departure",
+          "body": "The safety lock runs weather, daylight, capacity and document checks, in plain words."
+        },
+        {
+          "title": "Track the voyage",
+          "body": "The captain’s phone shares position. Passengers see a public status page, no personal data."
+        },
+        {
+          "title": "Close and report",
+          "body": "Takings, passengers and fuel roll up into a daily report for the owner, by boat and by route."
+        }
+      ]
     },
     "modes": {
-      "tag": "01 · Two modes",
-      "title": "Two modes, one record.",
-      "body": "Turn on what your business runs. Vessels, crew, documents and payments are shared underneath.",
+      "title": "Ferry, charter and compliance on one platform",
+      "body": "Turn on the modes your business runs. Vessels, crew, documents and payments are shared underneath.",
+      "tablist": "Modes",
       "ferry": {
-        "label": "Ferry mode",
-        "title": "For passenger boat operators",
-        "items": [
-          "Manifests that cannot exceed capacity",
-          "Tickets online, at the jetty or by transfer",
-          "Live tracking from the captain’s phone",
-          "Daily takings, cash and digital, per boat"
-        ]
+        "tab": "Ferry",
+        "eyebrow": "For passenger operators",
+        "title": "Fill every seat, safely.",
+        "body": "Manifests, tickets and takings for scheduled and ad-hoc trips, built for a busy jetty.",
+        "bullets": [
+          "Manifests that can’t exceed capacity",
+          "Online, cash and transfer tickets",
+          "Scan a QR code to board",
+          "Daily takings per boat"
+        ],
+        "panel": {
+          "title": "Blessing 2 · CMS → Ikorodu",
+          "meta": "07:15",
+          "capacityLabel": "Seats",
+          "capacity": "42 / 50",
+          "items": [
+            {
+              "label": "Life jackets confirmed",
+              "value": "Done",
+              "tone": "success"
+            },
+            {
+              "label": "Online tickets scanned",
+              "value": "28 of 30",
+              "tone": "info"
+            },
+            {
+              "label": "Walk-ups added",
+              "value": "14",
+              "tone": "neutral"
+            },
+            {
+              "label": "Weather at Ikorodu",
+              "value": "Gusts 32 km/h",
+              "tone": "warning"
+            }
+          ],
+          "footer": "Manifest locks at departure",
+          "action": "Depart"
+        }
       },
       "charter": {
-        "label": "Charter mode",
-        "title": "For crew-boat and offshore vessel owners",
-        "items": [
-          "Certificate expiry alerts before they bite",
-          "Tender packs drafted from your own documents",
-          "Quotes, contracts and invoices in one thread",
-          "Escrow so both sides know the money is there"
-        ]
+        "tab": "Charter",
+        "eyebrow": "For crew-boat & OSV owners",
+        "title": "Win the tender. Get paid on time.",
+        "body": "Tender packs from your own documents, quotes and contracts, invoices, and escrow so both sides know the money is there.",
+        "bullets": ["Tender packs in minutes", "Spot-charter board", "Contracts accepted in-app", "Escrow and payouts"],
+        "panel": {
+          "title": "Tender pack · Offshore crew transfer",
+          "meta": "Due in 6 days",
+          "items": [
+            {
+              "label": "Cabotage registration",
+              "value": "Valid",
+              "tone": "success"
+            },
+            {
+              "label": "Class certificate",
+              "value": "Expires before deadline",
+              "tone": "warning"
+            },
+            {
+              "label": "HSE statement",
+              "value": "Drafted",
+              "tone": "info"
+            },
+            {
+              "label": "P&I insurance",
+              "value": "Missing",
+              "tone": "danger"
+            }
+          ],
+          "footer": "Export blocked until reviewed",
+          "action": "Review"
+        }
+      },
+      "compliance": {
+        "tab": "Compliance",
+        "eyebrow": "For every operator",
+        "title": "Never sail on an expired certificate.",
+        "body": "Photograph a certificate and Tideline reads the dates for you to confirm. Alerts go out long before anything lapses.",
+        "bullets": [
+          "Reads dates from a photo",
+          "Alerts at 90, 30, 7 and 1 days",
+          "Compliance score per vessel",
+          "Country rules built in"
+        ],
+        "panel": {
+          "title": "Certificates · Lagoon Star",
+          "meta": "Score 86%",
+          "items": [
+            {
+              "label": "Vessel licence",
+              "value": "212 days",
+              "tone": "success"
+            },
+            {
+              "label": "Safety equipment",
+              "value": "41 days",
+              "tone": "success"
+            },
+            {
+              "label": "Insurance",
+              "value": "12 days",
+              "tone": "warning"
+            },
+            {
+              "label": "Captain competency",
+              "value": "Expired",
+              "tone": "danger"
+            }
+          ],
+          "footer": "Next alert: tomorrow, 07:00",
+          "action": "Renew"
+        }
       }
     },
-    "safety": {
-      "tag": "02 · Safety lock",
-      "title": "A safety check before every departure.",
-      "body": "Rules decide, in plain words. A blocked trip can only leave with the owner’s logged approval — and an overloaded boat can’t leave at all.",
-      "checks": [
-        {
-          "title": "Weather",
-          "body": "Wind, gusts, waves and rain along the route, against limits you can only make stricter."
-        },
-        { "title": "Daylight", "body": "Departure and arrival checked against sunrise and sunset at the jetty." },
-        { "title": "Capacity", "body": "Passengers counted against seats, life jackets confirmed. No override." },
-        { "title": "Documents", "body": "Vessel licence and captain’s competency must be in date." }
-      ],
-      "results": { "pass": "Pass", "warn": "Warn · acknowledge", "block": "Block · owner decides" }
-    },
     "field": {
-      "tag": "03 · In the field",
-      "title": "Built for the water, not the office.",
+      "title": "Built for the water, not the office",
       "items": [
         {
           "title": "Works offline",
-          "body": "Trips, manifests and safety checks save on the phone and sync when the signal comes back."
+          "body": "Trips, manifests and safety checks save on the phone and sync when the signal returns."
         },
         {
-          "title": "WhatsApp first",
-          "body": "Log a trip with a voice note. Alerts, approvals and invoices arrive where your team already is."
+          "title": "Voice notes count",
+          "body": "“Trip four, CMS to Ikorodu, eighteen passengers” becomes a logged trip after one tap."
         },
-        { "title": "Any phone", "body": "Light enough for a low-cost Android on a slow network, readable in full sun." }
+        {
+          "title": "Any phone",
+          "body": "Light enough for a low-cost Android on a slow network, readable in full sun."
+        }
+      ]
+    },
+    "faq": {
+      "title": "Questions, answered",
+      "items": [
+        {
+          "q": "Do my captains need smartphones?",
+          "a": "It helps, but it isn’t required. Captains can log trips by WhatsApp voice note or by a short SMS, and the office can enter trips for them."
+        },
+        {
+          "q": "What happens when there’s no signal on the water?",
+          "a": "Captain screens work offline. Trips, manifests and safety checks are saved on the phone and sync automatically when the connection returns."
+        },
+        {
+          "q": "Can a captain override the safety lock?",
+          "a": "No. A blocked trip can only depart with the owner’s recorded approval, and an overloaded boat can’t depart at all."
+        },
+        {
+          "q": "How do passengers pay?",
+          "a": "Online by card, transfer or USSD, or in cash at the jetty. Every ticket gets a code the crew scans at boarding."
+        },
+        {
+          "q": "Is passenger and crew data safe?",
+          "a": "Data is encrypted, each company only sees its own records, and we follow the data-protection law of every country we operate in."
+        },
+        {
+          "q": "Where is Tideline available?",
+          "a": "We’re launching in Nigeria with Lagos ferry operators and offshore support vessels. Other countries follow as we validate each market."
+        }
       ]
     },
     "cta": {
-      "title": "Run your fleet by the tide.",
-      "body": "We’re onboarding our first ferry and crew-boat operators now.",
-      "button": "Get early access"
+      "title": "Bring your fleet on board.",
+      "body": "We’re onboarding our first ferry and crew-boat operators now. Start with one boat; add the rest when you’re ready."
     },
     "footer": {
-      "line": "Built for the water",
+      "line": "The operating platform for vessel operators.",
+      "columns": {
+        "product": "Product",
+        "company": "Company"
+      },
+      "links": {
+        "platform": "Platform",
+        "fleet": "Vessel types",
+        "process": "How it works",
+        "modes": "Modes",
+        "faq": "FAQ",
+        "login": "Log in"
+      },
+      "made": "Made for the water",
       "rights": "© {year} Tideline"
     }
   }

@@ -1,7 +1,15 @@
 {
   "home": {
-    "safety": {
-      "title": "A safety check before every trip leaves the jetty."
+    "hero": {
+      "tag": "For ferry, crew-boat & offshore operators"
+    },
+    "platform": {
+      "safety": {
+        "body": "Weather, daylight, capacity and documents are checked before a boat can leave the jetty."
+      }
+    },
+    "cta": {
+      "body": "We’re onboarding our first Lagos ferry and crew-boat operators now. Start with one boat; add the rest when you’re ready."
     }
   }
 }
