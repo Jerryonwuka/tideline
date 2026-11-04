@@ -1,5 +1,7 @@
 {
   "home": {
-    "ferryBody": "Manifests, tickets, live tracking and a safety check before every trip leaves the jetty."
+    "safety": {
+      "title": "A safety check before every trip leaves the jetty."
+    }
   }
 }

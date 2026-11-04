@@ -2,129 +2,326 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+/*
+ * Tideline Brand System v2 (Figma: "Tideline Brand System v2").
+ * Dark-first: Abyss canvas with one point of light, Foam. Light pages use Shell with Tide Blue.
+ * Hierarchy comes from opacity, not more colours. Corners near-square. Motion eases out, like a tide.
+ */
+
 @custom-variant dark (&:is(.dark *));
 
+@theme {
+  /* Brand palette — raw values. Use semantic tokens below in components. */
+  --color-abyss-950: #05070d;
+  --color-abyss-900: #0d1016;
+  --color-abyss-850: #12151d;
+  --color-abyss-800: #1a1c22;
+
+  --color-gray-50: #f5f5f5;
+  --color-gray-100: #ecedf0;
+  --color-gray-200: #dbdde2;
+  --color-gray-300: #c1c4cb;
+  --color-gray-400: #9a9da6;
+  --color-gray-500: #71747c;
+  --color-gray-600: #505358;
+  --color-gray-700: #34363c;
+
+  --color-foam-50: #f2fcff;
+  --color-foam-100: #e2f8ff;
+  --color-foam-200: #baefff;
+  --color-foam-300: #8fe2fc;
+  --color-foam-400: #5fcdf8;
+  --color-foam-500: #2fb1dc;
+  --color-foam-600: #1a8db8;
+  --color-foam-700: #16708f;
+  --color-foam-800: #155a72;
+  --color-foam-900: #123f50;
+
+  --color-tide-50: #eef3ff;
+  --color-tide-100: #d9e4ff;
+  --color-tide-200: #b5c9ff;
+  --color-tide-300: #85a5fa;
+  --color-tide-400: #5079ee;
+  --color-tide-500: #2656d6;
+  --color-tide-600: #0b3eb3;
+  --color-tide-700: #0a3290;
+  --color-tide-800: #0b2a72;
+  --color-tide-900: #0a1f52;
+
+  /* Spacing: 4 px base (Tailwind's default step is already 0.25rem = 4 px). */
+
+  /* Radius: 2 px tags · 4 px buttons & inputs · 8 px cards & panels · pill for status only. */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-pill: 90px;
+
+  /* Motion */
+  --ease-tide: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-hover: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-hover: 150ms;
+  --duration-tide: 320ms;
+  --duration-reveal: 600ms;
+
+  --animate-tide-drift: tide-drift 24s var(--ease-hover) infinite alternate;
+  --animate-pulse-once: pulse-once 2.4s var(--ease-tide) 1;
+
+  @keyframes tide-drift {
+    from {
+      transform: translate3d(-2%, -1.5%, 0) scaleY(1);
+    }
+    to {
+      transform: translate3d(2%, 1.5%, 0) scaleY(1.06);
+    }
+  }
+
+  @keyframes pulse-once {
+    0% {
+      box-shadow: 0 0 0 0 color-mix(in srgb, currentColor 55%, transparent);
+    }
+    100% {
+      box-shadow: 0 0 0 8px transparent;
+    }
+  }
+}
+
+/* Semantic tokens, mapped into Tailwind (bg-background, text-body, border-hairline, ...). */
 @theme inline {
+  /* Type — inline so the next/font variables resolve where they are set. */
+  --font-display: var(--font-newsreader), ui-serif, Georgia, serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+  --font-heading: var(--font-newsreader), ui-serif, Georgia, serif;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-body: var(--text-body);
+  --color-meta: var(--text-meta);
+  --color-hairline: var(--hairline);
+  --color-hairline-strong: var(--hairline-strong);
   --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-info: var(--info);
+
+  /* shadcn/ui names, kept so generated components keep working */
+  --color-card: var(--surface);
+  --color-card-foreground: var(--foreground);
+  --color-popover: var(--surface-raised);
+  --color-popover-foreground: var(--foreground);
   --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--surface-raised);
+  --color-secondary-foreground: var(--foreground);
+  --color-muted: var(--surface-raised);
+  --color-muted-foreground: var(--text-meta);
+  --color-destructive: var(--danger);
+  --color-border: var(--hairline);
+  --color-input: var(--hairline-strong);
+  --color-ring: var(--accent);
+
+  --shadow-sm: var(--shadow-sm-value);
+  --shadow-md: var(--shadow-md-value);
+  --shadow-lg: var(--shadow-lg-value);
+
+  --radius-lg: var(--radius-md);
 }
 
+/* Light: Ink on Shell, Tide Blue accent. */
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  color-scheme: light;
+  --background: var(--color-gray-50);
+  --surface: #ffffff;
+  --surface-raised: var(--color-gray-100);
+  --surface-sunken: #ffffff;
+  --foreground: var(--color-abyss-950);
+  --text-body: rgb(5 7 13 / 0.7);
+  --text-meta: rgb(5 7 13 / 0.56);
+  --hairline: rgb(5 7 13 / 0.1);
+  --hairline-strong: rgb(5 7 13 / 0.18);
+  --accent: var(--color-tide-600);
+  --accent-foreground: var(--color-gray-50);
+  --primary: var(--color-abyss-950);
+  --primary-foreground: var(--color-gray-50);
+  --success: #23a26f;
+  --warning: #c97a35;
+  --danger: #d93c41;
+  --info: var(--color-tide-600);
+  --wave: var(--color-tide-600);
+  --wave-opacity: 0.55;
+  --shadow-sm-value: 0 1px 2px rgb(5 7 13 / 0.06);
+  --shadow-md-value: 0 8px 24px rgb(5 7 13 / 0.08);
+  --shadow-lg-value: 0 24px 64px rgb(5 7 13 / 0.14);
 }
 
+/* Dark: off-white on Abyss, Foam is the single point of colour. The brand default. */
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  color-scheme: dark;
+  --background: var(--color-abyss-950);
+  --surface: var(--color-abyss-900);
+  --surface-raised: var(--color-abyss-850);
+  --surface-sunken: #000000;
+  --foreground: var(--color-gray-50);
+  --text-body: rgb(245 245 245 / 0.64);
+  --text-meta: rgb(245 245 245 / 0.5);
+  --hairline: rgb(245 245 245 / 0.08);
+  --hairline-strong: rgb(245 245 245 / 0.14);
+  --accent: var(--color-foam-200);
+  --accent-foreground: var(--color-abyss-950);
+  --primary: var(--color-gray-50);
+  --primary-foreground: var(--color-abyss-950);
+  --success: #3dbe8b;
+  --warning: #e39c5c;
+  --danger: #e5484d;
+  --info: var(--color-foam-200);
+  --wave: var(--color-foam-200);
+  --wave-opacity: 1;
+  --shadow-sm-value: 0 1px 2px rgb(0 0 0 / 0.2);
+  --shadow-md-value: 0 8px 24px rgb(0 0 0 / 0.36);
+  --shadow-lg-value: 0 24px 64px rgb(0 0 0 / 0.55);
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-hairline outline-accent/60;
+  }
+  html {
+    @apply bg-background font-sans antialiased;
+    text-rendering: optimizeLegibility;
   }
   body {
     @apply bg-background text-foreground;
   }
-  html {
-    @apply font-sans;
+  ::selection {
+    @apply bg-accent text-accent-foreground;
+  }
+  :focus-visible {
+    outline-offset: 2px;
+  }
+}
+
+/* Type scale (Figma 03 — Typography). display-xl is the cover headline. */
+@utility display-xl {
+  font-family: var(--font-newsreader), ui-serif, Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(3rem, 8vw, 6.25rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+@utility display-lg {
+  font-family: var(--font-newsreader), ui-serif, Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(2.75rem, 6vw, 4rem);
+  line-height: 1.0625;
+  letter-spacing: -0.025em;
+}
+@utility display-sm {
+  font-family: var(--font-newsreader), ui-serif, Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(2.25rem, 4.5vw, 3rem);
+  line-height: 1.0833;
+  letter-spacing: -0.02em;
+}
+@utility heading {
+  font-family: var(--font-newsreader), ui-serif, Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  line-height: 1.1667;
+  letter-spacing: -0.015em;
+}
+@utility title-lg {
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 1.5rem;
+  line-height: 1.875rem;
+  letter-spacing: -0.01em;
+}
+@utility title-md {
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 1.25rem;
+  line-height: 1.625rem;
+}
+@utility body-lg {
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+@utility body-md {
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+@utility label-mono {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-weight: 500;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+@utility label-mono-sm {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-weight: 500;
+  font-size: 0.6875rem;
+  line-height: 0.875rem;
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
+}
+
+/* Reveal: sections fade up and their hairlines draw in left → right as they enter view. */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity var(--duration-reveal) var(--ease-expo),
+    transform var(--duration-reveal) var(--ease-expo);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+[data-reveal][data-visible="true"] {
+  opacity: 1;
+  transform: none;
+}
+[data-draw-line] {
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 900ms var(--ease-expo);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+[data-visible="true"] [data-draw-line],
+[data-draw-line][data-visible="true"] {
+  transform: scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+  [data-reveal],
+  [data-draw-line] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes wave-in {
+  from {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0;
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
   }
 }

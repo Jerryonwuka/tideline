@@ -2,48 +2,66 @@ import { Button as ButtonPrimitive } from "@base-ui/react/button";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
+/**
+ * Brand buttons (Figma 07 — Components): mono caps label in brackets, 4 px corners.
+ * Hover: an accent fill sweeps in from the left (600 ms expo-out) and the label slides.
+ * One primary action per view.
+ */
 const buttonVariants = cva(
-  "group/button inline-flex shrink-0 items-center justify-center rounded-lg border border-transparent bg-clip-padding text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  "group/button relative isolate inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-sm border whitespace-nowrap outline-none select-none transition-[color,border-color,background-color] duration-(--duration-tide) ease-tide focus-visible:outline-2 focus-visible:outline-accent disabled:pointer-events-none disabled:opacity-40 aria-invalid:border-danger [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/80",
-        outline:
-          "border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50",
+        primary: "border-primary bg-primary text-primary-foreground hover:border-accent hover:text-accent-foreground",
         secondary:
-          "bg-secondary text-secondary-foreground hover:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)] aria-expanded:bg-secondary aria-expanded:text-secondary-foreground",
-        ghost:
-          "hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50",
-        destructive:
-          "bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40",
-        link: "text-primary underline-offset-4 hover:underline",
+          "border-hairline-strong bg-transparent text-foreground hover:border-accent hover:text-accent-foreground",
+        ghost: "border-transparent bg-transparent text-body hover:bg-surface-raised hover:text-foreground",
+        danger: "border-danger/40 bg-transparent text-danger hover:bg-danger hover:text-white",
+        link: "h-auto border-transparent px-0 text-accent underline-offset-4 hover:underline",
       },
       size: {
-        default: "h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
-        xs: "h-6 gap-1 rounded-[min(var(--radius-md),10px)] px-2 text-xs in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3",
-        sm: "h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5",
-        lg: "h-9 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
-        icon: "size-8",
-        "icon-xs":
-          "size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3",
-        "icon-sm": "size-7 rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:rounded-lg",
-        "icon-lg": "size-9",
+        sm: "h-8 px-3 label-mono-sm",
+        md: "h-10 px-4 label-mono",
+        lg: "h-12 px-6 label-mono",
+        icon: "size-10",
+        "icon-sm": "size-8",
       },
     },
-    defaultVariants: {
-      variant: "default",
-      size: "default",
-    },
+    defaultVariants: { variant: "primary", size: "md" },
   },
 );
 
-function Button({
-  className,
-  variant = "default",
-  size = "default",
-  ...props
-}: ButtonPrimitive.Props & VariantProps<typeof buttonVariants>) {
-  return <ButtonPrimitive data-slot="button" className={cn(buttonVariants({ variant, size, className }))} {...props} />;
+const SWEEPS = new Set(["primary", "secondary"]);
+
+type ButtonProps = ButtonPrimitive.Props &
+  VariantProps<typeof buttonVariants> & {
+    /** Wrap the label in mono brackets: [ BOOK A DEMO ]. On by default for primary/secondary. */
+    bracketed?: boolean;
+  };
+
+function Button({ className, variant = "primary", size = "md", bracketed, children, ...props }: ButtonProps) {
+  const sweep = SWEEPS.has(variant ?? "primary");
+  const brackets = bracketed ?? (sweep && size !== "icon" && size !== "icon-sm");
+  return (
+    <ButtonPrimitive
+      data-slot="button"
+      data-variant={variant}
+      className={cn(buttonVariants({ variant, size, className }))}
+      {...props}
+    >
+      {sweep && (
+        <span
+          aria-hidden
+          className="absolute inset-0 -z-10 origin-left scale-x-0 bg-accent transition-transform duration-(--duration-reveal) ease-expo group-hover/button:scale-x-100"
+        />
+      )}
+      <span className="inline-flex items-center gap-2 transition-transform duration-(--duration-tide) ease-tide group-hover/button:translate-x-0.5">
+        {brackets && <span aria-hidden>[</span>}
+        {children}
+        {brackets && <span aria-hidden>]</span>}
+      </span>
+    </ButtonPrimitive>
+  );
 }
 
 export { Button, buttonVariants };
