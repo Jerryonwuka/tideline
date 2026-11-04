@@ -10,14 +10,15 @@ type Responder = (req: { promptId: string; system: string; lastUserMessage: stri
 export class FakeLlmClient implements LlmClient {
   readonly calls: { promptId: string; system: string; lastUserMessage: string }[] = [];
   private readonly responders = new Map<string, Responder>();
-  private readonly chatScripts = new Map<string, ChatEvent[]>();
+  private readonly chatScripts = new Map<string, ChatEvent[] | ((req: ChatRequest) => ChatEvent[])>();
 
   respond(promptId: string, output: unknown | Responder): this {
     this.responders.set(promptId, typeof output === "function" ? (output as Responder) : () => output);
     return this;
   }
 
-  scriptChat(promptId: string, events: ChatEvent[]): this {
+  /** Fixed events, or a function of the conversation so far (tool results included) for agent loops. */
+  scriptChat(promptId: string, events: ChatEvent[] | ((req: ChatRequest) => ChatEvent[])): this {
     this.chatScripts.set(promptId, events);
     return this;
   }
@@ -33,7 +34,7 @@ export class FakeLlmClient implements LlmClient {
   async *chat(req: ChatRequest): AsyncIterable<ChatEvent> {
     const script = this.chatScripts.get(req.promptId);
     if (!script) throw new Error(`FakeLlmClient: no chat script for "${req.promptId}"`);
-    yield* script;
+    yield* typeof script === "function" ? script(req) : script;
   }
 
   private run(req: { promptId: string; system: string; messages: { role: string; content: string }[] }): unknown {

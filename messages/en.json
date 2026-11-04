@@ -603,7 +603,8 @@
     "safety": "Safety",
     "billing": "Billing",
     "book": "Book a boat",
-    "map": "Live map"
+    "map": "Live map",
+    "assistant": "Assistant"
   },
   "dashboard": {
     "title": "Welcome, {name}",
@@ -641,7 +642,29 @@
       "needs_review": "{count, plural, one {# document to review} other {# documents to review}}"
     },
     "allClear": "All documents are in date.",
-    "noVessels": "Add a vessel to see its compliance here."
+    "noVessels": "Add a vessel to see its compliance here.",
+    "todayTitle": "Today",
+    "figures": {
+      "trips": "Trips",
+      "passengers": "Passengers",
+      "cash": "Cash",
+      "digital": "Digital"
+    },
+    "tripBreakdown": "{departed} sailing · {arrived} arrived · {waiting} waiting",
+    "alertsTitle": "Alerts",
+    "alerts": {
+      "pendingOverrides": "{count, plural, one {# safety override waiting} other {# safety overrides waiting}}",
+      "openIncidents": "{count, plural, one {# open incident} other {# open incidents}}",
+      "expiredDocuments": "{count, plural, one {# document expired} other {# documents expired}}",
+      "expiringDocuments": "{count, plural, one {# document expiring soon} other {# documents expiring soon}}",
+      "needsReview": "{count, plural, one {# document to review} other {# documents to review}}"
+    },
+    "idleTitle": "Idle vessels",
+    "idleHint": "No trips in the last {days} days.",
+    "idleNone": "Every vessel has worked this week.",
+    "lastTrip": "Last trip {date}",
+    "neverSailed": "No trips yet",
+    "reports": "Reports"
   },
   "members": {
     "title": "Team",
@@ -1102,7 +1125,47 @@
         "digital": "Digital"
       },
       "total": "Total",
-      "empty": "No trips on this day."
+      "empty": "No trips on this day.",
+      "weekly": "Weekly report"
+    },
+    "weekly": {
+      "title": "Weekly report",
+      "subtitle": "Seven days of trips, takings and expenses.",
+      "week": "Week starting",
+      "export": "Export trips (CSV)",
+      "daysTitle": "By day",
+      "vesselsTitle": "By vessel",
+      "expensesTitle": "Expenses",
+      "noExpenses": "No expenses logged this week.",
+      "incidentsTitle": "Incidents",
+      "noIncidents": "No incidents.",
+      "columns": {
+        "date": "Day",
+        "vessel": "Vessel",
+        "trips": "Trips",
+        "passengers": "Passengers",
+        "cash": "Cash",
+        "digital": "Digital",
+        "category": "Category",
+        "amount": "Amount"
+      },
+      "totals": {
+        "takings": "Takings",
+        "expenses": "Expenses",
+        "net": "Net"
+      },
+      "categories": {
+        "fuel": "Fuel",
+        "maintenance": "Maintenance",
+        "wages": "Wages",
+        "levy": "Levies",
+        "other": "Other"
+      },
+      "incidentStatus": {
+        "open": "Open",
+        "acknowledged": "Acknowledged",
+        "closed": "Closed"
+      }
     }
   },
   "captain": {
@@ -1421,5 +1484,32 @@
     "unknownVessel": "another boat",
     "cash": "cash",
     "transfer": "by transfer"
+  },
+  "assistant": {
+    "title": "Assistant",
+    "subtitle": "Ask about your trips, takings, documents and vessels. Answers come from your own records.",
+    "ask": "Ask",
+    "placeholder": "Which certificates expire this month?",
+    "thinking": "Checking…",
+    "checked": "Checked: {tools}",
+    "error": "Sorry, something went wrong. Try again.",
+    "limits": "The assistant can read and prepare drafts. It can’t move money, delete records or approve safety overrides.",
+    "examples": {
+      "expiring": "Which certificates expire this month?",
+      "takings": "What were today’s takings?",
+      "idle": "Which boats are idle?"
+    },
+    "tools": {
+      "list_expiring_documents": "documents",
+      "get_vessel_status": "vessels",
+      "get_daily_report": "daily report",
+      "get_trip": "trip",
+      "list_idle_vessels": "idle vessels",
+      "list_open_invoices": "invoices",
+      "draft_trip_log": "trip draft",
+      "draft_invoice": "invoice draft",
+      "draft_tender_pack": "tender draft",
+      "suggest_price": "pricing"
+    }
   }
 }

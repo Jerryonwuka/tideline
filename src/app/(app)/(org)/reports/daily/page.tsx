@@ -42,6 +42,12 @@ export default async function DailyReportPage({ searchParams }: { searchParams: 
             <a href={csv} className="h-10 content-center label-mono-sm text-accent hover:underline">
               {t("exportRange")}
             </a>
+            <a
+              href={`/reports/weekly?week=${date}`}
+              className="h-10 content-center label-mono-sm text-accent hover:underline"
+            >
+              {t("weekly")}
+            </a>
           </div>
         }
       />

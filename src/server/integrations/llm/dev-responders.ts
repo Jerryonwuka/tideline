@@ -1,4 +1,5 @@
 import { heuristicDraft, type BotContext } from "@/server/bot/parse";
+import { devAssistant } from "./dev-assistant";
 import type { FakeLlmClient } from "./fake";
 
 /**
@@ -6,6 +7,7 @@ import type { FakeLlmClient } from "./fake";
  * and says so in `notes`; it is always reviewed by a person like real AI output.
  */
 export function registerDevResponders(llm: FakeLlmClient): FakeLlmClient {
+  llm.scriptChat("assistant", devAssistant);
   // Voice/text logs: the rule-based reader, using the context the prompt carries.
   llm.respond("voice_log", ({ system, lastUserMessage }: { system: string; lastUserMessage: string }) => {
     const json = system.slice(system.indexOf("CONTEXT_JSON ") + "CONTEXT_JSON ".length);

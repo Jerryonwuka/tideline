@@ -20,6 +20,8 @@ import { DOCUMENTS_BUCKET } from "@/server/services/documents";
 import { runExtraction } from "@/server/services/extraction";
 import { supabaseAdmin, type AdminDb } from "@/server/supabase/admin";
 import type { Db } from "@/server/supabase/server";
+import { ASSISTANT_ROLES, assistantContext } from "@/server/assistant/context";
+import { askAssistant } from "@/server/assistant/run";
 import { applyAnswer, missingFields, parseTripSms, type BotContext, type BotDraft } from "./parse";
 
 // §10.2 WhatsApp (and SMS) bot. Every inbound message is handled once (wa_message_id). Unknown
@@ -286,7 +288,7 @@ async function onText(turn: Turn, text: string, source: Source) {
     .update({ parsed: draft as unknown as Json })
     .eq("id", turn.rowId);
   if (draft.kind === "incident" || draft.urgent) return escalate(turn, text, source, ctx);
-  if (draft.kind === "other") return reply(turn, turn.t("bot.help"));
+  if (draft.kind === "other") return answerQuestion(turn, text);
   return progress(
     turn,
     { ...draft, summary_for_confirmation: draft.summary_for_confirmation },
@@ -417,6 +419,16 @@ function summarise(turn: Turn, d: BotDraft, ctx: BotContext): string {
   }
   if (d.kind === "fuel") return t("bot.summary.fuel", { vessel, amount });
   return t("bot.summary.expense", { category: d.expense_category ?? "other", vessel, amount });
+}
+
+// ----- Questions → assistant (owners and managers) -------------------------------------------------
+
+async function answerQuestion(turn: Turn, text: string) {
+  if (!ASSISTANT_ROLES.includes(turn.sender.role)) return reply(turn, turn.t("bot.help"));
+  const ctx = await assistantContext(turn.db, turn.sender.orgId, turn.sender.locale, "whatsapp");
+  const { text: answer } = await askAssistant(ctx, text);
+  // WhatsApp: at most 5 lines (§10.6).
+  return reply(turn, answer.split("\n").slice(0, 5).join("\n") || turn.t("bot.help"));
 }
 
 // ----- Buttons -------------------------------------------------------------------------------------
