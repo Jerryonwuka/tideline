@@ -5,12 +5,13 @@ import { useTranslations } from "next-intl";
 import { useState, type FormEvent } from "react";
 import { TripStatusChip } from "@/components/ferry/trip-status";
 import { captainDb } from "@/lib/offline/db";
-import { canRemove, isClosed, isOpen, seatsOf } from "@/lib/offline/model";
+import { canRemove, isClosed, isOpen, safetyClearance, seatsOf } from "@/lib/offline/model";
 import { addPassenger, removePassenger, tripStep } from "@/lib/offline/store";
 import type { TripStep } from "@/lib/schemas/sync";
 import { cn } from "@/lib/utils";
 import { go } from "../nav";
 import { SyncBadge } from "../parts";
+import { SafetyPanel } from "./safety-panel";
 
 const big = "h-14 w-full rounded-sm label-mono disabled:opacity-40";
 const input = "h-14 w-full rounded-sm border border-hairline-strong bg-surface-sunken px-4 text-lg text-foreground";
@@ -206,11 +207,12 @@ export function TripView({ tripKey }: { tripKey: string }) {
           {t("boarding")}
         </button>
       )}
+      {open && <SafetyPanel trip={trip} />}
       {open && (
         <button
           type="button"
           onClick={() => step("depart")}
-          disabled={!trip.lifejackets || seats === 0}
+          disabled={!trip.lifejackets || seats === 0 || safetyClearance(trip, new Date()) !== null}
           className={cn(big, "bg-primary text-primary-foreground")}
         >
           {t("depart")}

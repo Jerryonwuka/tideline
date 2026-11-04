@@ -11,6 +11,7 @@ import type { PaymentProvider } from "./payments/types";
 import { FakeSttClient } from "./stt/fake";
 import type { SttClient } from "./stt/types";
 import { FakeWeatherClient } from "./weather/fake";
+import { OpenMeteoWeatherClient } from "./weather/open-meteo";
 import type { WeatherClient } from "./weather/types";
 
 export interface Integrations {
@@ -31,7 +32,7 @@ export function createFakeIntegrations(): Integrations {
     llm: serverEnv().NODE_ENV === "test" ? new FakeLlmClient() : registerDevResponders(new FakeLlmClient()),
     stt: new FakeSttClient(),
     ocr: new FakeOcrClient(),
-    weather: new FakeWeatherClient(),
+    weather: serverEnv().WEATHER_PROVIDER === "open-meteo" ? new OpenMeteoWeatherClient() : new FakeWeatherClient(),
   };
 }
 

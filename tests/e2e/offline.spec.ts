@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { logIn, randomPhone } from "./helpers";
+import { logIn, pinMidday, randomPhone } from "./helpers";
 
 // M5 acceptance (BUILD_SPEC §8): after one earlier visit, the captain screens work with the network
 // off — start a trip, add passengers, depart and arrive — and everything syncs once on reconnect;
@@ -22,6 +22,7 @@ test("captain works offline and syncs once on reconnect", async ({ page, context
   await expect(page).toHaveURL(/\/onboarding\/documents/);
 
   // One online visit: the service worker installs and the page and its data are stored.
+  await pinMidday(page);
   await page.goto("/captain");
   await expect(page.getByRole("heading", { name: "Today" })).toBeVisible();
   // The service worker comes with production builds (pnpm build && pnpm start); a dev server has none.
@@ -66,17 +67,24 @@ test("captain works offline and syncs once on reconnect", async ({ page, context
   }
   await expect(page.getByTestId("capacity-counter")).toHaveText("3 of 10");
   await page.getByRole("button", { name: /Life jackets checked/ }).click();
-  await page.getByRole("button", { name: "Depart" }).click();
+  // Safety check on the phone: no forecast cached and no route, so it warns; the captain accepts.
+  await page.getByRole("button", { name: "Run safety check" }).click();
+  await expect(page.getByTestId("safety-result")).toHaveText("Depart with care");
+  await expect(page.getByText("Checked on this phone (no connection).")).toBeVisible();
+  await expect(page.getByRole("button", { name: "Depart", exact: true })).toBeDisabled();
+  await page.getByRole("button", { name: /I understand/ }).click();
+  await page.getByRole("button", { name: "Depart", exact: true }).click();
   await page.getByLabel(/Cash collected/).fill("4500");
   await page.getByRole("button", { name: "Arrived" }).click();
   await expect(page.getByText("Trip closed.")).toBeVisible();
   await expect(page.getByText("Saved on phone").first()).toBeVisible();
 
-  // Six changes wait on the phone: trip, two passengers, life jackets, depart, arrive.
-  await expect(page.getByRole("status")).toContainText("6 changes saved on phone");
+  // Eight changes wait on the phone: trip, two passengers, life jackets, safety check, warnings
+  // accepted, depart, arrive.
+  await expect(page.getByRole("status")).toContainText("8 changes saved on phone");
   await page.getByRole("button", { name: "See" }).click();
   await expect(page.getByRole("heading", { name: "Pending sync" })).toBeVisible();
-  await expect(page.getByRole("listitem")).toHaveCount(6);
+  await expect(page.getByRole("listitem")).toHaveCount(8);
   expect(batches).toHaveLength(0);
 
   // Back online: everything syncs by itself.

@@ -1,5 +1,5 @@
 import { afterAll, describe, expect, it } from "vitest";
-import { addMember, as, createOrg, createUser, inTx, rejects, sql, type Tx } from "./helpers";
+import { addMember, as, createOrg, createUser, inTx, recordCheck, rejects, sql, type Tx } from "./helpers";
 
 afterAll(async () => {
   await sql.end();
@@ -26,6 +26,8 @@ async function trip(
   const [t] =
     await tx`insert into public.trips (org_id, vessel_id, route_id, currency, captain_crew_id, takings_cash_minor, scheduled_departure)
                        values (${orgId}, ${vesselId}, ${routeId}, 'NGN', ${captainCrewId}, ${cash}, now()) returning id`;
+  // A passing safety check, so these tests can depart (the safety lock has its own tests).
+  await recordCheck(tx, orgId, t!.id as string);
   return t!.id as string;
 }
 async function captainOn(tx: Tx, orgId: string, vesselId: string, name: string) {

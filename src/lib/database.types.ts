@@ -1227,9 +1227,242 @@ export type Database = {
           },
         ];
       };
+      safety_acknowledgements: {
+        Row: {
+          acknowledged_at: string;
+          acknowledged_by: string;
+          org_id: string;
+          safety_check_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          acknowledged_at?: string;
+          acknowledged_by: string;
+          org_id: string;
+          safety_check_id: string;
+        };
+        Update: {
+          acknowledged_at?: string;
+          acknowledged_by?: string;
+          org_id?: string;
+          safety_check_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "safety_acknowledgements_org_id_orgs_id_fk";
+            columns: ["org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "safety_acknowledgements_safety_check_id_safety_checks_id_fk";
+            columns: ["safety_check_id"];
+            isOneToOne: true;
+            referencedRelation: "safety_checks";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      safety_checks: {
+        Row: {
+          checked_at: string;
+          checked_by: string;
+          client_id: string | null;
+          created_at: string;
+          id: string;
+          offline: boolean;
+          org_id: string;
+          reasons: NonNullable<Json>;
+          result: Database["public"]["Enums"]["safety_result"];
+          rules_applied: NonNullable<Json>;
+          sunrise: string | null;
+          sunset: string | null;
+          trip_id: string;
+          weather_fetched_at: string | null;
+          weather_snapshot: Json | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          checked_at: string;
+          checked_by: string;
+          client_id?: string | null;
+          created_at?: string;
+          id?: string;
+          offline?: boolean;
+          org_id: string;
+          reasons?: NonNullable<Json>;
+          result: Database["public"]["Enums"]["safety_result"];
+          rules_applied: NonNullable<Json>;
+          sunrise?: string | null;
+          sunset?: string | null;
+          trip_id: string;
+          weather_fetched_at?: string | null;
+          weather_snapshot?: Json | null;
+        };
+        Update: {
+          checked_at?: string;
+          checked_by?: string;
+          client_id?: string | null;
+          created_at?: string;
+          id?: string;
+          offline?: boolean;
+          org_id?: string;
+          reasons?: NonNullable<Json>;
+          result?: Database["public"]["Enums"]["safety_result"];
+          rules_applied?: NonNullable<Json>;
+          sunrise?: string | null;
+          sunset?: string | null;
+          trip_id?: string;
+          weather_fetched_at?: string | null;
+          weather_snapshot?: Json | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "safety_checks_org_id_orgs_id_fk";
+            columns: ["org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "safety_checks_trip_id_trips_id_fk";
+            columns: ["trip_id"];
+            isOneToOne: false;
+            referencedRelation: "trips";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      safety_override_requests: {
+        Row: {
+          id: string;
+          note: string | null;
+          org_id: string;
+          requested_at: string;
+          requested_by: string;
+          safety_check_id: string;
+          trip_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          id?: string;
+          note?: string | null;
+          org_id: string;
+          requested_at?: string;
+          requested_by: string;
+          safety_check_id: string;
+          trip_id: string;
+        };
+        Update: {
+          id?: string;
+          note?: string | null;
+          org_id?: string;
+          requested_at?: string;
+          requested_by?: string;
+          safety_check_id?: string;
+          trip_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "safety_override_requests_org_id_orgs_id_fk";
+            columns: ["org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "safety_override_requests_safety_check_id_safety_checks_id_fk";
+            columns: ["safety_check_id"];
+            isOneToOne: false;
+            referencedRelation: "safety_checks";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "safety_override_requests_trip_id_trips_id_fk";
+            columns: ["trip_id"];
+            isOneToOne: false;
+            referencedRelation: "trips";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      safety_overrides: {
+        Row: {
+          decided_at: string;
+          decided_by: string;
+          decision: Database["public"]["Enums"]["override_decision"];
+          id: string;
+          org_id: string;
+          reason: string;
+          request_id: string;
+          requested_at: string;
+          requested_by: string;
+          safety_check_id: string;
+          trip_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          decided_at?: string;
+          decided_by: string;
+          decision: Database["public"]["Enums"]["override_decision"];
+          id?: string;
+          org_id: string;
+          reason: string;
+          request_id: string;
+          requested_at: string;
+          requested_by: string;
+          safety_check_id: string;
+          trip_id: string;
+        };
+        Update: {
+          decided_at?: string;
+          decided_by?: string;
+          decision?: Database["public"]["Enums"]["override_decision"];
+          id?: string;
+          org_id?: string;
+          reason?: string;
+          request_id?: string;
+          requested_at?: string;
+          requested_by?: string;
+          safety_check_id?: string;
+          trip_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "safety_overrides_org_id_orgs_id_fk";
+            columns: ["org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "safety_overrides_request_id_safety_override_requests_id_fk";
+            columns: ["request_id"];
+            isOneToOne: false;
+            referencedRelation: "safety_override_requests";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "safety_overrides_safety_check_id_safety_checks_id_fk";
+            columns: ["safety_check_id"];
+            isOneToOne: false;
+            referencedRelation: "safety_checks";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "safety_overrides_trip_id_trips_id_fk";
+            columns: ["trip_id"];
+            isOneToOne: false;
+            referencedRelation: "trips";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       safety_rule_defaults: {
         Row: {
           max_gust_kmh: number;
+          max_precip_mm_h: number;
           max_wave_m: number;
           max_wind_kmh: number;
           night_block: boolean;
@@ -1240,6 +1473,7 @@ export type Database = {
         ComputedFields: never;
         Insert: {
           max_gust_kmh: number;
+          max_precip_mm_h?: number;
           max_wave_m: number;
           max_wind_kmh: number;
           night_block?: boolean;
@@ -1249,6 +1483,7 @@ export type Database = {
         };
         Update: {
           max_gust_kmh?: number;
+          max_precip_mm_h?: number;
           max_wave_m?: number;
           max_wind_kmh?: number;
           night_block?: boolean;
@@ -1262,6 +1497,54 @@ export type Database = {
             columns: ["rule_set_id"];
             isOneToOne: true;
             referencedRelation: "compliance_rule_sets";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      safety_thresholds: {
+        Row: {
+          max_gust_kmh: number;
+          max_precip_mm_h: number;
+          max_wave_m: number;
+          max_wind_kmh: number;
+          night_block: boolean;
+          org_id: string;
+          permitted_end: string | null;
+          permitted_start: string | null;
+          updated_at: string;
+          updated_by: string | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          max_gust_kmh: number;
+          max_precip_mm_h: number;
+          max_wave_m: number;
+          max_wind_kmh: number;
+          night_block?: boolean;
+          org_id: string;
+          permitted_end?: string | null;
+          permitted_start?: string | null;
+          updated_at?: string;
+          updated_by?: string | null;
+        };
+        Update: {
+          max_gust_kmh?: number;
+          max_precip_mm_h?: number;
+          max_wave_m?: number;
+          max_wind_kmh?: number;
+          night_block?: boolean;
+          org_id?: string;
+          permitted_end?: string | null;
+          permitted_start?: string | null;
+          updated_at?: string;
+          updated_by?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "safety_thresholds_org_id_orgs_id_fk";
+            columns: ["org_id"];
+            isOneToOne: true;
+            referencedRelation: "orgs";
             referencedColumns: ["id"];
           },
         ];
@@ -1673,6 +1956,40 @@ export type Database = {
           },
         ];
       };
+      weather_cache: {
+        Row: {
+          data: NonNullable<Json>;
+          fetched_at: string;
+          key: string;
+          lat: number;
+          lng: number;
+          source: string;
+          valid_from: string;
+          valid_to: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          data: NonNullable<Json>;
+          fetched_at: string;
+          key: string;
+          lat: number;
+          lng: number;
+          source: string;
+          valid_from: string;
+          valid_to: string;
+        };
+        Update: {
+          data?: NonNullable<Json>;
+          fetched_at?: string;
+          key?: string;
+          lat?: number;
+          lng?: number;
+          source?: string;
+          valid_from?: string;
+          valid_to?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: {
       documents_live: {
@@ -1803,6 +2120,18 @@ export type Database = {
       materialise_schedule_trips: { Args: { p_date: string; p_org: string }; Returns: number };
       new_rule_set_version: { Args: { p_id: string }; Returns: string };
       publish_rule_set: { Args: { p_id: string; p_note?: string }; Returns: undefined };
+      safety_defaults_for: {
+        Args: { p_country: string };
+        Returns: {
+          max_gust_kmh: number;
+          max_precip_mm_h: number;
+          max_wave_m: number;
+          max_wind_kmh: number;
+          night_block: boolean;
+          permitted_end: string;
+          permitted_start: string;
+        }[];
+      };
     };
     Enums: {
       age_band: "child" | "adult" | "senior";
@@ -1826,11 +2155,13 @@ export type Database = {
       membership_role: "owner" | "manager" | "captain" | "crew" | "charterer";
       membership_status: "active" | "suspended";
       org_type: "ferry_operator" | "vessel_owner" | "charterer" | "barge_operator";
+      override_decision: "approved" | "declined";
       payment_provider: "paystack" | "flutterwave" | "stripe";
       payment_purpose: "ticket" | "subscription" | "invoice" | "charter_escrow" | "payout";
       regulator_scope: "national" | "state" | "port";
       rule_set_status: "draft" | "published" | "retired";
       rule_severity: "block" | "warn";
+      safety_result: "pass" | "warn" | "block";
       sync_op_status: "applied" | "conflict" | "rejected";
       trip_source: "app" | "whatsapp_voice" | "whatsapp_text" | "sms" | "admin";
       trip_status: "scheduled" | "boarding" | "departed" | "arrived" | "cancelled";
@@ -1966,11 +2297,13 @@ export const Constants = {
       membership_role: ["owner", "manager", "captain", "crew", "charterer"],
       membership_status: ["active", "suspended"],
       org_type: ["ferry_operator", "vessel_owner", "charterer", "barge_operator"],
+      override_decision: ["approved", "declined"],
       payment_provider: ["paystack", "flutterwave", "stripe"],
       payment_purpose: ["ticket", "subscription", "invoice", "charter_escrow", "payout"],
       regulator_scope: ["national", "state", "port"],
       rule_set_status: ["draft", "published", "retired"],
       rule_severity: ["block", "warn"],
+      safety_result: ["pass", "warn", "block"],
       sync_op_status: ["applied", "conflict", "rejected"],
       trip_source: ["app", "whatsapp_voice", "whatsapp_text", "sms", "admin"],
       trip_status: ["scheduled", "boarding", "departed", "arrived", "cancelled"],

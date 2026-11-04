@@ -10,7 +10,26 @@ export type TripStatus = CaptainSnapshot["trips"][number]["status"];
 export type LocalTrip = CaptainSnapshot["trips"][number] & { synced: boolean };
 export type LocalEntry = CaptainSnapshot["manifest"][number] & { synced: boolean };
 export type LocalError =
-  "capacity_exceeded" | "invalid_transition" | "lifejackets_unconfirmed" | "trip_closed" | "validation";
+  | "capacity_exceeded"
+  | "invalid_transition"
+  | "lifejackets_unconfirmed"
+  | "trip_closed"
+  | "validation"
+  | "safety_check_required"
+  | "safety_unacknowledged"
+  | "safety_blocked";
+
+/** A departure needs a safety check from the last hour (the server's rule, §4.2). */
+export const CHECK_VALID_MS = 60 * 60_000;
+
+/** Why the safety lock stops departure now, or null when it doesn't. */
+export function safetyClearance(trip: LocalTrip, now: Date): LocalError | null {
+  const latest = trip.safety?.latest;
+  if (!latest || now.getTime() - Date.parse(latest.checkedAt) > CHECK_VALID_MS) return "safety_check_required";
+  if (latest.result === "pass") return null;
+  if (latest.result === "warn") return latest.acknowledged ? null : "safety_unacknowledged";
+  return latest.decision?.decision === "approved" ? null : "safety_blocked";
+}
 
 const NEXT: Record<TripStatus, TripStatus[]> = {
   scheduled: ["boarding", "departed", "cancelled"],
@@ -33,13 +52,14 @@ export const isOpen = (s: TripStatus) => s === "scheduled" || s === "boarding";
 export const seatsOf = (entries: Pick<LocalEntry, "seats">[]) => entries.reduce((n, e) => n + e.seats, 0);
 
 /** Why a step can't happen now, or null when it can. */
-export function checkStep(trip: LocalTrip, seats: number, step: TripStep): LocalError | null {
+export function checkStep(trip: LocalTrip, seats: number, step: TripStep, now = new Date()): LocalError | null {
   if (isClosed(trip.status)) return "trip_closed";
   if (step === "lifejackets") return isOpen(trip.status) ? null : "invalid_transition";
   const to = STEP_STATUS[step];
   if (!to || !NEXT[trip.status].includes(to)) return "invalid_transition";
   if (step === "depart" && !trip.lifejackets) return "lifejackets_unconfirmed";
   if (step === "depart" && seats === 0) return "validation";
+  if (step === "depart") return safetyClearance(trip, now);
   return null;
 }
 

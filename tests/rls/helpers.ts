@@ -76,3 +76,18 @@ export function tokenPair() {
   const token = randomUUID().replace(/-/g, "") + randomUUID().replace(/-/g, "");
   return { token, hash: createHash("sha256").update(token).digest("hex") };
 }
+
+/** Records a safety check as the server would (people can't insert checks), for departure tests. */
+export async function recordCheck(
+  tx: Tx,
+  orgId: string,
+  tripId: string,
+  result: "pass" | "warn" | "block" = "pass",
+  reasons: unknown[] = [],
+) {
+  const [row] = await tx`
+    insert into public.safety_checks (org_id, trip_id, checked_at, checked_by, rules_applied, result, reasons)
+    values (${orgId}, ${tripId}, now(), gen_random_uuid(), '{}'::jsonb, ${result}::public.safety_result, ${tx.json(reasons as never)})
+    returning id`;
+  return row!.id as string;
+}

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import type { Reason, Thresholds } from "@/lib/safety/engine";
 import { uuid } from "./common";
 
 // §8 Offline sync. Captain screens write ops to the phone's outbox and post them in order to
@@ -11,6 +12,25 @@ const majorAmount = z
   .regex(/^\d+(\.\d{1,2})?$/);
 
 const base = { client_id: uuid, at: z.iso.datetime({ offset: true }) };
+
+const num = z.number().finite().nullable();
+/** The forecast the phone had cached when it ran an offline safety check. */
+export const weatherInputSchema = z.object({
+  fetchedAt: z.iso.datetime({ offset: true }),
+  points: z
+    .array(
+      z.object({
+        time: z.iso.datetime({ offset: true }),
+        windKmh: num,
+        gustKmh: num,
+        waveM: num,
+        precipMmH: num,
+        weatherCode: num,
+        visibilityM: num,
+      }),
+    )
+    .max(500),
+});
 
 export const syncOpSchema = z.discriminatedUnion("op", [
   z.object({
@@ -51,6 +71,17 @@ export const syncOpSchema = z.discriminatedUnion("op", [
     op: z.literal("manifest.remove"),
     payload: z.object({ trip: uuid, entry: uuid }),
   }),
+  z.object({
+    ...base,
+    op: z.literal("safety.check"),
+    // offline: the server uses the phone's cached weather and time; online: its own fresh weather.
+    payload: z.object({ trip: uuid, offline: z.boolean(), weather: weatherInputSchema.nullable() }),
+  }),
+  z.object({
+    ...base,
+    op: z.literal("safety.ack"),
+    payload: z.object({ check: uuid }),
+  }),
 ]);
 export type SyncOp = z.infer<typeof syncOpSchema>;
 export type TripStep = Extract<SyncOp, { op: "trip.step" }>["payload"]["step"];
@@ -71,6 +102,28 @@ export type SyncResult = {
   code?: string;
 };
 
+/** A trip's safety inputs and latest check, so the phone can run the rules with no signal. */
+export interface TripSafety {
+  origin: { lat: number; lng: number; timeZone: string } | null;
+  destination: { lat: number; lng: number } | null;
+  durationMin: number;
+  timeZone: string;
+  expiredDocuments: string[];
+  weather: z.infer<typeof weatherInputSchema> | null;
+  latest: {
+    key: string;
+    result: "pass" | "warn" | "block";
+    reasons: Reason[];
+    checkedAt: string;
+    /** When the server stored it (null while only on the phone). */
+    storedAt: string | null;
+    offline: boolean;
+    acknowledged: boolean;
+    requested: boolean;
+    decision: { decision: "approved" | "declined"; reason: string } | null;
+  } | null;
+}
+
 /** What a captain's phone caches: today's work for their vessels (§8). */
 export interface CaptainSnapshot {
   generatedAt: string;
@@ -79,8 +132,15 @@ export interface CaptainSnapshot {
   timeZone: string;
   currency: string;
   namesRequired: boolean;
+  thresholds: Thresholds;
   vessels: { id: string; name: string; capacity: number | null }[];
-  routes: { id: string; label: string }[];
+  routes: {
+    id: string;
+    label: string;
+    durationMin: number;
+    origin: { lat: number; lng: number; timeZone: string } | null;
+    destination: { lat: number; lng: number } | null;
+  }[];
   trips: {
     key: string;
     vesselId: string;
@@ -89,6 +149,8 @@ export interface CaptainSnapshot {
     status: "scheduled" | "boarding" | "departed" | "arrived" | "cancelled";
     lifejackets: boolean;
     currency: string;
+    /** Only for trips that haven't departed. */
+    safety?: TripSafety;
   }[];
   manifest: {
     key: string;

@@ -31,6 +31,13 @@ export const ERROR_CODES = [
   "invalid_transition",
   "lifejackets_unconfirmed",
   "immutable_trip",
+  "safety_check_required",
+  "safety_unacknowledged",
+  "safety_blocked",
+  "thresholds_too_loose",
+  "not_overridable",
+  "already_requested",
+  "already_decided",
   "unknown",
 ] as const;
 export type ErrorCode = (typeof ERROR_CODES)[number];
@@ -65,6 +72,13 @@ const STATUS: Partial<Record<ErrorCode, number>> = {
   invalid_transition: 409,
   lifejackets_unconfirmed: 409,
   immutable_trip: 409,
+  safety_check_required: 409,
+  safety_unacknowledged: 409,
+  safety_blocked: 409,
+  thresholds_too_loose: 422,
+  not_overridable: 409,
+  already_requested: 409,
+  already_decided: 409,
 };
 
 export class ServiceError extends Error {

@@ -35,7 +35,47 @@ describe("local trip rules (mirror the M4 database triggers)", () => {
   it("departure needs life jackets and someone on board", () => {
     expect(checkStep(trip({ status: "boarding" }), 3, "depart")).toBe("lifejackets_unconfirmed");
     expect(checkStep(trip({ status: "boarding", lifejackets: true }), 0, "depart")).toBe("validation");
-    expect(checkStep(trip({ status: "boarding", lifejackets: true }), 1, "depart")).toBeNull();
+    expect(checkStep(trip({ status: "boarding", lifejackets: true }), 1, "depart")).toBe("safety_check_required");
+  });
+
+  it("departure needs a safety check from the last hour that passed, was accepted or was overridden", () => {
+    const now = new Date("2026-11-04T11:00:00Z");
+    const latest = (over: Partial<NonNullable<NonNullable<LocalTrip["safety"]>["latest"]>>) =>
+      trip({
+        status: "boarding",
+        lifejackets: true,
+        safety: {
+          origin: null,
+          destination: null,
+          durationMin: 45,
+          timeZone: "Africa/Lagos",
+          expiredDocuments: [],
+          weather: null,
+          latest: {
+            key: "0190f1f2-0000-7000-8000-0000000000c1",
+            result: "pass",
+            reasons: [],
+            checkedAt: "2026-11-04T10:30:00Z",
+            storedAt: null,
+            offline: true,
+            acknowledged: false,
+            requested: false,
+            decision: null,
+            ...over,
+          },
+        },
+      });
+    expect(checkStep(latest({}), 1, "depart", now)).toBeNull();
+    expect(checkStep(latest({ checkedAt: "2026-11-04T09:59:00Z" }), 1, "depart", now)).toBe("safety_check_required");
+    expect(checkStep(latest({ result: "warn" }), 1, "depart", now)).toBe("safety_unacknowledged");
+    expect(checkStep(latest({ result: "warn", acknowledged: true }), 1, "depart", now)).toBeNull();
+    expect(checkStep(latest({ result: "block", requested: true }), 1, "depart", now)).toBe("safety_blocked");
+    expect(
+      checkStep(latest({ result: "block", decision: { decision: "declined", reason: "No" } }), 1, "depart", now),
+    ).toBe("safety_blocked");
+    expect(
+      checkStep(latest({ result: "block", decision: { decision: "approved", reason: "Ok" } }), 1, "depart", now),
+    ).toBeNull();
   });
 
   it("steps change the trip and mark it unsynced", () => {

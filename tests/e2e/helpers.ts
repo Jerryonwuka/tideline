@@ -68,3 +68,15 @@ export function makePng(width: number, height: number): Buffer {
 export function isoDate(daysFromToday: number): string {
   return new Date(Date.now() + daysFromToday * 86_400_000).toISOString().slice(0, 10);
 }
+
+/**
+ * Pins the server's and this page's clocks to 12:00 in Lagos today, so the safety rules (night,
+ * permitted hours) give the same answer whenever the tests run. Time keeps moving from there.
+ */
+export async function pinMidday(page: Page) {
+  const lagosDate = new Date(Date.now() + 3_600_000).toISOString().slice(0, 10);
+  const at = new Date(`${lagosDate}T11:00:00Z`);
+  const res = await page.request.post("/api/dev/clock", { data: { at: at.toISOString() } });
+  expect(res.ok(), "dev clock must be enabled (APP_ENV=local, INTEGRATIONS_MODE=fake)").toBe(true);
+  await page.clock.setSystemTime(at);
+}

@@ -12,6 +12,8 @@ const OP_LABEL = {
   "trip.create": "ops.tripCreate",
   "manifest.add": "ops.manifestAdd",
   "manifest.remove": "ops.manifestRemove",
+  "safety.check": "ops.safetyCheck",
+  "safety.ack": "ops.safetyAck",
 } as const;
 
 /** Everything saved on this phone that the server doesn't have yet, oldest first. */
@@ -37,7 +39,9 @@ export function PendingView() {
     return t(OP_LABEL[op.op]);
   };
   const tripOf = (item: (typeof data.items)[number]) =>
-    data.trips.get(item.op.op === "trip.create" ? item.op.client_id : item.op.payload.trip);
+    data.trips.get(
+      item.op.op === "trip.create" ? item.op.client_id : "trip" in item.op.payload ? item.op.payload.trip : "",
+    );
 
   return (
     <div className="flex flex-col gap-5">

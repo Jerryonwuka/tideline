@@ -1,11 +1,24 @@
 import "server-only";
 import { localDate } from "@/lib/dates";
-import type { CaptainSnapshot, SyncOp, SyncResult } from "@/lib/schemas/sync";
+import type { Reason } from "@/lib/safety/engine";
+import type { CaptainSnapshot, SyncOp, SyncResult, TripSafety } from "@/lib/schemas/sync";
+import { now as clockNow } from "@/server/clock";
+import { integrations } from "@/server/integrations";
+import { supabaseAdmin } from "@/server/supabase/admin";
 import { myVessels } from "@/server/captain";
 import { myCrewId, orgBasics } from "@/server/org-context";
 import type { Me, MembershipSummary } from "@/server/services/profile";
 import type { Db } from "@/server/supabase/server";
 import { fromDbError, ServiceError } from "./errors";
+import {
+  acknowledgeCheck,
+  effectiveThresholds,
+  latestSafety,
+  runSafetyCheck,
+  tripSafetyContext,
+  weatherPlaces,
+} from "./safety";
+import { weatherFor } from "./weather";
 import {
   addManifestEntry,
   arrive,
@@ -49,6 +62,7 @@ const namesRequired = (settings: unknown) =>
   (settings as { require_passenger_names?: boolean } | null)?.require_passenger_names ?? true;
 
 interface SyncContext {
+  me: Me;
   orgId: string;
   userId: string;
   currency: string;
@@ -127,6 +141,17 @@ async function applyOp(db: Db, ctx: SyncContext, op: SyncOp): Promise<string | n
       await removeManifestEntry(db, entryId);
       return entryId;
     }
+    case "safety.check": {
+      // The server recomputes; the phone's own result is only what it showed meanwhile.
+      const trip = await resolveTrip(db, ctx.orgId, op.payload.trip);
+      const check = await runSafetyCheck(db, ctx.me, trip.id, {
+        clientId: op.client_id,
+        ...(op.payload.offline ? { offline: { checkedAt: at, weather: op.payload.weather } } : {}),
+      });
+      return check.id;
+    }
+    case "safety.ack":
+      return acknowledgeCheck(db, ctx.me, op.payload.check);
   }
 }
 
@@ -139,6 +164,7 @@ export async function applySyncBatch(db: Db, me: Me, orgId: string, ops: SyncOp[
   if (!me.memberships.some((m) => m.orgId === orgId && m.status === "active")) throw new ServiceError("forbidden");
   const org = await orgBasics(db, orgId);
   const ctx: SyncContext = {
+    me,
     orgId,
     userId: me.userId,
     currency: org.currency,
@@ -199,7 +225,7 @@ export async function captainSnapshot(db: Db, me: Me, membership: MembershipSumm
     db
       .from("routes")
       .select(
-        "id, origin:jetties!routes_origin_jetty_id_jetties_id_fk(name), destination:jetties!routes_destination_jetty_id_jetties_id_fk(name)",
+        "id, duration_min, origin:jetties!routes_origin_jetty_id_jetties_id_fk(name, lat, lng, time_zone), destination:jetties!routes_destination_jetty_id_jetties_id_fk(name, lat, lng)",
       )
       .eq("org_id", membership.orgId)
       .eq("active", true),
@@ -230,6 +256,13 @@ export async function captainSnapshot(db: Db, me: Me, membership: MembershipSumm
     }));
   }
 
+  const [{ thresholds }, safety] = await Promise.all([
+    effectiveThresholds(db, membership.orgId, org.country_code),
+    Promise.all(
+      myTrips.map((t) => (t.status === "scheduled" || t.status === "boarding" ? tripSafety(db, t.id) : undefined)),
+    ),
+  ]);
+
   return {
     generatedAt: new Date().toISOString(),
     orgId: membership.orgId,
@@ -237,9 +270,16 @@ export async function captainSnapshot(db: Db, me: Me, membership: MembershipSumm
     timeZone: org.time_zone,
     currency: org.currency,
     namesRequired: namesRequired(org.settings),
+    thresholds,
     vessels: vessels.map((v) => ({ id: v.id, name: v.name, capacity: v.passenger_capacity })),
-    routes: routes.data.map((r) => ({ id: r.id, label: `${r.origin?.name} → ${r.destination?.name}` })),
-    trips: myTrips.map((t) => ({
+    routes: routes.data.map((r) => ({
+      id: r.id,
+      label: `${r.origin?.name} → ${r.destination?.name}`,
+      durationMin: r.duration_min,
+      origin: r.origin ? { lat: r.origin.lat, lng: r.origin.lng, timeZone: r.origin.time_zone } : null,
+      destination: r.destination ? { lat: r.destination.lat, lng: r.destination.lng } : null,
+    })),
+    trips: myTrips.map((t, i) => ({
       key: t.client_id ?? t.id,
       vesselId: t.vessel_id,
       label: tripLabel(t),
@@ -247,7 +287,48 @@ export async function captainSnapshot(db: Db, me: Me, membership: MembershipSumm
       status: t.status,
       lifejackets: t.lifejackets_confirmed,
       currency: t.currency,
+      ...(safety[i] ? { safety: safety[i] } : {}),
     })),
     manifest,
+  };
+}
+
+/** A trip's safety inputs, cached weather and latest check, for offline checks on the phone. */
+async function tripSafety(db: Db, tripId: string): Promise<TripSafety> {
+  const ctx = await tripSafetyContext(db, tripId);
+  const at = clockNow();
+  const [weather, latest] = await Promise.all([
+    weatherFor(
+      supabaseAdmin(),
+      integrations().weather,
+      weatherPlaces(ctx),
+      at,
+      new Date(at.getTime() + 12 * 60 * 60_000),
+      at,
+    ),
+    latestSafety(db, tripId),
+  ]);
+  const one = <T>(v: T | T[] | null): T | null => (Array.isArray(v) ? (v[0] ?? null) : v);
+  const override = latest ? one(latest.override) : null;
+  return {
+    origin: ctx.origin,
+    destination: ctx.destination,
+    durationMin: ctx.durationMin,
+    timeZone: ctx.timeZone,
+    expiredDocuments: ctx.expiredDocuments,
+    weather,
+    latest: latest
+      ? {
+          key: latest.client_id ?? latest.id,
+          result: latest.result,
+          reasons: latest.reasons as unknown as Reason[],
+          checkedAt: latest.checked_at,
+          storedAt: latest.created_at,
+          offline: latest.offline,
+          acknowledged: !!one(latest.ack),
+          requested: !!one(latest.request),
+          decision: override ? { decision: override.decision, reason: override.reason } : null,
+        }
+      : null,
   };
 }

@@ -1,5 +1,8 @@
 import { v7 as uuidv7 } from "uuid";
 import type { CaptainSnapshot, SyncOp, SyncResult, TripStep } from "@/lib/schemas/sync";
+import { localDate } from "@/lib/dates";
+import { DEFAULT_TRIP_MINUTES, evaluateSafety } from "@/lib/safety/engine";
+import { sunTimes } from "@/lib/safety/sun";
 import { captainDb, type OutboxItem } from "./db";
 import {
   applyStep,
@@ -57,6 +60,15 @@ export async function createTrip(input: {
       status: "scheduled",
       lifejackets: false,
       currency: meta.currency,
+      safety: {
+        origin: route?.origin ?? null,
+        destination: route?.destination ?? null,
+        durationMin: route?.durationMin ?? DEFAULT_TRIP_MINUTES,
+        timeZone: route?.origin?.timeZone ?? meta.timeZone,
+        expiredDocuments: [],
+        weather: null,
+        latest: null,
+      },
       synced: false,
     });
     await enqueue({
@@ -166,6 +178,126 @@ export async function removePassenger(tripKey: string, entryKey: string): Promis
   if (error) return { ok: false, error };
   void requestSync();
   return { ok: true, value: undefined };
+}
+
+// ----- Safety lock (§4.2, §8) ------------------------------------------------------------------
+
+/**
+ * Runs the safety rules on the phone (shown at once) and queues the check. The server recomputes
+ * it: with fresh weather when the phone is online, with the phone's cached weather when offline.
+ */
+export async function runSafetyCheck(tripKey: string): Promise<Result> {
+  const db = captainDb();
+  await db.transaction("rw", [db.trips, db.manifest, db.outbox, db.meta, db.vessels], async () => {
+    const { trip, seats } = await tripAndSeats(tripKey);
+    const meta = await db.meta.get("snapshot");
+    const vessel = await db.vessels.get(trip.vesselId);
+    if (!meta) throw new Error("No cached session");
+    const safety = trip.safety ?? {
+      origin: null,
+      destination: null,
+      durationMin: DEFAULT_TRIP_MINUTES,
+      timeZone: meta.timeZone,
+      expiredDocuments: [],
+      weather: null,
+      latest: null,
+    };
+    const at = new Date();
+    const offline = typeof navigator !== "undefined" && !navigator.onLine;
+    const sun = safety.origin
+      ? sunTimes(localDate(at, safety.origin.timeZone), safety.origin.lat, safety.origin.lng)
+      : null;
+    const { result, reasons } = evaluateSafety({
+      now: at,
+      departure: at,
+      arrival: new Date(at.getTime() + safety.durationMin * 60_000),
+      timeZone: safety.timeZone,
+      sun,
+      thresholds: meta.thresholds,
+      weather: safety.weather,
+      seats,
+      capacity: vessel?.capacity ?? null,
+      lifejackets: trip.lifejackets,
+      expiredDocuments: safety.expiredDocuments,
+    });
+    const key = uuidv7();
+    await db.trips.put({
+      ...trip,
+      synced: false,
+      safety: {
+        ...safety,
+        latest: {
+          key,
+          result,
+          reasons,
+          checkedAt: at.toISOString(),
+          storedAt: null,
+          offline,
+          acknowledged: false,
+          requested: false,
+          decision: null,
+        },
+      },
+    });
+    await enqueue({
+      op: "safety.check",
+      client_id: key,
+      at: at.toISOString(),
+      payload: { trip: tripKey, offline, weather: offline ? safety.weather : null },
+    });
+  });
+  void requestSync();
+  return { ok: true, value: undefined };
+}
+
+/** "I understand" on a warn result. */
+export async function acknowledgeSafety(tripKey: string): Promise<Result> {
+  const db = captainDb();
+  let error: LocalError | null = null;
+  await db.transaction("rw", db.trips, db.outbox, db.meta, async () => {
+    const trip = await db.trips.get(tripKey);
+    const latest = trip?.safety?.latest;
+    if (!trip?.safety || !latest || latest.result !== "warn") {
+      error = "invalid_transition";
+      return;
+    }
+    await db.trips.put({
+      ...trip,
+      synced: false,
+      safety: { ...trip.safety, latest: { ...latest, acknowledged: true } },
+    });
+    await enqueue({ op: "safety.ack", client_id: uuidv7(), at: now(), payload: { check: latest.key } });
+  });
+  if (error) return { ok: false, error };
+  void requestSync();
+  return { ok: true, value: undefined };
+}
+
+/** Asks the owner to override a block. Needs a connection: the check is synced first. */
+export async function requestOverride(tripKey: string, note?: string): Promise<{ ok: boolean; code?: string }> {
+  const db = captainDb();
+  const trip = await db.trips.get(tripKey);
+  const latest = trip?.safety?.latest;
+  if (!trip?.safety || !latest) return { ok: false, code: "invalid_transition" };
+  await requestSync();
+  try {
+    const res = await fetch(`/api/v1/safety-checks/${latest.key}/override-request`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(note ? { note } : {}),
+    });
+    if (!res.ok && res.status !== 409) {
+      const body = (await res.json().catch(() => null)) as { error?: { code?: string } } | null;
+      return { ok: false, code: body?.error?.code ?? "unknown" };
+    }
+  } catch {
+    return { ok: false, code: "offline" };
+  }
+  const fresh = await db.trips.get(tripKey);
+  if (fresh?.safety?.latest) {
+    await db.trips.put({ ...fresh, safety: { ...fresh.safety, latest: { ...fresh.safety.latest, requested: true } } });
+  }
+  return { ok: true };
 }
 
 export async function dismissFailed(clientId: string) {

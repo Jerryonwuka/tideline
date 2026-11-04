@@ -504,7 +504,14 @@
     "trip_closed": "This trip is closed.",
     "invalid_transition": "That step isn’t possible from the trip’s current status.",
     "lifejackets_unconfirmed": "Confirm life jackets before departing.",
-    "immutable_trip": "That can’t be changed once the trip has started."
+    "immutable_trip": "That can’t be changed once the trip has started.",
+    "safety_check_required": "Run the safety check before departing.",
+    "safety_unacknowledged": "Read and accept the safety warnings before departing.",
+    "safety_blocked": "The safety check blocked this departure. Ask the owner for an override.",
+    "thresholds_too_loose": "Limits can only be stricter than the country defaults.",
+    "not_overridable": "This can’t be overridden. Fix it first (people on board, life jackets).",
+    "already_requested": "An override was already requested for this check.",
+    "already_decided": "This request was already decided."
   },
   "auth": {
     "title": "Log in to Tideline",
@@ -585,7 +592,8 @@
     "trips": "Trips",
     "routes": "Routes",
     "reports": "Reports",
-    "captain": "Captain mode"
+    "captain": "Captain mode",
+    "safety": "Safety"
   },
   "dashboard": {
     "title": "Welcome, {name}",
@@ -986,7 +994,8 @@
     "title": "Notifications",
     "empty": "No notifications yet.",
     "templates": {
-      "document_expiry": "{document} for {subject} expires {days, plural, =0 {today} one {tomorrow} other {in # days}} ({date})."
+      "document_expiry": "{document} for {subject} expires {days, plural, =0 {today} one {tomorrow} other {in # days}} ({date}).",
+      "override_request": "A captain asked to depart despite the safety check: {why}"
     },
     "markRead": "Mark all as read"
   },
@@ -1145,7 +1154,9 @@
         "tripCreate": "Trip started",
         "tripStep": "Trip update: {step}",
         "manifestAdd": "Passenger added",
-        "manifestRemove": "Passenger removed"
+        "manifestRemove": "Passenger removed",
+        "safetyCheck": "Safety check",
+        "safetyAck": "Safety warnings accepted"
       },
       "steps": {
         "boarding": "boarding",
@@ -1160,5 +1171,75 @@
     "name": "Tideline",
     "shortName": "Tideline",
     "description": "Trips, manifests and safety for your boats, even with no signal."
+  },
+  "safety": {
+    "title": "Safety",
+    "check": "Run safety check",
+    "recheck": "Check again",
+    "checking": "Checking…",
+    "result": {
+      "pass": "Safe to depart",
+      "warn": "Depart with care",
+      "block": "Departure blocked"
+    },
+    "offlineNote": "Checked on this phone (no connection).",
+    "checkedAt": "Checked {time}",
+    "acknowledge": "I understand. Depart with care",
+    "acknowledged": "Warnings accepted",
+    "requestOverride": "Ask the owner to override",
+    "overrideNote": "Note for the owner (optional)",
+    "overrideNeedsSignal": "Asking for an override needs a connection.",
+    "requested": "Waiting for the owner’s decision.",
+    "approved": "Override approved: {reason}",
+    "declined": "Override declined: {reason}",
+    "cannotOverride": "This can’t be overridden.",
+    "reasons": {
+      "weather_unknown": "No recent weather forecast. Check conditions yourself.",
+      "wind": "Wind {value} km/h is over the {limit} km/h limit.",
+      "wind_near_limit": "Wind {value} km/h is close to the {limit} km/h limit.",
+      "gust": "Gusts {value} km/h are over the {limit} km/h limit.",
+      "gust_near_limit": "Gusts {value} km/h are close to the {limit} km/h limit.",
+      "wave": "Waves {value} m are over the {limit} m limit.",
+      "wave_near_limit": "Waves {value} m are close to the {limit} m limit.",
+      "precipitation": "Rain {value} mm/h is over the {limit} mm/h limit.",
+      "storm": "Thunderstorms are forecast.",
+      "low_visibility": "Visibility is down to {value} m.",
+      "location_unknown": "No route chosen, so daylight can’t be checked.",
+      "night": "The trip ({value}) is outside daylight ({limit}).",
+      "outside_hours": "The trip ({value}) is outside permitted hours ({limit}).",
+      "capacity": "{value} people on board; the licence allows {limit}.",
+      "lifejackets": "Life jackets haven’t been checked.",
+      "documents_expired": "Expired documents: {value}."
+    },
+    "whatsapp": {
+      "request": "Override requested: {why} Decide in Tideline: {link}",
+      "approve": "Approve",
+      "decline": "Decline"
+    },
+    "inbox": {
+      "title": "Override requests",
+      "subtitle": "Captains asking to depart despite the safety check.",
+      "empty": "No requests waiting.",
+      "note": "Captain’s note: {note}",
+      "reason": "Your reason",
+      "approve": "Approve",
+      "decline": "Decline"
+    },
+    "thresholds": {
+      "title": "Safety limits",
+      "subtitle": "Your limits can be stricter than the country defaults, never looser.",
+      "defaults": "Default: {value}",
+      "maxWindKmh": "Max wind (km/h)",
+      "maxGustKmh": "Max gusts (km/h)",
+      "maxWaveM": "Max wave height (m)",
+      "maxPrecipMmH": "Max rain (mm/h)",
+      "nightBlock": "No departures in the dark",
+      "permittedStart": "Earliest departure",
+      "permittedEnd": "Latest arrival",
+      "save": "Save limits",
+      "saved": "Saved.",
+      "placeholderNote": "Defaults are conservative placeholders, not official limits."
+    },
+    "history": "Safety checks"
   }
 }

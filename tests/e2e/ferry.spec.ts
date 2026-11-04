@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { logIn, outbox, randomPhone } from "./helpers";
+import { logIn, outbox, pinMidday, randomPhone } from "./helpers";
 
 // M4 acceptance: a captain runs a scheduled trip end to end and the owner sees it in the daily
 // report; the manifest can't exceed capacity; after departure additions are amendments.
@@ -55,6 +55,7 @@ test("captain runs a scheduled trip; owner sees it in the daily report", async (
   await captain.getByRole("button", { name: "Continue" }).click();
   await captain.getByRole("button", { name: "Accept invitation" }).click();
   await expect(captain).toHaveURL(/\/dashboard$/);
+  await pinMidday(captain);
   await captain.goto("/captain");
   await captain.getByRole("button", { name: /CMS Marina → Ikorodu/ }).click();
   await expect(captain).toHaveURL(/\/captain\?trip=[0-9a-f-]{36}$/);
@@ -72,10 +73,14 @@ test("captain runs a scheduled trip; owner sees it in the daily report", async (
   await expect(counter).toHaveText("4 of 5");
 
   // Can't depart without the life-jacket check; then depart.
-  await expect(captain.getByRole("button", { name: "Depart" })).toBeDisabled();
+  await expect(captain.getByRole("button", { name: "Depart", exact: true })).toBeDisabled();
   await captain.getByRole("button", { name: /Life jackets checked/ }).click();
   await expect(captain.getByRole("button", { name: /☑ Life jackets checked/ })).toBeVisible();
-  await captain.getByRole("button", { name: "Depart" }).click();
+  // Safety lock: calm weather at midday passes.
+  await expect(captain.getByRole("button", { name: "Depart", exact: true })).toBeDisabled();
+  await captain.getByRole("button", { name: "Run safety check" }).click();
+  await expect(captain.getByTestId("safety-result")).toHaveText("Safe to depart");
+  await captain.getByRole("button", { name: "Depart", exact: true }).click();
   await expect(captain.getByText(/The manifest is locked/)).toBeVisible();
 
   // A late passenger is an amendment; going over capacity is refused.

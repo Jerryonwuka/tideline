@@ -12,6 +12,8 @@ const schema = z
     DATABASE_URL: z.string().optional(),
     PHONE_HASH_SALT: z.string().optional(),
     SEND_SMS_HOOK_SECRET: z.string().optional(),
+    /** Weather needs no key, so it can be live while other integrations are fake. */
+    WEATHER_PROVIDER: z.enum(["fake", "open-meteo"]).optional(),
   })
   .refine((env) => env.APP_ENV === "local" || env.INTEGRATIONS_MODE === "live", {
     message: "Fake integrations are only allowed when APP_ENV=local",

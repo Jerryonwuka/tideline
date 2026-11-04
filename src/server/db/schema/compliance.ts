@@ -112,6 +112,7 @@ export const safetyRuleDefaults = pgTable("safety_rule_defaults", {
   maxWindKmh: numeric("max_wind_kmh").notNull(),
   maxGustKmh: numeric("max_gust_kmh").notNull(),
   maxWaveM: numeric("max_wave_m").notNull(),
+  maxPrecipMmH: numeric("max_precip_mm_h").notNull().default("10"),
   nightBlock: boolean("night_block").notNull().default(true),
   permittedStart: time("permitted_start"),
   permittedEnd: time("permitted_end"),

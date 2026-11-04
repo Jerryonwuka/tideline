@@ -8,6 +8,8 @@ import { requireOrgContext } from "@/server/auth/session";
 import { orgBasics } from "@/server/org-context";
 import { ServiceError } from "@/server/services/errors";
 import { getTrip, listManifest, tripLabel } from "@/server/services/ferry";
+import { listChecks } from "@/server/services/safety";
+import type { Reason } from "@/lib/safety/engine";
 
 export default async function TripPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -17,11 +19,14 @@ export default async function TripPage({ params }: { params: Promise<{ id: strin
     throw err;
   });
   const org = await orgBasics(db, membership.orgId);
-  const [t, format, manifest] = await Promise.all([
+  const [t, tSafety, format, manifest, checks] = await Promise.all([
     getTranslations("ferry.trip"),
+    getTranslations("safety"),
     getFormatter(),
     listManifest(db, id),
+    listChecks(db, id),
   ]);
+  const one = <T,>(v: T | T[] | null): T | null => (Array.isArray(v) ? (v[0] ?? null) : v);
   const when = (iso: string | null) =>
     iso ? format.dateTime(new Date(iso), { dateStyle: "medium", timeStyle: "short", timeZone: org.time_zone }) : "—";
 
@@ -82,6 +87,40 @@ export default async function TripPage({ params }: { params: Promise<{ id: strin
           <span className="label-mono-sm text-meta">{t("notes")}: </span>
           {trip.notes}
         </p>
+      )}
+      {checks.length > 0 && (
+        <section aria-labelledby="safety-history" className="flex flex-col gap-3">
+          <h2 id="safety-history" className="title-md text-foreground">
+            {tSafety("history")}
+          </h2>
+          <ul className="rounded-md border border-hairline">
+            {checks.map((c) => {
+              const override = one(c.override);
+              return (
+                <li key={c.id} className="flex flex-col gap-1 border-b border-hairline px-5 py-3 last:border-b-0">
+                  <span className="flex flex-wrap items-center justify-between gap-2">
+                    <span className="text-foreground">{tSafety(`result.${c.result}`)}</span>
+                    <span className="text-sm text-body">
+                      {when(c.checked_at)}
+                      {c.offline && ` · ${tSafety("offlineNote")}`}
+                    </span>
+                  </span>
+                  {(c.reasons as unknown as Reason[]).map((r) => (
+                    <span key={r.code} className="text-sm text-body">
+                      {tSafety(`reasons.${r.code}`, { value: String(r.value ?? ""), limit: String(r.limit ?? "") })}
+                    </span>
+                  ))}
+                  {one(c.ack) && <span className="text-sm text-body">{tSafety("acknowledged")}</span>}
+                  {override && (
+                    <span className="text-sm text-foreground">
+                      {tSafety(override.decision, { reason: override.reason })}
+                    </span>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        </section>
       )}
     </div>
   );
