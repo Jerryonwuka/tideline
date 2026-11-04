@@ -25,9 +25,17 @@ export async function AppShell({
   const t = await getTranslations("shell");
   const tRoles = await getTranslations("roles");
   const orgs = me.memberships.filter((m) => m.status === "active");
+  const manages = MANAGES_TEAM.includes(membership.role);
   const links = [
     { href: "/dashboard", label: t("dashboard") },
-    ...(MANAGES_TEAM.includes(membership.role) ? [{ href: "/members", label: t("members") }] : []),
+    { href: "/vessels", label: t("vessels") },
+    ...(manages
+      ? [
+          { href: "/crew", label: t("crew") },
+          { href: "/documents", label: t("documents") },
+          { href: "/members", label: t("members") },
+        ]
+      : []),
     ...(me.isPlatformAdmin ? [{ href: "/admin/countries", label: t("admin") }] : []),
   ];
 

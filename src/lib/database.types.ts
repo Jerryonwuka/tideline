@@ -192,6 +192,64 @@ export type Database = {
           },
         ];
       };
+      crew_members: {
+        Row: {
+          created_at: string;
+          crew_role: Database["public"]["Enums"]["crew_role"];
+          emergency_contact_name: string | null;
+          emergency_contact_phone: string | null;
+          full_name: string;
+          id: string;
+          org_id: string;
+          phone_e164: string | null;
+          status: Database["public"]["Enums"]["crew_status"];
+          updated_at: string | null;
+          user_id: string | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          crew_role: Database["public"]["Enums"]["crew_role"];
+          emergency_contact_name?: string | null;
+          emergency_contact_phone?: string | null;
+          full_name: string;
+          id?: string;
+          org_id: string;
+          phone_e164?: string | null;
+          status?: Database["public"]["Enums"]["crew_status"];
+          updated_at?: string | null;
+          user_id?: string | null;
+        };
+        Update: {
+          created_at?: string;
+          crew_role?: Database["public"]["Enums"]["crew_role"];
+          emergency_contact_name?: string | null;
+          emergency_contact_phone?: string | null;
+          full_name?: string;
+          id?: string;
+          org_id?: string;
+          phone_e164?: string | null;
+          status?: Database["public"]["Enums"]["crew_status"];
+          updated_at?: string | null;
+          user_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "crew_members_org_id_orgs_id_fk";
+            columns: ["org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "crew_members_user_id_profiles_id_fk";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       currencies: {
         Row: {
           code: string;
@@ -213,6 +271,62 @@ export type Database = {
           symbol?: string;
         };
         Relationships: [];
+      };
+      document_alerts: {
+        Row: {
+          channel: Database["public"]["Enums"]["alert_channel"];
+          detail: Json | null;
+          document_id: string;
+          id: string;
+          offset_days: number;
+          org_id: string;
+          sent_at: string | null;
+          status: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          channel: Database["public"]["Enums"]["alert_channel"];
+          detail?: Json | null;
+          document_id: string;
+          id?: string;
+          offset_days: number;
+          org_id: string;
+          sent_at?: string | null;
+          status?: string;
+        };
+        Update: {
+          channel?: Database["public"]["Enums"]["alert_channel"];
+          detail?: Json | null;
+          document_id?: string;
+          id?: string;
+          offset_days?: number;
+          org_id?: string;
+          sent_at?: string | null;
+          status?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "document_alerts_document_id_documents_id_fk";
+            columns: ["document_id"];
+            isOneToOne: false;
+            referencedRelation: "documents";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "document_alerts_document_id_documents_id_fk";
+            columns: ["document_id"];
+            isOneToOne: false;
+            referencedRelation: "documents_live";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "document_alerts_org_id_orgs_id_fk";
+            columns: ["org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       document_requirements: {
         Row: {
@@ -305,6 +419,95 @@ export type Database = {
             columns: ["rule_set_id"];
             isOneToOne: false;
             referencedRelation: "compliance_rule_sets";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      documents: {
+        Row: {
+          created_at: string;
+          document_type_code: string;
+          expiry_date: string | null;
+          extracted: Json | null;
+          extraction_confidence: number | null;
+          file_path: string | null;
+          id: string;
+          is_public: boolean;
+          issue_date: string | null;
+          issuer: string | null;
+          number: string | null;
+          org_id: string;
+          replaced_by: string | null;
+          reviewed_at: string | null;
+          reviewed_by: string | null;
+          status: Database["public"]["Enums"]["document_status"];
+          subject_id: string;
+          subject_type: Database["public"]["Enums"]["applies_to"];
+          updated_at: string | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          document_type_code: string;
+          expiry_date?: string | null;
+          extracted?: Json | null;
+          extraction_confidence?: number | null;
+          file_path?: string | null;
+          id?: string;
+          is_public?: boolean;
+          issue_date?: string | null;
+          issuer?: string | null;
+          number?: string | null;
+          org_id: string;
+          replaced_by?: string | null;
+          reviewed_at?: string | null;
+          reviewed_by?: string | null;
+          status?: Database["public"]["Enums"]["document_status"];
+          subject_id: string;
+          subject_type: Database["public"]["Enums"]["applies_to"];
+          updated_at?: string | null;
+        };
+        Update: {
+          created_at?: string;
+          document_type_code?: string;
+          expiry_date?: string | null;
+          extracted?: Json | null;
+          extraction_confidence?: number | null;
+          file_path?: string | null;
+          id?: string;
+          is_public?: boolean;
+          issue_date?: string | null;
+          issuer?: string | null;
+          number?: string | null;
+          org_id?: string;
+          replaced_by?: string | null;
+          reviewed_at?: string | null;
+          reviewed_by?: string | null;
+          status?: Database["public"]["Enums"]["document_status"];
+          subject_id?: string;
+          subject_type?: Database["public"]["Enums"]["applies_to"];
+          updated_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "documents_document_type_code_document_types_code_fk";
+            columns: ["document_type_code"];
+            isOneToOne: false;
+            referencedRelation: "document_types";
+            referencedColumns: ["code"];
+          },
+          {
+            foreignKeyName: "documents_org_id_orgs_id_fk";
+            columns: ["org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "documents_reviewed_by_profiles_id_fk";
+            columns: ["reviewed_by"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
             referencedColumns: ["id"];
           },
         ];
@@ -793,9 +996,208 @@ export type Database = {
           },
         ];
       };
+      vessel_crew: {
+        Row: {
+          created_at: string;
+          crew_member_id: string;
+          from_date: string;
+          id: string;
+          org_id: string;
+          to_date: string | null;
+          vessel_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          crew_member_id: string;
+          from_date?: string;
+          id?: string;
+          org_id: string;
+          to_date?: string | null;
+          vessel_id: string;
+        };
+        Update: {
+          created_at?: string;
+          crew_member_id?: string;
+          from_date?: string;
+          id?: string;
+          org_id?: string;
+          to_date?: string | null;
+          vessel_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "vessel_crew_crew_member_id_crew_members_id_fk";
+            columns: ["crew_member_id"];
+            isOneToOne: false;
+            referencedRelation: "crew_members";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "vessel_crew_org_id_orgs_id_fk";
+            columns: ["org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "vessel_crew_vessel_id_vessels_id_fk";
+            columns: ["vessel_id"];
+            isOneToOne: false;
+            referencedRelation: "vessels";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      vessels: {
+        Row: {
+          cargo_capacity_t: number | null;
+          charter_enabled: boolean;
+          created_at: string;
+          engine: string | null;
+          ferry_enabled: boolean;
+          flag_country_code: string | null;
+          home_jetty_id: string | null;
+          id: string;
+          idle_since: string | null;
+          imo: string | null;
+          length_m: number | null;
+          mmsi: string | null;
+          name: string;
+          operating_country_code: string;
+          org_id: string;
+          passenger_capacity: number | null;
+          photos: string[];
+          registration_no: string | null;
+          status: Database["public"]["Enums"]["vessel_status"];
+          type: Database["public"]["Enums"]["vessel_type"];
+          updated_at: string | null;
+          year_built: number | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          cargo_capacity_t?: number | null;
+          charter_enabled?: boolean;
+          created_at?: string;
+          engine?: string | null;
+          ferry_enabled?: boolean;
+          flag_country_code?: string | null;
+          home_jetty_id?: string | null;
+          id?: string;
+          idle_since?: string | null;
+          imo?: string | null;
+          length_m?: number | null;
+          mmsi?: string | null;
+          name: string;
+          operating_country_code: string;
+          org_id: string;
+          passenger_capacity?: number | null;
+          photos?: string[];
+          registration_no?: string | null;
+          status?: Database["public"]["Enums"]["vessel_status"];
+          type: Database["public"]["Enums"]["vessel_type"];
+          updated_at?: string | null;
+          year_built?: number | null;
+        };
+        Update: {
+          cargo_capacity_t?: number | null;
+          charter_enabled?: boolean;
+          created_at?: string;
+          engine?: string | null;
+          ferry_enabled?: boolean;
+          flag_country_code?: string | null;
+          home_jetty_id?: string | null;
+          id?: string;
+          idle_since?: string | null;
+          imo?: string | null;
+          length_m?: number | null;
+          mmsi?: string | null;
+          name?: string;
+          operating_country_code?: string;
+          org_id?: string;
+          passenger_capacity?: number | null;
+          photos?: string[];
+          registration_no?: string | null;
+          status?: Database["public"]["Enums"]["vessel_status"];
+          type?: Database["public"]["Enums"]["vessel_type"];
+          updated_at?: string | null;
+          year_built?: number | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "vessels_flag_country_code_countries_code_fk";
+            columns: ["flag_country_code"];
+            isOneToOne: false;
+            referencedRelation: "countries";
+            referencedColumns: ["code"];
+          },
+          {
+            foreignKeyName: "vessels_operating_country_code_countries_code_fk";
+            columns: ["operating_country_code"];
+            isOneToOne: false;
+            referencedRelation: "countries";
+            referencedColumns: ["code"];
+          },
+          {
+            foreignKeyName: "vessels_org_id_orgs_id_fk";
+            columns: ["org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     Views: {
-      [_ in never]: never;
+      documents_live: {
+        Row: {
+          created_at: string;
+          days_to_expiry: number | null;
+          document_type_code: string;
+          effective_status: Database["public"]["Enums"]["document_status"] | null;
+          expiry_date: string | null;
+          extracted: Json | null;
+          extraction_confidence: number | null;
+          file_path: string | null;
+          id: string;
+          is_public: boolean;
+          issue_date: string | null;
+          issuer: string | null;
+          number: string | null;
+          org_id: string;
+          replaced_by: string | null;
+          reviewed_at: string | null;
+          reviewed_by: string | null;
+          status: Database["public"]["Enums"]["document_status"];
+          subject_id: string;
+          subject_type: Database["public"]["Enums"]["applies_to"];
+          updated_at: string | null;
+        };
+        ComputedFields: never;
+        Relationships: [
+          {
+            foreignKeyName: "documents_document_type_code_document_types_code_fk";
+            columns: ["document_type_code"];
+            isOneToOne: false;
+            referencedRelation: "document_types";
+            referencedColumns: ["code"];
+          },
+          {
+            foreignKeyName: "documents_org_id_orgs_id_fk";
+            columns: ["org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "documents_reviewed_by_profiles_id_fk";
+            columns: ["reviewed_by"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     Functions: {
       accept_invitation: { Args: { p_token: string }; Returns: string };
@@ -840,6 +1242,25 @@ export type Database = {
         };
         Returns: string;
       };
+      document_types_for: {
+        Args: { p_applies_to: Database["public"]["Enums"]["applies_to"]; p_country: string };
+        Returns: {
+          applies_to: Database["public"]["Enums"]["applies_to"];
+          code: string;
+          default_validity_months: number;
+          issuer_name: string;
+          name_key: string;
+        }[];
+      };
+      effective_document_status: {
+        Args: {
+          p_expiring_days?: number;
+          p_expiry: string;
+          p_status: Database["public"]["Enums"]["document_status"];
+          p_today: string;
+        };
+        Returns: Database["public"]["Enums"]["document_status"];
+      };
       has_role: {
         Args: { p_org: string; p_roles?: Database["public"]["Enums"]["membership_role"][] };
         Returns: boolean;
@@ -857,8 +1278,12 @@ export type Database = {
       publish_rule_set: { Args: { p_id: string; p_note?: string }; Returns: undefined };
     };
     Enums: {
+      alert_channel: "whatsapp" | "sms" | "email" | "in_app";
       applies_to: "vessel" | "crew" | "org";
+      crew_role: "captain" | "engineer" | "deckhand" | "ticket_agent" | "other";
+      crew_status: "active" | "inactive";
       data_region: "af" | "eu" | "us";
+      document_status: "needs_review" | "valid" | "expiring" | "expired" | "rejected";
       launch_status: "planned" | "validating" | "pilot" | "live";
       membership_role: "owner" | "manager" | "captain" | "crew" | "charterer";
       membership_status: "active" | "suspended";
@@ -869,6 +1294,8 @@ export type Database = {
       rule_set_status: "draft" | "published" | "retired";
       rule_severity: "block" | "warn";
       verification_status: "unverified" | "pending" | "verified";
+      vessel_status: "active" | "maintenance" | "idle" | "on_charter" | "laid_up";
+      vessel_type: "ferry" | "crew_boat" | "osv" | "tug" | "barge" | "speedboat" | "other";
     };
     CompositeTypes: {
       [_ in never]: never;
@@ -976,8 +1403,12 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      alert_channel: ["whatsapp", "sms", "email", "in_app"],
       applies_to: ["vessel", "crew", "org"],
+      crew_role: ["captain", "engineer", "deckhand", "ticket_agent", "other"],
+      crew_status: ["active", "inactive"],
       data_region: ["af", "eu", "us"],
+      document_status: ["needs_review", "valid", "expiring", "expired", "rejected"],
       launch_status: ["planned", "validating", "pilot", "live"],
       membership_role: ["owner", "manager", "captain", "crew", "charterer"],
       membership_status: ["active", "suspended"],
@@ -988,6 +1419,8 @@ export const Constants = {
       rule_set_status: ["draft", "published", "retired"],
       rule_severity: ["block", "warn"],
       verification_status: ["unverified", "pending", "verified"],
+      vessel_status: ["active", "maintenance", "idle", "on_charter", "laid_up"],
+      vessel_type: ["ferry", "crew_boat", "osv", "tug", "barge", "speedboat", "other"],
     },
   },
 } as const;

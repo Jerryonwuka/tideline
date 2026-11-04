@@ -46,5 +46,5 @@ export async function createOrgAction(_: FormState, formData: FormData): Promise
     return { error: err instanceof ServiceError ? err.code : "unknown" };
   }
   await setActiveOrg(orgId);
-  redirect("/dashboard");
+  redirect("/onboarding/vessel");
 }

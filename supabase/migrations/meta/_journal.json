@@ -15,6 +15,13 @@
       "when": 1793798504812,
       "tag": "20261104132144_m1b_countries_compliance",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1793800036235,
+      "tag": "20261104134716_m2_fleet_documents",
+      "breakpoints": true
     }
   ]
 }

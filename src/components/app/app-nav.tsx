@@ -15,7 +15,7 @@ export function AppNav({ links, label }: { links: { href: string; label: string 
     return () => select?.removeEventListener("change", onChange);
   }, []);
   return (
-    <nav aria-label={label} className="ml-2 flex items-center gap-1">
+    <nav aria-label={label} className="ml-2 flex items-center gap-1 overflow-x-auto">
       {links.map((l) => {
         const active = pathname === l.href || pathname.startsWith(`${l.href}/`);
         return (

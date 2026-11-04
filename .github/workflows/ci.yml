@@ -42,8 +42,8 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - name: Start Supabase (database, auth, API only)
-        run: pnpm exec supabase start -x studio,imgproxy,edge-runtime,logflare,vector,supavisor,realtime,storage-api,postgres-meta,mailpit
+      - name: Start Supabase (database, auth, API, storage)
+        run: pnpm exec supabase start -x studio,imgproxy,edge-runtime,logflare,vector,supavisor,realtime,postgres-meta,mailpit
       - name: Export Supabase settings
         run: |
           pnpm exec supabase status -o env \

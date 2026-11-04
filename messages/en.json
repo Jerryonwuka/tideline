@@ -497,7 +497,8 @@
     "unknown": "Something went wrong. Try again.",
     "country_not_ready": "This country can’t be switched on yet: it needs a published rule set, an enabled currency and language, and a payment route.",
     "not_draft": "Only draft rule sets can be published.",
-    "invalid_time_zone": "That time zone isn’t recognised."
+    "invalid_time_zone": "That time zone isn’t recognised.",
+    "invalid_subject": "That vessel or crew member isn’t in this company."
   },
   "auth": {
     "title": "Log in to Tideline",
@@ -542,6 +543,25 @@
       "submit": "Create company",
       "creating": "Creating…",
       "countryDefaults": "Prices in {currency} · times in {timeZone}. You can change these later."
+    },
+    "vessel": {
+      "title": "Add your first vessel",
+      "subtitle": "You can add the rest of your fleet later.",
+      "skip": "Skip for now"
+    },
+    "documents": {
+      "title": "Upload a certificate",
+      "subtitle": "Start with one your vessel needs. We’ll remind you before it expires.",
+      "skip": "Skip for now",
+      "required": "Required for {vessel}:"
+    },
+    "invite": {
+      "title": "Invite your captain",
+      "subtitle": "They’ll get a link to join and run trips from their phone.",
+      "name": "Captain’s name",
+      "phone": "Captain’s phone",
+      "send": "Send invite",
+      "skip": "Skip for now"
     }
   },
   "shell": {
@@ -551,7 +571,10 @@
     "signOut": "Log out",
     "account": "Account",
     "menu": "Menu",
-    "admin": "Admin"
+    "admin": "Admin",
+    "vessels": "Vessels",
+    "crew": "Crew",
+    "documents": "Documents"
   },
   "dashboard": {
     "title": "Welcome, {name}",
@@ -566,18 +589,30 @@
       },
       "vessels": {
         "title": "Add your first vessel",
-        "body": "Vessel details, capacity and home jetty."
+        "body": "Vessel details, capacity and home jetty.",
+        "action": "Add vessel"
       },
       "documents": {
         "title": "Upload certificates",
-        "body": "Photograph a certificate; we read the dates for you."
+        "body": "Photograph a certificate; we read the dates for you.",
+        "action": "Add document"
       }
     },
     "verification": {
       "unverified": "Not yet verified",
       "pending": "Verification pending",
       "verified": "Verified"
-    }
+    },
+    "fleetTitle": "Fleet compliance",
+    "viewAll": "View all",
+    "needsAttention": "Needs attention",
+    "counts": {
+      "expiring": "{count, plural, one {# document expiring} other {# documents expiring}}",
+      "expired": "{count, plural, one {# document expired} other {# documents expired}}",
+      "needs_review": "{count, plural, one {# document to review} other {# documents to review}}"
+    },
+    "allClear": "All documents are in date.",
+    "noVessels": "Add a vessel to see its compliance here."
   },
   "members": {
     "title": "Team",
@@ -721,6 +756,201 @@
         "gust": "Max gusts",
         "wave": "Max wave",
         "hours": "Permitted hours"
+      }
+    }
+  },
+  "vesselTypes": {
+    "ferry": "Ferry",
+    "crew_boat": "Crew boat",
+    "osv": "Offshore supply vessel",
+    "tug": "Tug",
+    "barge": "Barge",
+    "speedboat": "Speedboat",
+    "other": "Other"
+  },
+  "vesselStatuses": {
+    "active": "Active",
+    "maintenance": "In maintenance",
+    "idle": "Idle",
+    "on_charter": "On charter",
+    "laid_up": "Laid up"
+  },
+  "crewRoles": {
+    "captain": "Captain",
+    "engineer": "Engineer",
+    "deckhand": "Deckhand",
+    "ticket_agent": "Ticket agent",
+    "other": "Other"
+  },
+  "documentStatuses": {
+    "needs_review": "Needs review",
+    "valid": "Valid",
+    "expiring": "Expiring soon",
+    "expired": "Expired",
+    "rejected": "Rejected"
+  },
+  "fleet": {
+    "vessels": {
+      "title": "Vessels",
+      "subtitle": "Your fleet and how complete each vessel’s papers are.",
+      "add": "Add vessel",
+      "empty": "No vessels yet. Add your first one to start tracking its documents.",
+      "columns": {
+        "name": "Vessel",
+        "type": "Type",
+        "capacity": "Capacity",
+        "compliance": "Compliance",
+        "status": "Status"
+      },
+      "capacity": "{count, plural, one {# seat} other {# seats}}"
+    },
+    "vesselForm": {
+      "title": "Add a vessel",
+      "editTitle": "Edit vessel",
+      "name": "Vessel name",
+      "namePlaceholder": "MV Lagoon Star",
+      "type": "Type",
+      "registration": "Registration number",
+      "imo": "IMO number",
+      "imoHint": "7 digits, if it has one",
+      "mmsi": "MMSI",
+      "year": "Year built",
+      "length": "Length (m)",
+      "passengers": "Passenger capacity",
+      "cargo": "Deck cargo (tonnes)",
+      "engine": "Engine",
+      "modes": "Use this vessel for",
+      "save": "Save vessel",
+      "saving": "Saving…"
+    },
+    "vessel": {
+      "overview": "Overview",
+      "documents": "Documents",
+      "crew": "Crew",
+      "compliance": "Compliance",
+      "scoreLabel": "{valid} of {required} required documents valid",
+      "noRequirements": "No documents are required for this vessel yet.",
+      "required": "Required",
+      "optional": "Optional",
+      "missing": "Missing",
+      "upload": "Add document",
+      "replace": "Renew",
+      "assign": "Assign",
+      "assignLabel": "Crew member",
+      "noCrew": "No crew assigned.",
+      "noCrewToAssign": "Add crew first to assign them.",
+      "end": "Remove",
+      "fields": {
+        "type": "Type",
+        "registration": "Registration",
+        "imo": "IMO",
+        "mmsi": "MMSI",
+        "year": "Built",
+        "length": "Length",
+        "passengers": "Passengers",
+        "cargo": "Deck cargo",
+        "engine": "Engine",
+        "country": "Operating country",
+        "modes": "Modes"
+      },
+      "regulator": "Issued by {regulator}",
+      "otherDocuments": "Other documents",
+      "delete": "Delete vessel",
+      "deleteConfirm": "Delete {name} and its records? This can’t be undone."
+    },
+    "crew": {
+      "title": "Crew",
+      "subtitle": "Captains, engineers, deckhands and ticket agents.",
+      "add": "Add crew member",
+      "empty": "No crew yet.",
+      "columns": {
+        "name": "Name",
+        "role": "Role",
+        "phone": "Phone",
+        "vessels": "Vessels",
+        "app": "App access"
+      },
+      "hasApp": "Uses the app",
+      "noApp": "Record only",
+      "inactive": "Inactive"
+    },
+    "crewForm": {
+      "title": "Add a crew member",
+      "name": "Full name",
+      "role": "Role",
+      "phone": "Phone number",
+      "phoneHint": "Needed to invite them to the app.",
+      "emergencyName": "Emergency contact",
+      "emergencyPhone": "Emergency contact phone",
+      "invite": "Invite them to use the app",
+      "save": "Save",
+      "saving": "Saving…"
+    },
+    "crewMember": {
+      "certificates": "Certificates",
+      "vessels": "Assigned vessels",
+      "contact": "Emergency contact",
+      "none": "—"
+    },
+    "documents": {
+      "title": "Documents",
+      "subtitle": "Certificates and papers for your vessels, crew and company.",
+      "add": "Add document",
+      "tabs": {
+        "all": "All",
+        "expiring": "Expiring",
+        "expired": "Expired",
+        "needs_review": "Needs review"
+      },
+      "empty": "Nothing here.",
+      "columns": {
+        "document": "Document",
+        "for": "For",
+        "number": "Number",
+        "expires": "Expires",
+        "status": "Status"
+      },
+      "daysLeft": "{days, plural, =0 {today} one {in # day} other {in # days}}",
+      "daysAgo": "{days, plural, one {# day ago} other {# days ago}}",
+      "noExpiry": "No expiry"
+    },
+    "upload": {
+      "title": "Add a document",
+      "forLabel": "For",
+      "typeLabel": "Document type",
+      "fileLabel": "Photo or PDF",
+      "takePhoto": "Take a photo or choose a file",
+      "fileHint": "Photos are shrunk on your phone before upload to save data.",
+      "number": "Certificate number",
+      "issuer": "Issued by",
+      "issueDate": "Issue date",
+      "expiryDate": "Expiry date",
+      "datesHint": "Enter the dates from the certificate. Without an expiry date it waits in “Needs review”.",
+      "save": "Save document",
+      "uploading": "Uploading…",
+      "saving": "Saving…",
+      "fileTooLarge": "That file is over 10 MB. Try a photo instead.",
+      "uploadFailed": "The upload didn’t go through. Check your connection and try again."
+    },
+    "document": {
+      "title": "Document",
+      "preview": "Preview",
+      "noFile": "No file attached.",
+      "openFile": "Open file",
+      "linkExpires": "This link expires in 5 minutes.",
+      "reviewTitle": "Review",
+      "reviewBody": "Check the details against the certificate, then confirm.",
+      "confirm": "Confirm",
+      "reject": "Reject",
+      "reviewed": "Reviewed {date}",
+      "fields": {
+        "type": "Type",
+        "for": "For",
+        "number": "Number",
+        "issuer": "Issuer",
+        "issueDate": "Issued",
+        "expiryDate": "Expires",
+        "status": "Status"
       }
     }
   }

@@ -19,6 +19,11 @@ test("owner signs up, creates an org and invites a captain who joins", async ({ 
   await page.getByLabel("Company name").fill("Lagoon Test Ferries");
   await expect(page.getByText(/Prices in NGN · times in Africa\/Lagos/)).toBeVisible();
   await page.getByRole("button", { name: "Create company" }).click();
+  // Steps 3–5 (vessel, document, captain) can be skipped.
+  await expect(page).toHaveURL(/\/onboarding\/vessel$/);
+  await page.getByRole("link", { name: "Skip for now" }).click();
+  await expect(page).toHaveURL(/\/onboarding\/invite$/);
+  await page.getByRole("link", { name: "Skip for now" }).click();
   await expect(page).toHaveURL(/\/dashboard$/);
   await expect(page.getByRole("heading", { name: "Welcome, Ada Okafor" })).toBeVisible();
   // The company form showed the country's defaults before submitting.
