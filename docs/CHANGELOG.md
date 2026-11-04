@@ -75,3 +75,14 @@
 - Notifications page and an unread badge in the app bar.
 - Tests: extraction (valid, retry then success, two failures → manual, impossible date), prompt date-order wording, review hints, alert offsets; database-backed job tests (sent once across two runs, an org in another time zone alerted at its own 07:00, SMS fallback); e2e upload → AI draft with highlights → confirm → valid, with the `ai_jobs` row checked.
 - Not yet: requirement-level alert offsets from the rule set (org offsets are used), and a real LLM/OCR vendor (Appendix item 7: choose after an accuracy test on real certificates).
+
+## M4 — Ferry routes, trips and manifests (2026-11-04)
+
+- §5.3 tables: `jetties` (shared, proposed by orgs, activated by admins; six Lagos jetties seeded as proposed), `routes`, `schedules`, `trips`, `manifest_entries`. Fares are minor units with a currency; times are UTC shown in the jetty's zone.
+- Rules in the database: the manifest can never exceed the vessel's licensed capacity (no override); it locks at departure and later additions are recorded as audited amendments; trip status only moves forward (scheduled → boarding → departed → arrived → closed, or cancelled); departure needs the lifejacket check; passenger counts are fixed at departure and arrival; closed trips can't be edited.
+- Who does what: owners/managers run routes, schedules and every trip; captains move their own vessel's trips; crew add passengers; a captain sees only their own vessel's trips and takings, never org totals.
+- `materialise_schedule_trips` creates each day's trips from active schedules once (re-runs are no-ops), with the assigned captain.
+- Screens: routes and schedules, trips (list, detail with manifest), daily report with CSV export; captain mode (`/captain`): today's trips, start an unscheduled trip, a step-by-step trip screen (board → lifejackets → depart → arrive with count) and a live seats counter.
+- Endpoints: `GET|POST /api/v1/jetties`, `GET|POST /routes`, `GET|PATCH|DELETE /routes/:id`, `GET|POST /schedules`, `GET|PATCH|DELETE /schedules/:id`, `GET|POST /trips`, `GET|PATCH /trips/:id`, `POST /trips/:id/depart|arrive|cancel`, `GET|POST /trips/:id/manifest`, `PATCH|DELETE /manifest/:id`, `GET /reports/daily`, `GET /reports/export.csv`.
+- Tests: 7 database tests (captain visibility, capacity hard block, lock and amendments, forward-only status, crew vs captain permissions, schedule materialisation, jetty proposals) and an e2e happy path (captain fills a trip to capacity, is blocked at one more, departs, arrives; owner sees it in the daily report).
+- Not yet: the admin jetty verification screen (proposals are activated in the database for now), and offline capture (M5).

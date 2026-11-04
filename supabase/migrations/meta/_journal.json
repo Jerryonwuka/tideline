@@ -29,6 +29,13 @@
       "when": 1793800993516,
       "tag": "20261104140313_m3_ai_notifications",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1793801869753,
+      "tag": "20261104141749_m4_ferry",
+      "breakpoints": true
     }
   ]
 }

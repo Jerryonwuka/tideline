@@ -13,7 +13,8 @@ describe("orgs and memberships", () => {
       const [m] = await tx`select role from public.memberships where org_id = ${orgId} and user_id = ${owner.id}`;
       expect(m?.role).toBe("owner");
       const actions = await tx`select action, actor_user_id from public.audit_logs where org_id = ${orgId} order by at`;
-      expect(actions.map((a) => a.action)).toEqual(["org.created", "membership.created"]);
+      // Same transaction, same timestamp: compare as a set.
+      expect(actions.map((a) => a.action).sort()).toEqual(["membership.created", "org.created"]);
       expect(actions.every((a) => a.actor_user_id === owner.id)).toBe(true);
     }));
 

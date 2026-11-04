@@ -680,6 +680,64 @@ export type Database = {
           },
         ];
       };
+      jetties: {
+        Row: {
+          admin_area: string | null;
+          aliases: string[];
+          country_code: string;
+          created_at: string;
+          id: string;
+          lat: number;
+          lng: number;
+          name: string;
+          proposed_by_org_id: string | null;
+          status: Database["public"]["Enums"]["jetty_status"];
+          time_zone: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          admin_area?: string | null;
+          aliases?: string[];
+          country_code: string;
+          created_at?: string;
+          id?: string;
+          lat: number;
+          lng: number;
+          name: string;
+          proposed_by_org_id?: string | null;
+          status?: Database["public"]["Enums"]["jetty_status"];
+          time_zone: string;
+        };
+        Update: {
+          admin_area?: string | null;
+          aliases?: string[];
+          country_code?: string;
+          created_at?: string;
+          id?: string;
+          lat?: number;
+          lng?: number;
+          name?: string;
+          proposed_by_org_id?: string | null;
+          status?: Database["public"]["Enums"]["jetty_status"];
+          time_zone?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "jetties_country_code_countries_code_fk";
+            columns: ["country_code"];
+            isOneToOne: false;
+            referencedRelation: "countries";
+            referencedColumns: ["code"];
+          },
+          {
+            foreignKeyName: "jetties_proposed_by_org_id_orgs_id_fk";
+            columns: ["proposed_by_org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       locales: {
         Row: {
           code: string;
@@ -698,6 +756,73 @@ export type Database = {
           name?: string;
         };
         Relationships: [];
+      };
+      manifest_entries: {
+        Row: {
+          age_band: Database["public"]["Enums"]["age_band"] | null;
+          boarded_at: string | null;
+          client_id: string | null;
+          created_at: string;
+          full_name: string | null;
+          id: string;
+          is_amendment: boolean;
+          next_of_kin_phone: string | null;
+          org_id: string;
+          phone_e164: string | null;
+          seats: number;
+          sex: string | null;
+          ticket_id: string | null;
+          trip_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          age_band?: Database["public"]["Enums"]["age_band"] | null;
+          boarded_at?: string | null;
+          client_id?: string | null;
+          created_at?: string;
+          full_name?: string | null;
+          id?: string;
+          is_amendment?: boolean;
+          next_of_kin_phone?: string | null;
+          org_id: string;
+          phone_e164?: string | null;
+          seats?: number;
+          sex?: string | null;
+          ticket_id?: string | null;
+          trip_id: string;
+        };
+        Update: {
+          age_band?: Database["public"]["Enums"]["age_band"] | null;
+          boarded_at?: string | null;
+          client_id?: string | null;
+          created_at?: string;
+          full_name?: string | null;
+          id?: string;
+          is_amendment?: boolean;
+          next_of_kin_phone?: string | null;
+          org_id?: string;
+          phone_e164?: string | null;
+          seats?: number;
+          sex?: string | null;
+          ticket_id?: string | null;
+          trip_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "manifest_entries_org_id_orgs_id_fk";
+            columns: ["org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "manifest_entries_trip_id_trips_id_fk";
+            columns: ["trip_id"];
+            isOneToOne: false;
+            referencedRelation: "trips";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       memberships: {
         Row: {
@@ -1033,6 +1158,75 @@ export type Database = {
           },
         ];
       };
+      routes: {
+        Row: {
+          active: boolean;
+          base_fare_minor: number;
+          created_at: string;
+          currency: string;
+          destination_jetty_id: string;
+          distance_km: number | null;
+          duration_min: number;
+          id: string;
+          org_id: string;
+          origin_jetty_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          active?: boolean;
+          base_fare_minor: number;
+          created_at?: string;
+          currency: string;
+          destination_jetty_id: string;
+          distance_km?: number | null;
+          duration_min: number;
+          id?: string;
+          org_id: string;
+          origin_jetty_id: string;
+        };
+        Update: {
+          active?: boolean;
+          base_fare_minor?: number;
+          created_at?: string;
+          currency?: string;
+          destination_jetty_id?: string;
+          distance_km?: number | null;
+          duration_min?: number;
+          id?: string;
+          org_id?: string;
+          origin_jetty_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "routes_currency_currencies_code_fk";
+            columns: ["currency"];
+            isOneToOne: false;
+            referencedRelation: "currencies";
+            referencedColumns: ["code"];
+          },
+          {
+            foreignKeyName: "routes_destination_jetty_id_jetties_id_fk";
+            columns: ["destination_jetty_id"];
+            isOneToOne: false;
+            referencedRelation: "jetties";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "routes_org_id_orgs_id_fk";
+            columns: ["org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "routes_origin_jetty_id_jetties_id_fk";
+            columns: ["origin_jetty_id"];
+            isOneToOne: false;
+            referencedRelation: "jetties";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       safety_rule_defaults: {
         Row: {
           max_gust_kmh: number;
@@ -1072,6 +1266,62 @@ export type Database = {
           },
         ];
       };
+      schedules: {
+        Row: {
+          active: boolean;
+          created_at: string;
+          days_of_week: number[];
+          departure_time: string;
+          id: string;
+          org_id: string;
+          route_id: string;
+          vessel_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          active?: boolean;
+          created_at?: string;
+          days_of_week: number[];
+          departure_time: string;
+          id?: string;
+          org_id: string;
+          route_id: string;
+          vessel_id: string;
+        };
+        Update: {
+          active?: boolean;
+          created_at?: string;
+          days_of_week?: number[];
+          departure_time?: string;
+          id?: string;
+          org_id?: string;
+          route_id?: string;
+          vessel_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "schedules_org_id_orgs_id_fk";
+            columns: ["org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "schedules_route_id_routes_id_fk";
+            columns: ["route_id"];
+            isOneToOne: false;
+            referencedRelation: "routes";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "schedules_vessel_id_vessels_id_fk";
+            columns: ["vessel_id"];
+            isOneToOne: false;
+            referencedRelation: "vessels";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       tax_rules: {
         Row: {
           applies_to: string;
@@ -1104,6 +1354,128 @@ export type Database = {
             columns: ["rule_set_id"];
             isOneToOne: false;
             referencedRelation: "compliance_rule_sets";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      trips: {
+        Row: {
+          actual_arrival: string | null;
+          actual_departure: string | null;
+          captain_crew_id: string | null;
+          cargo_note: string | null;
+          client_id: string | null;
+          created_at: string;
+          currency: string;
+          destination_text: string | null;
+          id: string;
+          lifejackets_confirmed: boolean;
+          notes: string | null;
+          org_id: string;
+          origin_text: string | null;
+          passenger_count: number;
+          route_id: string | null;
+          schedule_id: string | null;
+          scheduled_departure: string | null;
+          source: Database["public"]["Enums"]["trip_source"];
+          status: Database["public"]["Enums"]["trip_status"];
+          takings_cash_minor: number;
+          takings_digital_minor: number;
+          updated_at: string | null;
+          vessel_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          actual_arrival?: string | null;
+          actual_departure?: string | null;
+          captain_crew_id?: string | null;
+          cargo_note?: string | null;
+          client_id?: string | null;
+          created_at?: string;
+          currency: string;
+          destination_text?: string | null;
+          id?: string;
+          lifejackets_confirmed?: boolean;
+          notes?: string | null;
+          org_id: string;
+          origin_text?: string | null;
+          passenger_count?: number;
+          route_id?: string | null;
+          schedule_id?: string | null;
+          scheduled_departure?: string | null;
+          source?: Database["public"]["Enums"]["trip_source"];
+          status?: Database["public"]["Enums"]["trip_status"];
+          takings_cash_minor?: number;
+          takings_digital_minor?: number;
+          updated_at?: string | null;
+          vessel_id: string;
+        };
+        Update: {
+          actual_arrival?: string | null;
+          actual_departure?: string | null;
+          captain_crew_id?: string | null;
+          cargo_note?: string | null;
+          client_id?: string | null;
+          created_at?: string;
+          currency?: string;
+          destination_text?: string | null;
+          id?: string;
+          lifejackets_confirmed?: boolean;
+          notes?: string | null;
+          org_id?: string;
+          origin_text?: string | null;
+          passenger_count?: number;
+          route_id?: string | null;
+          schedule_id?: string | null;
+          scheduled_departure?: string | null;
+          source?: Database["public"]["Enums"]["trip_source"];
+          status?: Database["public"]["Enums"]["trip_status"];
+          takings_cash_minor?: number;
+          takings_digital_minor?: number;
+          updated_at?: string | null;
+          vessel_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "trips_captain_crew_id_crew_members_id_fk";
+            columns: ["captain_crew_id"];
+            isOneToOne: false;
+            referencedRelation: "crew_members";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "trips_currency_currencies_code_fk";
+            columns: ["currency"];
+            isOneToOne: false;
+            referencedRelation: "currencies";
+            referencedColumns: ["code"];
+          },
+          {
+            foreignKeyName: "trips_org_id_orgs_id_fk";
+            columns: ["org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "trips_route_id_routes_id_fk";
+            columns: ["route_id"];
+            isOneToOne: false;
+            referencedRelation: "routes";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "trips_schedule_id_schedules_id_fk";
+            columns: ["schedule_id"];
+            isOneToOne: false;
+            referencedRelation: "schedules";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "trips_vessel_id_vessels_id_fk";
+            columns: ["vessel_id"];
+            isOneToOne: false;
+            referencedRelation: "vessels";
             referencedColumns: ["id"];
           },
         ];
@@ -1386,10 +1758,12 @@ export type Database = {
         }[];
       };
       is_platform_admin: { Args: Record<PropertyKey, never>; Returns: boolean };
+      materialise_schedule_trips: { Args: { p_date: string; p_org: string }; Returns: number };
       new_rule_set_version: { Args: { p_id: string }; Returns: string };
       publish_rule_set: { Args: { p_id: string; p_note?: string }; Returns: undefined };
     };
     Enums: {
+      age_band: "child" | "adult" | "senior";
       ai_job_kind:
         | "ocr_extract"
         | "voice_log"
@@ -1405,6 +1779,7 @@ export type Database = {
       crew_status: "active" | "inactive";
       data_region: "af" | "eu" | "us";
       document_status: "needs_review" | "valid" | "expiring" | "expired" | "rejected";
+      jetty_status: "proposed" | "active";
       launch_status: "planned" | "validating" | "pilot" | "live";
       membership_role: "owner" | "manager" | "captain" | "crew" | "charterer";
       membership_status: "active" | "suspended";
@@ -1414,6 +1789,8 @@ export type Database = {
       regulator_scope: "national" | "state" | "port";
       rule_set_status: "draft" | "published" | "retired";
       rule_severity: "block" | "warn";
+      trip_source: "app" | "whatsapp_voice" | "whatsapp_text" | "sms" | "admin";
+      trip_status: "scheduled" | "boarding" | "departed" | "arrived" | "cancelled";
       verification_status: "unverified" | "pending" | "verified";
       vessel_status: "active" | "maintenance" | "idle" | "on_charter" | "laid_up";
       vessel_type: "ferry" | "crew_boat" | "osv" | "tug" | "barge" | "speedboat" | "other";
@@ -1524,6 +1901,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      age_band: ["child", "adult", "senior"],
       ai_job_kind: [
         "ocr_extract",
         "voice_log",
@@ -1540,6 +1918,7 @@ export const Constants = {
       crew_status: ["active", "inactive"],
       data_region: ["af", "eu", "us"],
       document_status: ["needs_review", "valid", "expiring", "expired", "rejected"],
+      jetty_status: ["proposed", "active"],
       launch_status: ["planned", "validating", "pilot", "live"],
       membership_role: ["owner", "manager", "captain", "crew", "charterer"],
       membership_status: ["active", "suspended"],
@@ -1549,6 +1928,8 @@ export const Constants = {
       regulator_scope: ["national", "state", "port"],
       rule_set_status: ["draft", "published", "retired"],
       rule_severity: ["block", "warn"],
+      trip_source: ["app", "whatsapp_voice", "whatsapp_text", "sms", "admin"],
+      trip_status: ["scheduled", "boarding", "departed", "arrived", "cancelled"],
       verification_status: ["unverified", "pending", "verified"],
       vessel_status: ["active", "maintenance", "idle", "on_charter", "laid_up"],
       vessel_type: ["ferry", "crew_boat", "osv", "tug", "barge", "speedboat", "other"],

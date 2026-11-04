@@ -3,6 +3,7 @@
 export * from "./ai";
 export * from "./audit";
 export * from "./compliance";
+export * from "./ferry";
 export * from "./fleet";
 export * from "./identity";
 export * from "./localisation";

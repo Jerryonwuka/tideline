@@ -41,11 +41,15 @@ export async function AppShell({
     { href: "/vessels", label: t("vessels") },
     ...(manages
       ? [
+          { href: "/trips", label: t("trips") },
+          { href: "/routes", label: t("routes") },
+          { href: "/reports/daily", label: t("reports") },
           { href: "/crew", label: t("crew") },
           { href: "/documents", label: t("documents") },
           { href: "/members", label: t("members") },
         ]
       : []),
+    { href: "/captain", label: t("captain") },
     ...(me.isPlatformAdmin ? [{ href: "/admin/countries", label: t("admin") }] : []),
   ];
 

@@ -498,7 +498,13 @@
     "country_not_ready": "This country can’t be switched on yet: it needs a published rule set, an enabled currency and language, and a payment route.",
     "not_draft": "Only draft rule sets can be published.",
     "invalid_time_zone": "That time zone isn’t recognised.",
-    "invalid_subject": "That vessel or crew member isn’t in this company."
+    "invalid_subject": "That vessel or crew member isn’t in this company.",
+    "capacity_exceeded": "That would put more people on board than the vessel is licensed for.",
+    "manifest_locked": "The manifest locked when the trip departed. You can still add late passengers as amendments.",
+    "trip_closed": "This trip is closed.",
+    "invalid_transition": "That step isn’t possible from the trip’s current status.",
+    "lifejackets_unconfirmed": "Confirm life jackets before departing.",
+    "immutable_trip": "That can’t be changed once the trip has started."
   },
   "auth": {
     "title": "Log in to Tideline",
@@ -575,7 +581,11 @@
     "vessels": "Vessels",
     "crew": "Crew",
     "documents": "Documents",
-    "notifications": "Notifications"
+    "notifications": "Notifications",
+    "trips": "Trips",
+    "routes": "Routes",
+    "reports": "Reports",
+    "captain": "Captain mode"
   },
   "dashboard": {
     "title": "Welcome, {name}",
@@ -979,5 +989,142 @@
       "document_expiry": "{document} for {subject} expires {days, plural, =0 {today} one {tomorrow} other {in # days}} ({date})."
     },
     "markRead": "Mark all as read"
+  },
+  "tripStatuses": {
+    "scheduled": "Scheduled",
+    "boarding": "Boarding",
+    "departed": "Departed",
+    "arrived": "Arrived",
+    "cancelled": "Cancelled"
+  },
+  "weekdays": {
+    "0": "Sun",
+    "1": "Mon",
+    "2": "Tue",
+    "3": "Wed",
+    "4": "Thu",
+    "5": "Fri",
+    "6": "Sat"
+  },
+  "ferry": {
+    "routes": {
+      "title": "Routes and schedules",
+      "subtitle": "Where your boats go and when.",
+      "add": "Add route",
+      "origin": "From",
+      "destination": "To",
+      "duration": "Usual duration (minutes)",
+      "fare": "Base fare ({currency})",
+      "save": "Save route",
+      "empty": "No routes yet.",
+      "inactive": "Paused",
+      "pause": "Pause",
+      "resume": "Resume",
+      "proposedJetty": "Not yet verified",
+      "schedulesTitle": "Departures",
+      "addSchedule": "Add departure",
+      "vessel": "Vessel",
+      "days": "Days",
+      "time": "Departs at",
+      "saveSchedule": "Save departure",
+      "noSchedules": "No regular departures.",
+      "proposeTitle": "Missing a jetty?",
+      "proposeBody": "Suggest it and our team will check the name and location.",
+      "jettyName": "Jetty name",
+      "aliases": "Other names (comma separated)",
+      "lat": "Latitude",
+      "lng": "Longitude",
+      "propose": "Suggest jetty",
+      "proposed": "Thanks — it’s available to your company now and will be checked."
+    },
+    "trips": {
+      "title": "Trips",
+      "subtitle": "Every sailing for the day, with passengers and takings.",
+      "date": "Date",
+      "empty": "No trips on this day.",
+      "columns": {
+        "time": "Departs",
+        "vessel": "Vessel",
+        "route": "Route",
+        "captain": "Captain",
+        "passengers": "Passengers",
+        "takings": "Cash",
+        "status": "Status"
+      },
+      "open": "Open"
+    },
+    "trip": {
+      "manifest": "Manifest",
+      "amendment": "Amendment",
+      "boarded": "Boarded",
+      "noPassengers": "No passengers yet.",
+      "seats": "{count, plural, one {# seat} other {# seats}}",
+      "takings": "Takings",
+      "cash": "Cash",
+      "digital": "Digital",
+      "departed": "Departed",
+      "arrived": "Arrived",
+      "lifejackets": "Life jackets confirmed",
+      "notes": "Notes",
+      "cancel": "Cancel trip"
+    },
+    "report": {
+      "title": "Daily report",
+      "subtitle": "Trips, passengers and takings by vessel.",
+      "date": "Date",
+      "export": "Export CSV",
+      "exportRange": "Last 30 days (CSV)",
+      "columns": {
+        "vessel": "Vessel",
+        "trips": "Trips",
+        "passengers": "Passengers",
+        "cash": "Cash",
+        "digital": "Digital"
+      },
+      "total": "Total",
+      "empty": "No trips on this day."
+    }
+  },
+  "captain": {
+    "title": "Today",
+    "subtitle": "Your trips for {date}.",
+    "startAdHoc": "Start a trip",
+    "noTrips": "No trips for your boats today.",
+    "noVessels": "You’re not assigned to a vessel yet. Ask your manager to add you to one.",
+    "backToApp": "Office view",
+    "newTrip": {
+      "title": "Start a trip",
+      "vessel": "Vessel",
+      "route": "Route",
+      "orTypeEnds": "Or type where you’re going",
+      "from": "From",
+      "to": "To",
+      "start": "Start trip",
+      "noRoute": "No route"
+    },
+    "trip": {
+      "capacity": "On board",
+      "capacityOf": "{count} of {capacity}",
+      "addPassenger": "Add passenger",
+      "name": "Name",
+      "seats": "Seats",
+      "phone": "Phone (optional)",
+      "add": "Add",
+      "quickAdd": "Walk-ups",
+      "quickAddHint": "Names to follow",
+      "addCount": "Add {count}",
+      "remove": "Remove",
+      "lifejackets": "Life jackets checked for everyone on board",
+      "boarding": "Start boarding",
+      "depart": "Depart",
+      "arrive": "Arrived",
+      "cashLabel": "Cash collected ({currency})",
+      "close": "Close trip",
+      "closed": "Trip closed.",
+      "amendmentNote": "The manifest is locked. People added now are recorded as amendments.",
+      "back": "All trips",
+      "full": "Full",
+      "amendment": "Amendment"
+    }
   }
 }

@@ -19,7 +19,7 @@ export const auditLogs = pgTable(
     ip: text("ip"),
     at: timestamp("at", { withTimezone: true })
       .notNull()
-      .default(sql`now()`),
+      .default(sql`clock_timestamp()`),
   },
   (t) => [index("audit_logs_org_at_idx").on(t.orgId, t.at), index("audit_logs_entity_idx").on(t.entity, t.entityId)],
 );

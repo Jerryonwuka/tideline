@@ -24,6 +24,13 @@ export const ERROR_CODES = [
   "country_not_ready",
   "not_draft",
   "invalid_time_zone",
+  "invalid_subject",
+  "capacity_exceeded",
+  "manifest_locked",
+  "trip_closed",
+  "invalid_transition",
+  "lifejackets_unconfirmed",
+  "immutable_trip",
   "unknown",
 ] as const;
 export type ErrorCode = (typeof ERROR_CODES)[number];
@@ -51,6 +58,13 @@ const STATUS: Partial<Record<ErrorCode, number>> = {
   country_not_ready: 409,
   not_draft: 409,
   invalid_time_zone: 422,
+  invalid_subject: 422,
+  capacity_exceeded: 409,
+  manifest_locked: 409,
+  trip_closed: 409,
+  invalid_transition: 409,
+  lifejackets_unconfirmed: 409,
+  immutable_trip: 409,
 };
 
 export class ServiceError extends Error {
