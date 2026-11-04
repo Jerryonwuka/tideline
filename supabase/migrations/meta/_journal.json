@@ -78,6 +78,13 @@
       "when": 1793816813968,
       "tag": "20261104182653_m9_bot",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1793818726433,
+      "tag": "20261104185846_m11_charter",
+      "breakpoints": true
     }
   ]
 }

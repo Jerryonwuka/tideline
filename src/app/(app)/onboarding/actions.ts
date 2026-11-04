@@ -46,5 +46,6 @@ export async function createOrgAction(_: FormState, formData: FormData): Promise
     return { error: err instanceof ServiceError ? err.code : "unknown" };
   }
   await setActiveOrg(orgId);
-  redirect("/onboarding/vessel");
+  // Charterers hire vessels rather than run them: straight to the board.
+  redirect(parsed.data.type === "charterer" ? "/board" : "/onboarding/vessel");
 }

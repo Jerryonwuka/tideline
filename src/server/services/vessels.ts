@@ -5,7 +5,7 @@ import type { Db } from "@/server/supabase/server";
 import { fromDbError, ServiceError } from "./errors";
 
 const COLUMNS =
-  "id, org_id, name, type, registration_no, imo, mmsi, flag_country_code, operating_country_code, year_built, length_m, passenger_capacity, cargo_capacity_t, engine, status, ferry_enabled, charter_enabled, created_at";
+  "id, org_id, name, type, registration_no, imo, mmsi, flag_country_code, operating_country_code, year_built, length_m, passenger_capacity, cargo_capacity_t, engine, crew_complement, speed_kn, deck_space_m2, dp_class, status, ferry_enabled, charter_enabled, created_at";
 
 export type Vessel = Awaited<ReturnType<typeof getVessel>>;
 
@@ -28,6 +28,10 @@ function toRow(input: Partial<VesselInput>): TablesUpdate<"vessels"> {
   if (input.passengerCapacity !== undefined) row.passenger_capacity = input.passengerCapacity;
   if (input.cargoCapacityT !== undefined) row.cargo_capacity_t = input.cargoCapacityT;
   if (input.engine !== undefined) row.engine = input.engine;
+  if (input.crewComplement !== undefined) row.crew_complement = input.crewComplement;
+  if (input.speedKn !== undefined) row.speed_kn = input.speedKn;
+  if (input.deckSpaceM2 !== undefined) row.deck_space_m2 = input.deckSpaceM2;
+  if (input.dpClass !== undefined) row.dp_class = input.dpClass;
   if (input.status !== undefined) row.status = input.status;
   if (input.ferryEnabled !== undefined) row.ferry_enabled = input.ferryEnabled;
   if (input.charterEnabled !== undefined) row.charter_enabled = input.charterEnabled;

@@ -37,6 +37,10 @@ function vesselFromForm(formData: FormData) {
       "passengerCapacity",
       "cargoCapacityT",
       "engine",
+      "crewComplement",
+      "speedKn",
+      "deckSpaceM2",
+      "dpClass",
     ].map((k) => [k, formData.get(k) || undefined]),
   );
   return vesselInputSchema.safeParse({

@@ -518,7 +518,8 @@
     "ticket_not_paid": "That ticket hasn’t been paid for.",
     "currency_mismatch": "The amount is in the wrong currency.",
     "payments_unavailable": "Online payment isn’t available here yet. Pay at the jetty.",
-    "billing_read_only": "Your subscription has lapsed, so this is read-only. Renew under Billing. Trips, manifests and safety checks still work."
+    "billing_read_only": "Your subscription has lapsed, so this is read-only. Renew under Billing. Trips, manifests and safety checks still work.",
+    "quote_expired": "This quote has expired. Ask the owner for a new one."
   },
   "auth": {
     "title": "Log in to Tideline",
@@ -604,7 +605,9 @@
     "billing": "Billing",
     "book": "Book a boat",
     "map": "Live map",
-    "assistant": "Assistant"
+    "assistant": "Assistant",
+    "charters": "Charters",
+    "board": "Charter board"
   },
   "dashboard": {
     "title": "Welcome, {name}",
@@ -873,7 +876,12 @@
       "engine": "Engine",
       "modes": "Use this vessel for",
       "save": "Save vessel",
-      "saving": "Saving…"
+      "saving": "Saving…",
+      "charterProfile": "Charter details",
+      "crewComplement": "Crew complement",
+      "speedKn": "Speed (knots)",
+      "deckSpaceM2": "Deck space (m²)",
+      "dpClass": "DP class (if any)"
     },
     "vessel": {
       "overview": "Overview",
@@ -1029,7 +1037,10 @@
     "templates": {
       "document_expiry": "{document} for {subject} expires {days, plural, =0 {today} one {tomorrow} other {in # days}} ({date}).",
       "override_request": "A captain asked to depart despite the safety check: {why}",
-      "incident": "URGENT: incident reported: {text}"
+      "incident": "URGENT: incident reported: {text}",
+      "charter_request": "New charter request: {location}, {dates}.",
+      "charter_quote": "You have a quote for {location}: {amount} a day.",
+      "charter_accepted": "Quote accepted: {vessel}, {dates}. Next: the contract."
     },
     "markRead": "Mark all as read"
   },
@@ -1511,5 +1522,123 @@
       "draft_tender_pack": "tender draft",
       "suggest_price": "pricing"
     }
+  },
+  "charter": {
+    "board": {
+      "title": "Vessels for charter",
+      "subtitle": "Crew boats, supply vessels and more, from operators on Tideline.",
+      "filters": {
+        "type": "Vessel type",
+        "any": "Any type",
+        "area": "Area",
+        "from": "From",
+        "to": "To",
+        "minCapacity": "Min. passengers",
+        "apply": "Search"
+      },
+      "empty": "No vessels match. Try fewer filters.",
+      "perDay": "{amount} / day",
+      "minDays": "{count, plural, one {Min. # day} other {Min. # days}}",
+      "verified": "Verified operator",
+      "unverified": "Not yet verified",
+      "compliance": "Compliance {score}%",
+      "available": "Available {from} – {to}",
+      "availableAny": "Available now",
+      "view": "View"
+    },
+    "listing": {
+      "specs": "Specifications",
+      "spec": {
+        "type": "Type",
+        "passengerCapacity": "Passengers",
+        "cargoCapacityT": "Cargo (t)",
+        "lengthM": "Length (m)",
+        "yearBuilt": "Built",
+        "crewComplement": "Crew",
+        "speedKn": "Speed (kn)",
+        "deckSpaceM2": "Deck (m²)",
+        "dpClass": "DP class"
+      },
+      "area": "Operating area",
+      "documents": "Documents",
+      "noDocuments": "The operator hasn’t shared documents for this vessel.",
+      "requestTitle": "Request this vessel",
+      "loginToRequest": "Log in to send a request",
+      "notCharterer": "Switch to a charterer company to send requests.",
+      "sent": "Request sent. The owner will reply with a quote.",
+      "fields": {
+        "startDate": "From",
+        "endDate": "To",
+        "location": "Location",
+        "purpose": "Purpose",
+        "crewNeeds": "Crew needs (optional)",
+        "budget": "Budget per day (optional)",
+        "send": "Send request"
+      }
+    },
+    "listings": {
+      "title": "Charter listings",
+      "subtitle": "Put charter-enabled vessels on the public board.",
+      "new": "New listing",
+      "empty": "No listings yet.",
+      "noVessels": "Turn on charter for a vessel first (Vessels → edit).",
+      "fields": {
+        "vessel": "Vessel",
+        "dayRate": "Day rate ({currency})",
+        "minRate": "Lowest you’d accept (private)",
+        "minDays": "Minimum days",
+        "area": "Operating area",
+        "from": "Available from",
+        "to": "Available to",
+        "description": "Description",
+        "status": "Status",
+        "documents": "Documents shown publicly",
+        "save": "Save listing"
+      },
+      "status": {
+        "draft": "Draft",
+        "live": "Live",
+        "paused": "Paused"
+      },
+      "saved": "Saved."
+    },
+    "requests": {
+      "title": "Charter requests",
+      "subtitle": "Requests you’ve sent and received, with quotes.",
+      "empty": "No requests yet.",
+      "received": "Received",
+      "sent": "Sent",
+      "from": "From {org}",
+      "dates": "{from} – {to}",
+      "status": {
+        "open": "Open",
+        "quoted": "Quoted",
+        "accepted": "Accepted",
+        "declined": "Declined",
+        "expired": "Expired"
+      },
+      "quoteStatus": {
+        "sent": "Waiting for reply",
+        "accepted": "Accepted",
+        "declined": "Declined",
+        "expired": "Expired"
+      },
+      "quote": "{vessel}: {rate} / day + {mobilisation} mobilisation, valid until {until}",
+      "accept": "Accept",
+      "decline": "Decline",
+      "accepted": "Accepted. A charter was created; the contract comes next.",
+      "quoteTitle": "Send a quote",
+      "fields": {
+        "vessel": "Vessel",
+        "dayRate": "Day rate ({currency})",
+        "mobilisation": "Mobilisation fee",
+        "fuel": "Fuel terms",
+        "payment": "Payment terms",
+        "validUntil": "Valid until",
+        "send": "Send quote"
+      }
+    },
+    "nav": "Charters",
+    "requestsNav": "Requests"
   }
 }

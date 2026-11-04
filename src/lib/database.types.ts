@@ -188,6 +188,377 @@ export type Database = {
           },
         ];
       };
+      charter_listings: {
+        Row: {
+          available_from: string | null;
+          available_to: string | null;
+          created_at: string;
+          currency: string;
+          day_rate_minor: number;
+          description: string | null;
+          id: string;
+          min_days: number;
+          min_rate_minor: number | null;
+          operating_area: string;
+          org_id: string;
+          public_document_ids: string[];
+          status: Database["public"]["Enums"]["listing_status"];
+          suggested_rate_minor: number | null;
+          suggestion_inputs: Json | null;
+          updated_at: string;
+          vessel_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          available_from?: string | null;
+          available_to?: string | null;
+          created_at?: string;
+          currency: string;
+          day_rate_minor: number;
+          description?: string | null;
+          id?: string;
+          min_days?: number;
+          min_rate_minor?: number | null;
+          operating_area: string;
+          org_id: string;
+          public_document_ids?: string[];
+          status?: Database["public"]["Enums"]["listing_status"];
+          suggested_rate_minor?: number | null;
+          suggestion_inputs?: Json | null;
+          updated_at?: string;
+          vessel_id: string;
+        };
+        Update: {
+          available_from?: string | null;
+          available_to?: string | null;
+          created_at?: string;
+          currency?: string;
+          day_rate_minor?: number;
+          description?: string | null;
+          id?: string;
+          min_days?: number;
+          min_rate_minor?: number | null;
+          operating_area?: string;
+          org_id?: string;
+          public_document_ids?: string[];
+          status?: Database["public"]["Enums"]["listing_status"];
+          suggested_rate_minor?: number | null;
+          suggestion_inputs?: Json | null;
+          updated_at?: string;
+          vessel_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "charter_listings_currency_currencies_code_fk";
+            columns: ["currency"];
+            isOneToOne: false;
+            referencedRelation: "currencies";
+            referencedColumns: ["code"];
+          },
+          {
+            foreignKeyName: "charter_listings_org_id_orgs_id_fk";
+            columns: ["org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "charter_listings_vessel_id_vessels_id_fk";
+            columns: ["vessel_id"];
+            isOneToOne: false;
+            referencedRelation: "vessels";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      charter_quotes: {
+        Row: {
+          created_at: string;
+          currency: string;
+          day_rate_minor: number;
+          decided_at: string | null;
+          decided_by: string | null;
+          id: string;
+          mobilisation_minor: number;
+          owner_org_id: string;
+          request_id: string;
+          status: Database["public"]["Enums"]["charter_quote_status"];
+          terms: NonNullable<Json>;
+          updated_at: string;
+          valid_until: string;
+          vessel_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          currency: string;
+          day_rate_minor: number;
+          decided_at?: string | null;
+          decided_by?: string | null;
+          id?: string;
+          mobilisation_minor?: number;
+          owner_org_id: string;
+          request_id: string;
+          status?: Database["public"]["Enums"]["charter_quote_status"];
+          terms?: NonNullable<Json>;
+          updated_at?: string;
+          valid_until: string;
+          vessel_id: string;
+        };
+        Update: {
+          created_at?: string;
+          currency?: string;
+          day_rate_minor?: number;
+          decided_at?: string | null;
+          decided_by?: string | null;
+          id?: string;
+          mobilisation_minor?: number;
+          owner_org_id?: string;
+          request_id?: string;
+          status?: Database["public"]["Enums"]["charter_quote_status"];
+          terms?: NonNullable<Json>;
+          updated_at?: string;
+          valid_until?: string;
+          vessel_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "charter_quotes_currency_currencies_code_fk";
+            columns: ["currency"];
+            isOneToOne: false;
+            referencedRelation: "currencies";
+            referencedColumns: ["code"];
+          },
+          {
+            foreignKeyName: "charter_quotes_owner_org_id_orgs_id_fk";
+            columns: ["owner_org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "charter_quotes_request_id_charter_requests_id_fk";
+            columns: ["request_id"];
+            isOneToOne: false;
+            referencedRelation: "charter_requests";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "charter_quotes_vessel_id_vessels_id_fk";
+            columns: ["vessel_id"];
+            isOneToOne: false;
+            referencedRelation: "vessels";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      charter_requests: {
+        Row: {
+          budget_minor: number | null;
+          charterer_org_id: string;
+          country_code: string | null;
+          created_at: string;
+          crew_needs: string | null;
+          currency: string | null;
+          end_date: string;
+          id: string;
+          listing_id: string | null;
+          location: string;
+          owner_org_id: string | null;
+          purpose: string;
+          requested_by: string | null;
+          start_date: string;
+          status: Database["public"]["Enums"]["charter_request_status"];
+          updated_at: string;
+          vessel_type: string | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          budget_minor?: number | null;
+          charterer_org_id: string;
+          country_code?: string | null;
+          created_at?: string;
+          crew_needs?: string | null;
+          currency?: string | null;
+          end_date: string;
+          id?: string;
+          listing_id?: string | null;
+          location: string;
+          owner_org_id?: string | null;
+          purpose: string;
+          requested_by?: string | null;
+          start_date: string;
+          status?: Database["public"]["Enums"]["charter_request_status"];
+          updated_at?: string;
+          vessel_type?: string | null;
+        };
+        Update: {
+          budget_minor?: number | null;
+          charterer_org_id?: string;
+          country_code?: string | null;
+          created_at?: string;
+          crew_needs?: string | null;
+          currency?: string | null;
+          end_date?: string;
+          id?: string;
+          listing_id?: string | null;
+          location?: string;
+          owner_org_id?: string | null;
+          purpose?: string;
+          requested_by?: string | null;
+          start_date?: string;
+          status?: Database["public"]["Enums"]["charter_request_status"];
+          updated_at?: string;
+          vessel_type?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "charter_requests_charterer_org_id_orgs_id_fk";
+            columns: ["charterer_org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "charter_requests_country_code_countries_code_fk";
+            columns: ["country_code"];
+            isOneToOne: false;
+            referencedRelation: "countries";
+            referencedColumns: ["code"];
+          },
+          {
+            foreignKeyName: "charter_requests_currency_currencies_code_fk";
+            columns: ["currency"];
+            isOneToOne: false;
+            referencedRelation: "currencies";
+            referencedColumns: ["code"];
+          },
+          {
+            foreignKeyName: "charter_requests_listing_id_charter_listings_id_fk";
+            columns: ["listing_id"];
+            isOneToOne: false;
+            referencedRelation: "charter_listings";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "charter_requests_owner_org_id_orgs_id_fk";
+            columns: ["owner_org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      charters: {
+        Row: {
+          booked_on_platform: boolean;
+          charterer_org_id: string | null;
+          commission_bps: number;
+          created_at: string;
+          currency: string;
+          day_rate_minor: number;
+          end_date: string;
+          governing_country_code: string | null;
+          id: string;
+          mobilisation_minor: number;
+          off_hire_at: string | null;
+          on_hire_at: string | null;
+          owner_org_id: string;
+          quote_id: string | null;
+          start_date: string;
+          status: Database["public"]["Enums"]["charter_status"];
+          total_value_minor: number;
+          updated_at: string;
+          vessel_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          booked_on_platform?: boolean;
+          charterer_org_id?: string | null;
+          commission_bps?: number;
+          created_at?: string;
+          currency: string;
+          day_rate_minor: number;
+          end_date: string;
+          governing_country_code?: string | null;
+          id?: string;
+          mobilisation_minor?: number;
+          off_hire_at?: string | null;
+          on_hire_at?: string | null;
+          owner_org_id: string;
+          quote_id?: string | null;
+          start_date: string;
+          status?: Database["public"]["Enums"]["charter_status"];
+          total_value_minor: number;
+          updated_at?: string;
+          vessel_id: string;
+        };
+        Update: {
+          booked_on_platform?: boolean;
+          charterer_org_id?: string | null;
+          commission_bps?: number;
+          created_at?: string;
+          currency?: string;
+          day_rate_minor?: number;
+          end_date?: string;
+          governing_country_code?: string | null;
+          id?: string;
+          mobilisation_minor?: number;
+          off_hire_at?: string | null;
+          on_hire_at?: string | null;
+          owner_org_id?: string;
+          quote_id?: string | null;
+          start_date?: string;
+          status?: Database["public"]["Enums"]["charter_status"];
+          total_value_minor?: number;
+          updated_at?: string;
+          vessel_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "charters_charterer_org_id_orgs_id_fk";
+            columns: ["charterer_org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "charters_currency_currencies_code_fk";
+            columns: ["currency"];
+            isOneToOne: false;
+            referencedRelation: "currencies";
+            referencedColumns: ["code"];
+          },
+          {
+            foreignKeyName: "charters_governing_country_code_countries_code_fk";
+            columns: ["governing_country_code"];
+            isOneToOne: false;
+            referencedRelation: "countries";
+            referencedColumns: ["code"];
+          },
+          {
+            foreignKeyName: "charters_owner_org_id_orgs_id_fk";
+            columns: ["owner_org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "charters_quote_id_charter_quotes_id_fk";
+            columns: ["quote_id"];
+            isOneToOne: false;
+            referencedRelation: "charter_quotes";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "charters_vessel_id_vessels_id_fk";
+            columns: ["vessel_id"];
+            isOneToOne: false;
+            referencedRelation: "vessels";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       compliance_rule_sets: {
         Row: {
           country_code: string | null;
@@ -2594,6 +2965,9 @@ export type Database = {
           cargo_capacity_t: number | null;
           charter_enabled: boolean;
           created_at: string;
+          crew_complement: number | null;
+          deck_space_m2: number | null;
+          dp_class: string | null;
           engine: string | null;
           ferry_enabled: boolean;
           flag_country_code: string | null;
@@ -2609,6 +2983,7 @@ export type Database = {
           passenger_capacity: number | null;
           photos: string[];
           registration_no: string | null;
+          speed_kn: number | null;
           status: Database["public"]["Enums"]["vessel_status"];
           type: Database["public"]["Enums"]["vessel_type"];
           updated_at: string | null;
@@ -2619,6 +2994,9 @@ export type Database = {
           cargo_capacity_t?: number | null;
           charter_enabled?: boolean;
           created_at?: string;
+          crew_complement?: number | null;
+          deck_space_m2?: number | null;
+          dp_class?: string | null;
           engine?: string | null;
           ferry_enabled?: boolean;
           flag_country_code?: string | null;
@@ -2634,6 +3012,7 @@ export type Database = {
           passenger_capacity?: number | null;
           photos?: string[];
           registration_no?: string | null;
+          speed_kn?: number | null;
           status?: Database["public"]["Enums"]["vessel_status"];
           type: Database["public"]["Enums"]["vessel_type"];
           updated_at?: string | null;
@@ -2643,6 +3022,9 @@ export type Database = {
           cargo_capacity_t?: number | null;
           charter_enabled?: boolean;
           created_at?: string;
+          crew_complement?: number | null;
+          deck_space_m2?: number | null;
+          dp_class?: string | null;
           engine?: string | null;
           ferry_enabled?: boolean;
           flag_country_code?: string | null;
@@ -2658,6 +3040,7 @@ export type Database = {
           passenger_capacity?: number | null;
           photos?: string[];
           registration_no?: string | null;
+          speed_kn?: number | null;
           status?: Database["public"]["Enums"]["vessel_status"];
           type?: Database["public"]["Enums"]["vessel_type"];
           updated_at?: string | null;
@@ -2862,6 +3245,7 @@ export type Database = {
       };
     };
     Functions: {
+      accept_charter_quote: { Args: { p_quote: string }; Returns: string };
       accept_invitation: { Args: { p_token: string }; Returns: string };
       compliance_requirements: {
         Args: {
@@ -2904,6 +3288,7 @@ export type Database = {
         };
         Returns: string;
       };
+      decline_charter_quote: { Args: { p_quote: string }; Returns: undefined };
       document_types_for: {
         Args: { p_applies_to: Database["public"]["Enums"]["applies_to"]; p_country: string };
         Returns: {
@@ -3010,6 +3395,9 @@ export type Database = {
       ai_job_status: "queued" | "done" | "failed";
       alert_channel: "whatsapp" | "sms" | "email" | "in_app";
       applies_to: "vessel" | "crew" | "org";
+      charter_quote_status: "sent" | "accepted" | "declined" | "expired";
+      charter_request_status: "open" | "quoted" | "accepted" | "declined" | "expired";
+      charter_status: "pending_contract" | "pending_payment" | "active" | "completed" | "disputed" | "cancelled";
       crew_role: "captain" | "engineer" | "deckhand" | "ticket_agent" | "other";
       crew_status: "active" | "inactive";
       data_region: "af" | "eu" | "us";
@@ -3019,6 +3407,7 @@ export type Database = {
       jetty_status: "proposed" | "active";
       launch_status: "planned" | "validating" | "pilot" | "live";
       ledger_account: "escrow" | "platform_revenue" | "payee_payable" | "provider_fees";
+      listing_status: "draft" | "live" | "paused";
       membership_role: "owner" | "manager" | "captain" | "crew" | "charterer";
       membership_status: "active" | "suspended";
       message_channel: "whatsapp" | "sms";
@@ -3165,6 +3554,9 @@ export const Constants = {
       ai_job_status: ["queued", "done", "failed"],
       alert_channel: ["whatsapp", "sms", "email", "in_app"],
       applies_to: ["vessel", "crew", "org"],
+      charter_quote_status: ["sent", "accepted", "declined", "expired"],
+      charter_request_status: ["open", "quoted", "accepted", "declined", "expired"],
+      charter_status: ["pending_contract", "pending_payment", "active", "completed", "disputed", "cancelled"],
       crew_role: ["captain", "engineer", "deckhand", "ticket_agent", "other"],
       crew_status: ["active", "inactive"],
       data_region: ["af", "eu", "us"],
@@ -3174,6 +3566,7 @@ export const Constants = {
       jetty_status: ["proposed", "active"],
       launch_status: ["planned", "validating", "pilot", "live"],
       ledger_account: ["escrow", "platform_revenue", "payee_payable", "provider_fees"],
+      listing_status: ["draft", "live", "paused"],
       membership_role: ["owner", "manager", "captain", "crew", "charterer"],
       membership_status: ["active", "suspended"],
       message_channel: ["whatsapp", "sms"],

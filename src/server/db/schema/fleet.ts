@@ -61,6 +61,11 @@ export const vessels = pgTable(
     idleSince: timestamp("idle_since", { withTimezone: true }),
     ferryEnabled: boolean("ferry_enabled").notNull().default(false),
     charterEnabled: boolean("charter_enabled").notNull().default(false),
+    /** §4.3 charter profile. */
+    crewComplement: smallint("crew_complement"),
+    speedKn: numeric("speed_kn", { precision: 5, scale: 1 }),
+    deckSpaceM2: numeric("deck_space_m2", { precision: 8, scale: 1 }),
+    dpClass: text("dp_class"),
     photos: text("photos")
       .array()
       .notNull()

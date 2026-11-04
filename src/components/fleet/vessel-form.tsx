@@ -21,6 +21,10 @@ interface VesselDefaults {
   passenger_capacity?: number | null;
   cargo_capacity_t?: number | null;
   engine?: string | null;
+  crew_complement?: number | null;
+  speed_kn?: number | null;
+  deck_space_m2?: number | null;
+  dp_class?: string | null;
   ferry_enabled?: boolean;
   charter_enabled?: boolean;
 }
@@ -145,6 +149,24 @@ export function VesselForm({ vessel, next, orgModes }: { vessel?: VesselDefaults
           <Input id="engine" name="engine" maxLength={120} defaultValue={vessel?.engine ?? undefined} />
         </div>
       </div>
+      {modes.includes("charter") && (
+        <fieldset className="grid gap-4 sm:grid-cols-4">
+          <legend className="mb-2 label-mono-sm text-meta">{t("charterProfile")}</legend>
+          {(
+            [
+              ["crewComplement", "crew_complement", "numeric"],
+              ["speedKn", "speed_kn", "decimal"],
+              ["deckSpaceM2", "deck_space_m2", "decimal"],
+              ["dpClass", "dp_class", "text"],
+            ] as const
+          ).map(([name, key, mode]) => (
+            <div key={name} className="flex flex-col gap-2">
+              <Label htmlFor={name}>{t(name)}</Label>
+              <Input id={name} name={name} inputMode={mode} defaultValue={vessel?.[key] ?? undefined} />
+            </div>
+          ))}
+        </fieldset>
+      )}
       {modes.length > 0 && (
         <fieldset className="flex flex-col gap-2">
           <legend className="mb-2 label-mono-sm text-meta">{t("modes")}</legend>
