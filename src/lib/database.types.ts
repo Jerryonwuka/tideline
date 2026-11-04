@@ -3206,6 +3206,136 @@ export type Database = {
           },
         ];
       };
+      tender_packs: {
+        Row: {
+          created_at: string;
+          export_path: string | null;
+          exported_at: string | null;
+          exported_by: string | null;
+          id: string;
+          items: NonNullable<Json>;
+          org_id: string;
+          reviewed_at: string | null;
+          reviewed_by: string | null;
+          sections: NonNullable<Json>;
+          status: Database["public"]["Enums"]["tender_pack_status"];
+          submit_anyway: boolean;
+          submit_anyway_at: string | null;
+          submit_anyway_by: string | null;
+          tender_id: string;
+          updated_at: string;
+          vessel_ids: string[];
+          zip_path: string | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          export_path?: string | null;
+          exported_at?: string | null;
+          exported_by?: string | null;
+          id?: string;
+          items?: NonNullable<Json>;
+          org_id: string;
+          reviewed_at?: string | null;
+          reviewed_by?: string | null;
+          sections?: NonNullable<Json>;
+          status?: Database["public"]["Enums"]["tender_pack_status"];
+          submit_anyway?: boolean;
+          submit_anyway_at?: string | null;
+          submit_anyway_by?: string | null;
+          tender_id: string;
+          updated_at?: string;
+          vessel_ids?: string[];
+          zip_path?: string | null;
+        };
+        Update: {
+          created_at?: string;
+          export_path?: string | null;
+          exported_at?: string | null;
+          exported_by?: string | null;
+          id?: string;
+          items?: NonNullable<Json>;
+          org_id?: string;
+          reviewed_at?: string | null;
+          reviewed_by?: string | null;
+          sections?: NonNullable<Json>;
+          status?: Database["public"]["Enums"]["tender_pack_status"];
+          submit_anyway?: boolean;
+          submit_anyway_at?: string | null;
+          submit_anyway_by?: string | null;
+          tender_id?: string;
+          updated_at?: string;
+          vessel_ids?: string[];
+          zip_path?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "tender_packs_org_id_orgs_id_fk";
+            columns: ["org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tender_packs_tender_id_tenders_id_fk";
+            columns: ["tender_id"];
+            isOneToOne: true;
+            referencedRelation: "tenders";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      tenders: {
+        Row: {
+          client_name: string | null;
+          created_at: string;
+          deadline: string | null;
+          id: string;
+          org_id: string;
+          parsed: Json | null;
+          requirements_file_path: string | null;
+          requirements_text: string;
+          status: Database["public"]["Enums"]["tender_status"];
+          title: string;
+          updated_at: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          client_name?: string | null;
+          created_at?: string;
+          deadline?: string | null;
+          id?: string;
+          org_id: string;
+          parsed?: Json | null;
+          requirements_file_path?: string | null;
+          requirements_text: string;
+          status?: Database["public"]["Enums"]["tender_status"];
+          title: string;
+          updated_at?: string;
+        };
+        Update: {
+          client_name?: string | null;
+          created_at?: string;
+          deadline?: string | null;
+          id?: string;
+          org_id?: string;
+          parsed?: Json | null;
+          requirements_file_path?: string | null;
+          requirements_text?: string;
+          status?: Database["public"]["Enums"]["tender_status"];
+          title?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "tenders_org_id_orgs_id_fk";
+            columns: ["org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       tickets: {
         Row: {
           buyer_name: string;
@@ -4020,6 +4150,8 @@ export type Database = {
       safety_result: "pass" | "warn" | "block";
       subscription_status: "trialing" | "active" | "past_due" | "read_only" | "cancelled";
       sync_op_status: "applied" | "conflict" | "rejected";
+      tender_pack_status: "draft" | "reviewed" | "exported";
+      tender_status: "new" | "parsed" | "in_progress" | "exported";
       ticket_channel: "online" | "agent_cash" | "agent_transfer";
       ticket_status: "reserved" | "paid" | "used" | "refunded" | "cancelled";
       trip_source: "app" | "whatsapp_voice" | "whatsapp_text" | "sms" | "admin";
@@ -4182,6 +4314,8 @@ export const Constants = {
       safety_result: ["pass", "warn", "block"],
       subscription_status: ["trialing", "active", "past_due", "read_only", "cancelled"],
       sync_op_status: ["applied", "conflict", "rejected"],
+      tender_pack_status: ["draft", "reviewed", "exported"],
+      tender_status: ["new", "parsed", "in_progress", "exported"],
       ticket_channel: ["online", "agent_cash", "agent_transfer"],
       ticket_status: ["reserved", "paid", "used", "refunded", "cancelled"],
       trip_source: ["app", "whatsapp_voice", "whatsapp_text", "sms", "admin"],

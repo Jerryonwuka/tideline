@@ -379,3 +379,54 @@ export const payouts = pgTable("payouts", {
   failureReason: text("failure_reason"),
   ...ts,
 });
+
+// ----- M14: tenders and tender packs (§10.5) -------------------------------------------------------
+
+export const tenderStatus = pgEnum("tender_status", ["new", "parsed", "in_progress", "exported"]);
+export const tenderPackStatus = pgEnum("tender_pack_status", ["draft", "reviewed", "exported"]);
+
+export const tenders = pgTable("tenders", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  orgId: uuid("org_id")
+    .notNull()
+    .references(() => orgs.id, { onDelete: "cascade" }),
+  title: text("title").notNull(),
+  clientName: text("client_name"),
+  deadline: date("deadline"),
+  requirementsText: text("requirements_text").notNull(),
+  requirementsFilePath: text("requirements_file_path"),
+  /** The AI parse (validated): requirements quote the tender in source_text. */
+  parsed: jsonb("parsed"),
+  status: tenderStatus("status").notNull().default("new"),
+  ...ts,
+});
+
+export const tenderPacks = pgTable("tender_packs", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  orgId: uuid("org_id")
+    .notNull()
+    .references(() => orgs.id, { onDelete: "cascade" }),
+  tenderId: uuid("tender_id")
+    .notNull()
+    .unique()
+    .references(() => tenders.id, { onDelete: "cascade" }),
+  vesselIds: uuid("vessel_ids")
+    .array()
+    .notNull()
+    .default(sql`'{}'::uuid[]`),
+  /** requirement id → {document_id, document_type_code, status, manual} */
+  items: jsonb("items").notNull().default({}),
+  /** {cover_letter, company_profile, vessel_specification, hse_statement} */
+  sections: jsonb("sections").notNull().default({}),
+  status: tenderPackStatus("status").notNull().default("draft"),
+  submitAnyway: boolean("submit_anyway").notNull().default(false),
+  submitAnywayBy: uuid("submit_anyway_by"),
+  submitAnywayAt: timestamp("submit_anyway_at", { withTimezone: true }),
+  reviewedBy: uuid("reviewed_by"),
+  reviewedAt: timestamp("reviewed_at", { withTimezone: true }),
+  exportPath: text("export_path"),
+  zipPath: text("zip_path"),
+  exportedBy: uuid("exported_by"),
+  exportedAt: timestamp("exported_at", { withTimezone: true }),
+  ...ts,
+});

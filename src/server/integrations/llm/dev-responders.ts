@@ -1,5 +1,6 @@
 import { heuristicDraft, type BotContext } from "@/server/bot/parse";
 import { devAssistant } from "./dev-assistant";
+import { devTenderDraft, devTenderParse } from "./dev-tender";
 import type { FakeLlmClient } from "./fake";
 
 /**
@@ -8,6 +9,8 @@ import type { FakeLlmClient } from "./fake";
  */
 export function registerDevResponders(llm: FakeLlmClient): FakeLlmClient {
   llm.scriptChat("assistant", devAssistant);
+  llm.respond("tender_parse", ({ lastUserMessage }: { lastUserMessage: string }) => devTenderParse(lastUserMessage));
+  llm.respond("tender_draft", ({ lastUserMessage }: { lastUserMessage: string }) => devTenderDraft(lastUserMessage));
   // Voice/text logs: the rule-based reader, using the context the prompt carries.
   llm.respond("voice_log", ({ system, lastUserMessage }: { system: string; lastUserMessage: string }) => {
     const json = system.slice(system.indexOf("CONTEXT_JSON ") + "CONTEXT_JSON ".length);

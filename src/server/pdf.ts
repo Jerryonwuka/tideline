@@ -74,7 +74,11 @@ export async function renderPdf(title: string, blocks: PdfBlock[], footer?: stri
     const font = b.bold ? bold : regular;
     y -= b.gapBefore ?? 0;
     const rightWidth = b.right ? regular.widthOfTextAtSize(pdfSafe(b.right), size) + 16 : 0;
-    for (const line of wrap(pdfSafe(b.text), font, size, W - 2 * M - rightWidth)) {
+    const lines = pdfSafe(b.text)
+      .replace(/\t/g, "    ")
+      .split(/\r?\n/)
+      .flatMap((para) => (para.trim() ? wrap(para, font, size, W - 2 * M - rightWidth) : [""]));
+    for (const line of lines) {
       if (y < M + size * 2) newPage();
       page.drawText(line, { x: M, y, size, font, color: rgb(0.08, 0.1, 0.14) });
       if (b.right) {
@@ -88,6 +92,38 @@ export async function renderPdf(title: string, blocks: PdfBlock[], footer?: stri
   if (footer) {
     for (const p of doc.getPages()) {
       p.drawText(pdfSafe(footer), { x: M, y: M / 2, size: 7, font: regular, color: rgb(0.45, 0.48, 0.55) });
+    }
+  }
+  return doc.save();
+}
+
+/** Appends files after a document: PDF pages are copied; JPEG/PNG images get a page each. */
+export async function appendFiles(
+  base: Uint8Array,
+  files: { title: string; bytes: Uint8Array; mimeType: string }[],
+): Promise<Uint8Array> {
+  const doc = await PDFDocument.load(base);
+  const font = await doc.embedFont(StandardFonts.HelveticaBold);
+  for (const f of files) {
+    try {
+      if (f.mimeType === "application/pdf") {
+        const src = await PDFDocument.load(f.bytes, { ignoreEncryption: true });
+        for (const p of await doc.copyPages(src, src.getPageIndices())) doc.addPage(p);
+        continue;
+      }
+      const img =
+        f.mimeType === "image/png"
+          ? await doc.embedPng(f.bytes)
+          : f.mimeType === "image/jpeg"
+            ? await doc.embedJpg(f.bytes)
+            : null;
+      if (!img) continue;
+      const page = doc.addPage([595.28, 841.89]);
+      page.drawText(pdfSafe(f.title), { x: 56, y: 800, size: 11, font });
+      const scale = Math.min((595.28 - 112) / img.width, (841.89 - 140) / img.height, 1);
+      page.drawImage(img, { x: 56, y: 760 - img.height * scale, width: img.width * scale, height: img.height * scale });
+    } catch {
+      // A file that can't be read is listed in the index but not appended.
     }
   }
   return doc.save();

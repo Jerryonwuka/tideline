@@ -51,6 +51,9 @@ export const ERROR_CODES = [
   "escrow_disputed",
   "nothing_to_release",
   "already_released",
+  "tender_not_reviewed",
+  "tender_blocked",
+  "tender_no_text",
   "unknown",
 ] as const;
 export type ErrorCode = (typeof ERROR_CODES)[number];
@@ -105,6 +108,9 @@ const STATUS: Partial<Record<ErrorCode, number>> = {
   escrow_disputed: 409,
   nothing_to_release: 409,
   already_released: 409,
+  tender_not_reviewed: 409,
+  tender_blocked: 409,
+  tender_no_text: 400,
 };
 
 export class ServiceError extends Error {

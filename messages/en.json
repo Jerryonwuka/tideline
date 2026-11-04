@@ -524,7 +524,10 @@
     "escrow_disabled": "Escrow payments aren’t available yet.",
     "escrow_disputed": "This payment is under dispute. Tideline will resolve it.",
     "nothing_to_release": "There’s nothing left to release.",
-    "already_released": "That payment has already been released."
+    "already_released": "That payment has already been released.",
+    "tender_not_reviewed": "Mark the pack as reviewed before exporting.",
+    "tender_blocked": "Fill the [MISSING] items and attach the red mandatory documents, or tick “Submit anyway”.",
+    "tender_no_text": "Paste the tender text or upload a readable file."
   },
   "auth": {
     "title": "Log in to Tideline",
@@ -614,7 +617,8 @@
     "charters": "Charters",
     "board": "Charter board",
     "invoices": "Invoices",
-    "payouts": "Payouts"
+    "payouts": "Payouts",
+    "tenders": "Tenders"
   },
   "dashboard": {
     "title": "Welcome, {name}",
@@ -1830,5 +1834,78 @@
     "split": "Split",
     "ownerShare": "Owner’s share ({currency})",
     "resolved": "Resolved."
+  },
+  "tenders": {
+    "title": "Tenders",
+    "subtitle": "Turn a tender into a ready pack: a checklist from the tender, your documents attached, and drafted sections to review.",
+    "new": "New tender",
+    "empty": "No tenders yet.",
+    "deadline": "Deadline {date}",
+    "noDeadline": "No deadline",
+    "status": {
+      "new": "Not read yet",
+      "parsed": "Checklist ready",
+      "in_progress": "In progress",
+      "exported": "Exported"
+    },
+    "fields": {
+      "title": "Tender title",
+      "client": "Client",
+      "deadline": "Deadline",
+      "text": "Tender text",
+      "textHint": "Paste the requirements section, or upload the tender below.",
+      "file": "Tender file (PDF or photo)"
+    },
+    "create": "Read tender",
+    "notRead": "The tender couldn’t be read yet.",
+    "readAgain": "Read again",
+    "summary": "Summary",
+    "contractPeriod": "Contract period",
+    "vesselNeeds": "Vessel needs",
+    "dropped": "{count, plural, one {# item was left out because its quote isn’t in the tender.} other {# items were left out because their quotes aren’t in the tender.}}",
+    "vessels": "Vessels in this bid",
+    "vesselsHint": "Documents are matched for these vessels and the company.",
+    "noVessels": "Add a vessel first.",
+    "match": "Match documents",
+    "checklist": "Checklist",
+    "checklistHint": "Every item quotes the tender. Green is attached, amber expires before the deadline, red is missing, grey needs a match.",
+    "mandatory": "Mandatory",
+    "itemStatus": {
+      "valid": "Attached",
+      "expires_before_deadline": "Expires before deadline",
+      "missing": "Missing",
+      "unmatched": "Not matched"
+    },
+    "pickDocument": "Attach a document",
+    "noDocument": "No document",
+    "attach": "Attach",
+    "manual": "Attached by you",
+    "sections": "Drafted sections",
+    "sectionsHint": "Drafted only from your stored records. Replace every [MISSING: …] before exporting.",
+    "draft": "Draft sections",
+    "redraft": "Draft again",
+    "notDrafted": "No sections drafted yet.",
+    "section": {
+      "cover_letter": "Cover letter",
+      "company_profile": "Company profile",
+      "vessel_specification": "Vessel specification",
+      "hse_statement": "HSE statement"
+    },
+    "save": "Save",
+    "saved": "Saved.",
+    "markers": "{count, plural, =0 {No missing items} one {# missing item} other {# missing items}}",
+    "review": "Review and export",
+    "markReviewed": "I’ve reviewed this pack",
+    "reviewed": "Reviewed",
+    "needsReview": "Needs review. AI drafts are never final until you review them.",
+    "submitAnyway": "Submit anyway (I accept the open items)",
+    "submitAnywayOn": "Submitting with open items. This choice is recorded.",
+    "export": "Export pack",
+    "exported": "Exported {date}",
+    "downloadPdf": "Download PDF",
+    "downloadZip": "Download ZIP",
+    "held": "Export is held until these are fixed:",
+    "heldMarkers": "{count, plural, one {# [MISSING] marker in the sections} other {# [MISSING] markers in the sections}}",
+    "heldRed": "Mandatory items without a document: {ids}"
   }
 }
