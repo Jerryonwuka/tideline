@@ -39,6 +39,9 @@ export default async function ChartersPage() {
             <Link href="/charters/requests" className="label-mono-sm text-accent hover:underline">
               {tc("requestsNav")}
             </Link>
+            <Link href="/charters/idle" className="label-mono-sm text-accent hover:underline">
+              {tc("idleNav")}
+            </Link>
             <Link href="/board" className="label-mono-sm text-accent hover:underline">
               {tc("board.title")}
             </Link>

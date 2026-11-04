@@ -174,6 +174,39 @@ export type Database = {
           },
         ];
       };
+      board_searches: {
+        Row: {
+          area: string | null;
+          charterer_org_id: string;
+          created_at: string;
+          id: string;
+          vessel_type: string | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          area?: string | null;
+          charterer_org_id: string;
+          created_at?: string;
+          id?: string;
+          vessel_type?: string | null;
+        };
+        Update: {
+          area?: string | null;
+          charterer_org_id?: string;
+          created_at?: string;
+          id?: string;
+          vessel_type?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "board_searches_charterer_org_id_orgs_id_fk";
+            columns: ["charterer_org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       bot_sessions: {
         Row: {
           asking: string | null;
@@ -3669,6 +3702,87 @@ export type Database = {
           },
         ];
       };
+      vessel_suggestions: {
+        Row: {
+          buyers: NonNullable<Json>;
+          created_at: string;
+          currency: string;
+          id: string;
+          idle_since: string;
+          inputs: NonNullable<Json>;
+          listing_description: string | null;
+          org_id: string;
+          published_listing_id: string | null;
+          rationale: string | null;
+          review_status: Database["public"]["Enums"]["suggestion_review"];
+          suggested_rate_minor: number | null;
+          updated_at: string;
+          vessel_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          buyers?: NonNullable<Json>;
+          created_at?: string;
+          currency: string;
+          id?: string;
+          idle_since: string;
+          inputs: NonNullable<Json>;
+          listing_description?: string | null;
+          org_id: string;
+          published_listing_id?: string | null;
+          rationale?: string | null;
+          review_status?: Database["public"]["Enums"]["suggestion_review"];
+          suggested_rate_minor?: number | null;
+          updated_at?: string;
+          vessel_id: string;
+        };
+        Update: {
+          buyers?: NonNullable<Json>;
+          created_at?: string;
+          currency?: string;
+          id?: string;
+          idle_since?: string;
+          inputs?: NonNullable<Json>;
+          listing_description?: string | null;
+          org_id?: string;
+          published_listing_id?: string | null;
+          rationale?: string | null;
+          review_status?: Database["public"]["Enums"]["suggestion_review"];
+          suggested_rate_minor?: number | null;
+          updated_at?: string;
+          vessel_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "vessel_suggestions_currency_currencies_code_fk";
+            columns: ["currency"];
+            isOneToOne: false;
+            referencedRelation: "currencies";
+            referencedColumns: ["code"];
+          },
+          {
+            foreignKeyName: "vessel_suggestions_org_id_orgs_id_fk";
+            columns: ["org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "vessel_suggestions_published_listing_id_charter_listings_id_fk";
+            columns: ["published_listing_id"];
+            isOneToOne: false;
+            referencedRelation: "charter_listings";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "vessel_suggestions_vessel_id_vessels_id_fk";
+            columns: ["vessel_id"];
+            isOneToOne: false;
+            referencedRelation: "vessels";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       vessels: {
         Row: {
           cargo_capacity_t: number | null;
@@ -4149,6 +4263,7 @@ export type Database = {
       rule_severity: "block" | "warn";
       safety_result: "pass" | "warn" | "block";
       subscription_status: "trialing" | "active" | "past_due" | "read_only" | "cancelled";
+      suggestion_review: "needs_review" | "accepted";
       sync_op_status: "applied" | "conflict" | "rejected";
       tender_pack_status: "draft" | "reviewed" | "exported";
       tender_status: "new" | "parsed" | "in_progress" | "exported";
@@ -4313,6 +4428,7 @@ export const Constants = {
       rule_severity: ["block", "warn"],
       safety_result: ["pass", "warn", "block"],
       subscription_status: ["trialing", "active", "past_due", "read_only", "cancelled"],
+      suggestion_review: ["needs_review", "accepted"],
       sync_op_status: ["applied", "conflict", "rejected"],
       tender_pack_status: ["draft", "reviewed", "exported"],
       tender_status: ["new", "parsed", "in_progress", "exported"],

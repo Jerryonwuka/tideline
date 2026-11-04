@@ -6,6 +6,9 @@ import { StatusChip } from "@/components/ui/chip";
 import { formatMoney } from "@/lib/money";
 import { boardQuerySchema } from "@/lib/schemas/charter";
 import { boardListings } from "@/server/services/charter";
+import { logBoardSearch } from "@/server/services/idle";
+import { getMe } from "@/server/services/profile";
+import { supabaseServer } from "@/server/supabase/server";
 
 export const dynamic = "force-dynamic";
 
@@ -19,6 +22,15 @@ const TYPES = ["crew_boat", "osv", "tug", "barge", "speedboat", "ferry", "other"
 export default async function BoardPage({ searchParams }: { searchParams: Promise<Record<string, string>> }) {
   const parsed = boardQuerySchema.safeParse(await searchParams);
   const q = parsed.success ? parsed.data : {};
+  // Signed-in charterers' searches (type and area only) help owners find likely buyers (§10.4).
+  if (q.type || q.area) {
+    const me = await getMe(await supabaseServer()).catch(() => null);
+    if (me)
+      await logBoardSearch(
+        me.memberships.filter((m) => m.status === "active").map((m) => m.orgId),
+        q,
+      ).catch(() => {});
+  }
   const [t, tTypes, format, locale, listings] = await Promise.all([
     getTranslations("charter.board"),
     getTranslations("vesselTypes"),

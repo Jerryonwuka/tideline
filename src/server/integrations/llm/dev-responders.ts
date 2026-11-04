@@ -1,5 +1,6 @@
 import { heuristicDraft, type BotContext } from "@/server/bot/parse";
 import { devAssistant } from "./dev-assistant";
+import { devIdleListing, devIdleOutreach } from "./dev-idle";
 import { devTenderDraft, devTenderParse } from "./dev-tender";
 import type { FakeLlmClient } from "./fake";
 
@@ -10,6 +11,8 @@ import type { FakeLlmClient } from "./fake";
 export function registerDevResponders(llm: FakeLlmClient): FakeLlmClient {
   llm.scriptChat("assistant", devAssistant);
   llm.respond("tender_parse", ({ lastUserMessage }: { lastUserMessage: string }) => devTenderParse(lastUserMessage));
+  llm.respond("idle_listing", ({ lastUserMessage }: { lastUserMessage: string }) => devIdleListing(lastUserMessage));
+  llm.respond("idle_outreach", ({ lastUserMessage }: { lastUserMessage: string }) => devIdleOutreach(lastUserMessage));
   llm.respond("tender_draft", ({ lastUserMessage }: { lastUserMessage: string }) => devTenderDraft(lastUserMessage));
   // Voice/text logs: the rule-based reader, using the context the prompt carries.
   llm.respond("voice_log", ({ system, lastUserMessage }: { system: string; lastUserMessage: string }) => {

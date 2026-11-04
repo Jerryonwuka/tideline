@@ -430,3 +430,52 @@ export const tenderPacks = pgTable("tender_packs", {
   exportedAt: timestamp("exported_at", { withTimezone: true }),
   ...ts,
 });
+
+// §10.4 (M15) idle-vessel pricing and buyer suggestions. Written by the idle-vessels job and the
+// server; owners and managers read them. AI text is "needs_review" until the owner publishes.
+export const suggestionReview = pgEnum("suggestion_review", ["needs_review", "accepted"]);
+
+export const vesselSuggestions = pgTable(
+  "vessel_suggestions",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    orgId: uuid("org_id")
+      .notNull()
+      .references(() => orgs.id, { onDelete: "cascade" }),
+    vesselId: uuid("vessel_id")
+      .notNull()
+      .references(() => vessels.id, { onDelete: "cascade" }),
+    idleSince: timestamp("idle_since", { withTimezone: true }).notNull(),
+    currency: char("currency", { length: 3 })
+      .notNull()
+      .references(() => currencies.code),
+    /** Null when there is nothing to price from (no charters, listings or board rates). */
+    suggestedRateMinor: bigint("suggested_rate_minor", { mode: "bigint" }),
+    inputs: jsonb("inputs").notNull(),
+    rationale: text("rationale"),
+    listingDescription: text("listing_description"),
+    reviewStatus: suggestionReview("review_status").notNull().default("needs_review"),
+    /** Ranked charterers: [{org_id, name, score, reasons}] (no LLM in the ranking). */
+    buyers: jsonb("buyers")
+      .notNull()
+      .default(sql`'[]'::jsonb`),
+    publishedListingId: uuid("published_listing_id").references(() => charterListings.id, { onDelete: "set null" }),
+    ...ts,
+  },
+  (t) => [uniqueIndex("vessel_suggestions_vessel_idx").on(t.vesselId), index("vessel_suggestions_org_idx").on(t.orgId)],
+);
+
+/** Charterer board searches (signed-in charterers only), kept 90 days for buyer ranking. */
+export const boardSearches = pgTable(
+  "board_searches",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    chartererOrgId: uuid("charterer_org_id")
+      .notNull()
+      .references(() => orgs.id, { onDelete: "cascade" }),
+    vesselType: text("vessel_type"),
+    area: text("area"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("board_searches_created_idx").on(t.createdAt)],
+);

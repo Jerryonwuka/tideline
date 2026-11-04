@@ -54,6 +54,7 @@ export const ERROR_CODES = [
   "tender_not_reviewed",
   "tender_blocked",
   "tender_no_text",
+  "rate_below_minimum",
   "unknown",
 ] as const;
 export type ErrorCode = (typeof ERROR_CODES)[number];
@@ -111,6 +112,7 @@ const STATUS: Partial<Record<ErrorCode, number>> = {
   tender_not_reviewed: 409,
   tender_blocked: 409,
   tender_no_text: 400,
+  rate_below_minimum: 400,
 };
 
 export class ServiceError extends Error {

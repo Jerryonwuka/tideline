@@ -527,7 +527,8 @@
     "already_released": "That payment has already been released.",
     "tender_not_reviewed": "Mark the pack as reviewed before exporting.",
     "tender_blocked": "Fill the [MISSING] items and attach the red mandatory documents, or tick “Submit anyway”.",
-    "tender_no_text": "Paste the tender text or upload a readable file."
+    "tender_no_text": "Paste the tender text or upload a readable file.",
+    "rate_below_minimum": "That rate is below your minimum rate for this vessel."
   },
   "auth": {
     "title": "Log in to Tideline",
@@ -1679,7 +1680,8 @@
       "dates": "{from} – {to}",
       "total": "Total value {amount}",
       "commission": "Platform commission {pct}%"
-    }
+    },
+    "idleNav": "Idle vessels"
   },
   "invoices": {
     "title": "Invoices",
@@ -1907,5 +1909,51 @@
     "held": "Export is held until these are fixed:",
     "heldMarkers": "{count, plural, one {# [MISSING] marker in the sections} other {# [MISSING] markers in the sections}}",
     "heldRed": "Mandatory items without a document: {ids}"
+  },
+  "idle": {
+    "title": "Idle vessels",
+    "subtitle": "Vessels with no work for a few days get a suggested day rate and a list of likely charterers. Check it, then publish to the board in one tap.",
+    "empty": "No vessel has been idle long enough for a suggestion. Suggestions are refreshed every morning.",
+    "idleFor": "{days, plural, one {Idle # day} other {Idle # days}}",
+    "suggested": "Suggested day rate",
+    "noRate": "Not enough past rates to suggest one yet. Enter your rate below.",
+    "howWorkedOut": "How this was worked out",
+    "inputs": {
+      "baseline": "Starting point",
+      "source": {
+        "vessel": "Median of this vessel’s last {count} charters",
+        "org_same_type": "Median of your {count} charters of the same vessel type",
+        "board": "Median of {count} similar board listings",
+        "none": "No past rates"
+      },
+      "board": "Similar board listings (90 days)",
+      "boardNone": "None in this type, size and area",
+      "boardDetail": "{count} listings, median {median}; moved {weight}% of the way toward it",
+      "weeks": "Weeks idle",
+      "weeksDetail": "{weeks} × {step}% = {total}% off",
+      "minimum": "Your minimum",
+      "minimumNone": "Not set",
+      "floored": "Raised to your minimum rate"
+    },
+    "rationale": "Why",
+    "aiNote": "Written by AI from the numbers above. Check it before publishing.",
+    "buyers": "Likely charterers",
+    "buyersNone": "No likely charterers yet.",
+    "reason": {
+      "past_client": "Past client",
+      "similar_requests": "Asked for this vessel type",
+      "similar_searches": "Searched for this vessel type",
+      "area": "Works in your area"
+    },
+    "draftMessage": "Draft a message",
+    "messageNote": "Copy it and send it yourself. Nothing is sent from here.",
+    "copy": "Copy",
+    "copied": "Copied.",
+    "publish": "Publish to the board",
+    "dayRate": "Day rate ({currency})",
+    "area": "Operating area",
+    "description": "Listing description",
+    "published": "Live on the board.",
+    "viewListing": "View listing"
   }
 }

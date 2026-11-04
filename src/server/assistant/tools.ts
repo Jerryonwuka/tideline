@@ -184,10 +184,22 @@ export const TOOLS = [
   tool({
     name: "list_open_invoices",
     kind: "read",
-    description: "Unpaid invoices.",
+    description: "Unpaid invoices (sent, part paid or overdue).",
     inputSchema: z.object({}),
-    async run() {
-      return { invoices: [], note: "Invoicing isn't set up yet; it arrives with charter contracts and invoices." };
+    async run(ctx) {
+      const { data } = await ctx.db
+        .from("invoices")
+        .select("number, currency, total_minor, amount_paid_minor, due_date, status")
+        .eq("org_id", ctx.orgId)
+        .in("status", ["sent", "part_paid", "overdue"])
+        .order("due_date", { ascending: true })
+        .limit(20);
+      return (data ?? []).map((i) => ({
+        number: i.number,
+        status: i.status,
+        due: i.due_date,
+        outstanding: show(ctx, BigInt(i.total_minor) - BigInt(i.amount_paid_minor), i.currency),
+      }));
     },
   }),
   tool({
@@ -208,19 +220,42 @@ export const TOOLS = [
       };
     },
   }),
-  ...(["draft_invoice", "draft_tender_pack", "suggest_price"] as const).map((name) =>
+  tool({
+    name: "suggest_price",
+    kind: "draft",
+    description: "The suggested charter day rate for an idle vessel, with how it was worked out.",
+    inputSchema: z.object({ vessel_name: z.string().optional() }),
+    async run(ctx, input) {
+      const { data } = await ctx.db
+        .from("vessel_suggestions")
+        .select("currency, suggested_rate_minor, inputs, rationale, review_status, vessel:vessels(name)")
+        .eq("org_id", ctx.orgId);
+      const rows = (data ?? []).filter(
+        (r) => !input.vessel_name || r.vessel?.name.toLowerCase().includes(input.vessel_name.toLowerCase()),
+      );
+      if (!rows.length) return { suggestions: [], note: "No vessel has been idle long enough for a suggestion." };
+      return {
+        suggestions: rows.map((r) => ({
+          vessel: r.vessel?.name,
+          day_rate: r.suggested_rate_minor ? show(ctx, r.suggested_rate_minor, r.currency) : null,
+          inputs: r.inputs,
+          rationale: r.rationale,
+          review: r.review_status,
+        })),
+        how_to_publish: "Open Charters → Idle vessels (/charters/idle) to check and publish.",
+      };
+    },
+  }),
+  ...(["draft_invoice", "draft_tender_pack"] as const).map((name) =>
     tool({
       name,
       kind: "draft",
-      description:
-        name === "suggest_price"
-          ? "Suggest a charter day rate for a vessel."
-          : name === "draft_invoice"
-            ? "Prepare an invoice draft."
-            : "Prepare a tender pack draft.",
+      description: name === "draft_invoice" ? "Prepare an invoice draft." : "Prepare a tender pack draft.",
       inputSchema: z.object({ details: z.string().optional() }),
       async run() {
-        return { available: false, note: "This arrives with the charter features; nothing was created." };
+        return name === "draft_invoice"
+          ? { saved: false, how_to: "Create it at Invoices → New invoice (/invoices/new), or from a charter's page." }
+          : { saved: false, how_to: "Paste or upload the tender at Tenders → New tender (/tenders/new)." };
       },
     }),
   ),
