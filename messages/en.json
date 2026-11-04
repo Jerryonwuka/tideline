@@ -1,0 +1,15 @@
+{
+  "app": {
+    "name": "Tideline",
+    "tagline": "Run your boats safely, keep your papers current, and get paid."
+  },
+  "home": {
+    "title": "Vessel operations, on any phone",
+    "ferryTitle": "Ferry operators",
+    "ferryBody": "Manifests, tickets, live tracking and a safety check before every departure.",
+    "charterTitle": "Crew boats and offshore vessels",
+    "charterBody": "Certificate expiry alerts, tender packs, charter contracts and invoices.",
+    "getStarted": "Get started",
+    "status": "Early access"
+  }
+}

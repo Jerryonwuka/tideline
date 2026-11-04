@@ -1,0 +1,1 @@
+-- Reference data loaded by `supabase db reset`. Populated from M1b (countries, currencies, rule sets).
