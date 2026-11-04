@@ -1322,6 +1322,48 @@ export type Database = {
           },
         ];
       };
+      sync_ops: {
+        Row: {
+          client_id: string;
+          op: string;
+          org_id: string;
+          processed_at: string;
+          recorded_at: string | null;
+          result: NonNullable<Json>;
+          status: Database["public"]["Enums"]["sync_op_status"];
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          client_id: string;
+          op: string;
+          org_id: string;
+          processed_at?: string;
+          recorded_at?: string | null;
+          result?: NonNullable<Json>;
+          status: Database["public"]["Enums"]["sync_op_status"];
+          user_id: string;
+        };
+        Update: {
+          client_id?: string;
+          op?: string;
+          org_id?: string;
+          processed_at?: string;
+          recorded_at?: string | null;
+          result?: NonNullable<Json>;
+          status?: Database["public"]["Enums"]["sync_op_status"];
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "sync_ops_org_id_orgs_id_fk";
+            columns: ["org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       tax_rules: {
         Row: {
           applies_to: string;
@@ -1789,6 +1831,7 @@ export type Database = {
       regulator_scope: "national" | "state" | "port";
       rule_set_status: "draft" | "published" | "retired";
       rule_severity: "block" | "warn";
+      sync_op_status: "applied" | "conflict" | "rejected";
       trip_source: "app" | "whatsapp_voice" | "whatsapp_text" | "sms" | "admin";
       trip_status: "scheduled" | "boarding" | "departed" | "arrived" | "cancelled";
       verification_status: "unverified" | "pending" | "verified";
@@ -1928,6 +1971,7 @@ export const Constants = {
       regulator_scope: ["national", "state", "port"],
       rule_set_status: ["draft", "published", "retired"],
       rule_severity: ["block", "warn"],
+      sync_op_status: ["applied", "conflict", "rejected"],
       trip_source: ["app", "whatsapp_voice", "whatsapp_text", "sms", "admin"],
       trip_status: ["scheduled", "boarding", "departed", "arrived", "cancelled"],
       verification_status: ["unverified", "pending", "verified"],

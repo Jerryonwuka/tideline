@@ -56,8 +56,8 @@ test("captain runs a scheduled trip; owner sees it in the daily report", async (
   await captain.getByRole("button", { name: "Accept invitation" }).click();
   await expect(captain).toHaveURL(/\/dashboard$/);
   await captain.goto("/captain");
-  await captain.getByRole("link", { name: /CMS Marina → Ikorodu/ }).click();
-  await expect(captain).toHaveURL(/\/captain\/trips\/[0-9a-f-]{36}$/);
+  await captain.getByRole("button", { name: /CMS Marina → Ikorodu/ }).click();
+  await expect(captain).toHaveURL(/\/captain\?trip=[0-9a-f-]{36}$/);
 
   const counter = captain.getByTestId("capacity-counter");
   for (const [name, seats] of [
@@ -93,6 +93,9 @@ test("captain runs a scheduled trip; owner sees it in the daily report", async (
   await captain.getByLabel(/Cash collected/).fill("6000");
   await captain.getByRole("button", { name: "Arrived" }).click();
   await expect(captain.getByText("Trip closed.")).toBeVisible();
+  // Saved on the phone first, then synced (M5).
+  await expect(captain.getByText("Saved on phone")).toHaveCount(0);
+  await expect(captain.getByText("Synced").first()).toBeVisible();
   await ctx.close();
 
   // Owner's daily report.

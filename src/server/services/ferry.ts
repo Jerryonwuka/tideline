@@ -114,7 +114,7 @@ export async function setScheduleActive(db: Db, scheduleId: string, active: bool
 // ----- Trips ------------------------------------------------------------------------------------
 
 export const TRIP_COLUMNS =
-  "id, org_id, vessel_id, captain_crew_id, route_id, origin_text, destination_text, scheduled_departure, actual_departure, actual_arrival, status, passenger_count, lifejackets_confirmed, takings_cash_minor, takings_digital_minor, currency, source, notes, created_at, vessel:vessels(name, passenger_capacity), route:routes(origin:jetties!routes_origin_jetty_id_jetties_id_fk(name), destination:jetties!routes_destination_jetty_id_jetties_id_fk(name)), captain:crew_members(full_name)";
+  "id, org_id, client_id, vessel_id, captain_crew_id, route_id, origin_text, destination_text, scheduled_departure, actual_departure, actual_arrival, status, passenger_count, lifejackets_confirmed, takings_cash_minor, takings_digital_minor, currency, source, notes, created_at, vessel:vessels(name, passenger_capacity), route:routes(origin:jetties!routes_origin_jetty_id_jetties_id_fk(name), destination:jetties!routes_destination_jetty_id_jetties_id_fk(name)), captain:crew_members(full_name)";
 
 export type TripRow = Awaited<ReturnType<typeof getTrip>>;
 
@@ -168,6 +168,7 @@ export async function createAdHocTrip(
   currency: string,
   captainCrewId: string | null,
   input: AdHocTripInput,
+  startedAt?: string,
 ) {
   const row = {
     org_id: orgId,
@@ -178,7 +179,7 @@ export async function createAdHocTrip(
     captain_crew_id: captainCrewId,
     currency,
     client_id: input.clientId ?? null,
-    scheduled_departure: new Date().toISOString(),
+    scheduled_departure: startedAt ?? new Date().toISOString(),
   };
   const { data, error } = input.clientId
     ? await db.from("trips").upsert(row, { onConflict: "org_id,client_id" }).select("id").single()
@@ -196,14 +197,21 @@ async function updateTrip(db: Db, id: string, patch: TablesUpdate<"trips">) {
 export const startBoarding = (db: Db, id: string) => updateTrip(db, id, { status: "boarding" });
 export const setLifejackets = (db: Db, id: string, confirmed: boolean) =>
   updateTrip(db, id, { lifejackets_confirmed: confirmed });
-export const depart = (db: Db, id: string) => updateTrip(db, id, { status: "departed" });
+/** `at` is when it happened on the boat (offline phones sync later); default now. */
+export const depart = (db: Db, id: string, at?: string) =>
+  updateTrip(db, id, { status: "departed", ...(at ? { actual_departure: at } : {}) });
 export const cancelTrip = (db: Db, id: string, notes?: string) =>
   updateTrip(db, id, { status: "cancelled", ...(notes ? { notes } : {}) });
 
 /** Closes a trip: arrival time, final passenger count and the cash collected. */
-export async function arrive(db: Db, id: string, currency: string, cash?: string, notes?: string) {
+export async function arrive(db: Db, id: string, currency: string, cash?: string, notes?: string, at?: string) {
   const cashMinor = cash ? Number(fromMajor(cash, currency).amountMinor) : 0;
-  await updateTrip(db, id, { status: "arrived", takings_cash_minor: cashMinor, ...(notes ? { notes } : {}) });
+  await updateTrip(db, id, {
+    status: "arrived",
+    takings_cash_minor: cashMinor,
+    ...(notes ? { notes } : {}),
+    ...(at ? { actual_arrival: at } : {}),
+  });
 }
 
 // ----- Manifest ---------------------------------------------------------------------------------

@@ -53,3 +53,7 @@ next-env.d.ts
 supabase/.temp
 supabase/.branches
 .claude/settings.local.json
+
+# Production build next to dev (NEXT_DIST_DIR) and the generated service worker
+/.next-build/
+/public/sw.js

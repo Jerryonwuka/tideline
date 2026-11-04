@@ -1125,6 +1125,40 @@
       "back": "All trips",
       "full": "Full",
       "amendment": "Amendment"
+    },
+    "loading": "Loading your trips…",
+    "notCached": "Open Tideline once with a connection, then it works offline.",
+    "offline": "Offline. {count, plural, =0 {Everything is saved} one {# change saved on phone} other {# changes saved on phone}}.",
+    "pendingOnline": "{count, plural, one {# change} other {# changes}} waiting to sync.",
+    "viewPending": "See",
+    "savedOnPhone": "Saved on phone",
+    "synced": "Synced",
+    "signOutPending": "{count, plural, one {# change hasn’t} other {# changes haven’t}} synced yet. Signing out deletes them from this phone. Sign out anyway?",
+    "pending": {
+      "title": "Pending sync",
+      "intro": "Changes saved on this phone, oldest first. They send by themselves when there is a connection.",
+      "empty": "Nothing waiting. Everything is synced.",
+      "syncNow": "Sync now",
+      "failed": "Not accepted",
+      "dismiss": "Dismiss",
+      "ops": {
+        "tripCreate": "Trip started",
+        "tripStep": "Trip update: {step}",
+        "manifestAdd": "Passenger added",
+        "manifestRemove": "Passenger removed"
+      },
+      "steps": {
+        "boarding": "boarding",
+        "lifejackets": "life jackets",
+        "depart": "departed",
+        "arrive": "arrived",
+        "cancel": "cancelled"
+      }
     }
+  },
+  "pwa": {
+    "name": "Tideline",
+    "shortName": "Tideline",
+    "description": "Trips, manifests and safety for your boats, even with no signal."
   }
 }

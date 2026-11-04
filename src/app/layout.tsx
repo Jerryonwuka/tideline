@@ -32,7 +32,11 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: { default: t("name"), template: `%s · ${t("name")}` },
     description: t("tagline"),
-    icons: { icon: [{ url: "/brand/globe-foam.svg", type: "image/svg+xml" }] },
+    icons: {
+      icon: [{ url: "/brand/globe-foam.svg", type: "image/svg+xml" }],
+      apple: [{ url: "/icons/apple-touch-icon.png", sizes: "180x180" }],
+    },
+    appleWebApp: { capable: true, title: t("name"), statusBarStyle: "black-translucent" },
   };
 }
 

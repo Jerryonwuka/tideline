@@ -7,3 +7,4 @@ export * from "./ferry";
 export * from "./fleet";
 export * from "./identity";
 export * from "./localisation";
+export * from "./sync";
