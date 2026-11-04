@@ -83,6 +83,11 @@ export default async function TicketPage({ params }: { params: Promise<{ code: s
             {ticket.code}
           </p>
           <p className="text-sm text-body">{t("showAtJetty")}</p>
+          {trip && (
+            <Link href={`/status/${trip.id}`} className="text-sm underline">
+              {t("tripStatus")}
+            </Link>
+          )}
         </div>
       )}
       <dl className="mt-6 flex flex-col gap-1 border-t border-hairline pt-4 text-sm text-body">

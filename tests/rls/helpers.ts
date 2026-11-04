@@ -87,7 +87,7 @@ export async function recordCheck(
 ) {
   const [row] = await tx`
     insert into public.safety_checks (org_id, trip_id, checked_at, checked_by, rules_applied, result, reasons)
-    values (${orgId}, ${tripId}, now(), gen_random_uuid(), '{}'::jsonb, ${result}::public.safety_result, ${tx.json(reasons as never)})
+    values (${orgId}, ${tripId}, clock_timestamp(), gen_random_uuid(), '{}'::jsonb, ${result}::public.safety_result, ${tx.json(reasons as never)})
     returning id`;
   return row!.id as string;
 }

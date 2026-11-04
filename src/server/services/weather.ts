@@ -56,14 +56,18 @@ export async function weatherFor(
 ): Promise<WeatherInput | null> {
   const { data: cached } = await db
     .from("weather_cache")
-    .select("key, fetched_at, valid_to, data")
+    .select("key, fetched_at, valid_from, valid_to, data")
     .in("key", places.map(cacheKey));
   const byKey = new Map((cached ?? []).map((c) => [c.key, c]));
   const parts: { fetchedAt: string; points: WeatherPoint[] }[] = [];
   for (const place of places) {
     const hit = byKey.get(cacheKey(place));
+    // Fresh, and covering the whole window (a forecast that starts after departure is no use).
     const fresh =
-      hit && now.getTime() - Date.parse(hit.fetched_at) < REFRESH_AFTER_MS && Date.parse(hit.valid_to) >= to.getTime();
+      hit &&
+      now.getTime() - Date.parse(hit.fetched_at) < REFRESH_AFTER_MS &&
+      Date.parse(hit.valid_from) <= from.getTime() &&
+      Date.parse(hit.valid_to) >= to.getTime();
     if (fresh) {
       parts.push({ fetchedAt: hit.fetched_at, points: hit.data as unknown as WeatherPoint[] });
       continue;

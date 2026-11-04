@@ -167,3 +167,28 @@ export const manifestEntries = pgTable(
   },
   (t) => [uniqueIndex("manifest_org_client_key").on(t.orgId, t.clientId), index("manifest_trip_idx").on(t.tripId)],
 );
+
+/** GPS points from the captain's phone while a trip is departed (§4.2 tracking). Append-only. */
+export const tripPositions = pgTable(
+  "trip_positions",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    orgId: uuid("org_id")
+      .notNull()
+      .references(() => orgs.id, { onDelete: "cascade" }),
+    tripId: uuid("trip_id")
+      .notNull()
+      .references(() => trips.id, { onDelete: "cascade" }),
+    recordedAt: timestamp("recorded_at", { withTimezone: true }).notNull(),
+    lat: doublePrecision("lat").notNull(),
+    lng: doublePrecision("lng").notNull(),
+    speedKn: doublePrecision("speed_kn"),
+    accuracyM: doublePrecision("accuracy_m"),
+    clientId: text("client_id").notNull(),
+    receivedAt: timestamp("received_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    uniqueIndex("trip_positions_org_client_key").on(t.orgId, t.clientId),
+    index("trip_positions_trip_idx").on(t.tripId, t.recordedAt),
+  ],
+);

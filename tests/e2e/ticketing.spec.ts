@@ -48,8 +48,8 @@ test("passenger buys a ticket online, boards by code; agent sells for cash; owne
   await passenger.getByLabel("Seats").fill("2");
   await passenger.getByLabel("Name on the ticket").fill("Funmi Ade");
   await passenger.getByLabel(/Phone/).fill("08031234567");
-  // ₦1,500 × 2 + 2.5% booking fee (passenger bears it by default) = ₦3,075.00
-  await expect(passenger.getByTestId("booking-total")).toHaveText(/3,075\.00/);
+  // ₦1,500 × 2 + 1% booking fee (passenger bears it by default) = ₦3,030.00
+  await expect(passenger.getByTestId("booking-total")).toHaveText(/3,030\.00/);
   await passenger.getByRole("button", { name: /Pay/ }).click();
   await expect(passenger.getByRole("heading", { name: "Test payment" })).toBeVisible();
   const reference = new URL(passenger.url()).searchParams.get("reference")!;

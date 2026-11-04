@@ -42,6 +42,7 @@ export async function AppShell({
     ...(manages
       ? [
           { href: "/trips", label: t("trips") },
+          { href: "/map", label: t("map") },
           { href: "/routes", label: t("routes") },
           { href: "/safety", label: t("safety") },
           { href: "/reports/daily", label: t("reports") },

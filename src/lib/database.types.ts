@@ -2173,6 +2173,61 @@ export type Database = {
           },
         ];
       };
+      trip_positions: {
+        Row: {
+          accuracy_m: number | null;
+          client_id: string;
+          id: string;
+          lat: number;
+          lng: number;
+          org_id: string;
+          received_at: string;
+          recorded_at: string;
+          speed_kn: number | null;
+          trip_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          accuracy_m?: number | null;
+          client_id: string;
+          id?: string;
+          lat: number;
+          lng: number;
+          org_id: string;
+          received_at?: string;
+          recorded_at: string;
+          speed_kn?: number | null;
+          trip_id: string;
+        };
+        Update: {
+          accuracy_m?: number | null;
+          client_id?: string;
+          id?: string;
+          lat?: number;
+          lng?: number;
+          org_id?: string;
+          received_at?: string;
+          recorded_at?: string;
+          speed_kn?: number | null;
+          trip_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "trip_positions_org_id_orgs_id_fk";
+            columns: ["org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "trip_positions_trip_id_trips_id_fk";
+            columns: ["trip_id"];
+            isOneToOne: false;
+            referencedRelation: "trips";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       trips: {
         Row: {
           actual_arrival: string | null;

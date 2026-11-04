@@ -64,7 +64,9 @@ export const safetyChecks = pgTable(
     checkedAt: timestamp("checked_at", { withTimezone: true }).notNull(),
     checkedBy: uuid("checked_by").notNull(),
     /** When the server stored it; a departure needs a check stored in the last hour. */
-    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .default(sql`clock_timestamp()`),
     weatherSnapshot: jsonb("weather_snapshot"),
     weatherFetchedAt: timestamp("weather_fetched_at", { withTimezone: true }),
     sunrise: timestamp("sunrise", { withTimezone: true }),

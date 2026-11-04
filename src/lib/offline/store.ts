@@ -300,6 +300,60 @@ export async function requestOverride(tripKey: string, note?: string): Promise<{
   return { ok: true };
 }
 
+// ----- GPS points ---------------------------------------------------------------------------------
+
+export async function recordPosition(
+  tripKey: string,
+  fix: { lat: number; lng: number; speedKn: number | null; accuracyM: number | null; at: Date },
+) {
+  const meta = await captainDb().meta.get("snapshot");
+  if (!meta) return;
+  await captainDb().positions.add({
+    clientId: uuidv7(),
+    orgId: meta.orgId,
+    tripKey,
+    recordedAt: fix.at.toISOString(),
+    lat: fix.lat,
+    lng: fix.lng,
+    speedKn: fix.speedKn,
+    accuracyM: fix.accuracyM,
+  });
+  void requestSync();
+}
+
+/** Uploads queued points oldest first, after the outbox (so their trips exist on the server). */
+async function pushPositions(orgId: string): Promise<boolean> {
+  const db = captainDb();
+  for (;;) {
+    const batch = (await db.positions.orderBy("recordedAt").toArray()).filter((p) => p.orgId === orgId).slice(0, 200);
+    if (!batch.length) return true;
+    const res = await fetch("/api/v1/positions", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        org_id: orgId,
+        points: batch.map((p) => ({
+          client_id: p.clientId,
+          trip: p.tripKey,
+          recorded_at: p.recordedAt,
+          lat: p.lat,
+          lng: p.lng,
+          speed_kn: p.speedKn,
+          accuracy_m: p.accuracyM,
+        })),
+      }),
+    });
+    if (res.status === 422) {
+      await db.positions.bulkDelete(batch.map((p) => p.clientId));
+      continue;
+    }
+    if (!res.ok) return false;
+    const { accepted, rejected } = (await res.json()) as { accepted: string[]; rejected: string[] };
+    // Refused points (not this trip, outside the voyage) would never be accepted: drop them too.
+    await db.positions.bulkDelete([...accepted, ...rejected]);
+  }
+}
+
 export async function dismissFailed(clientId: string) {
   await captainDb().outbox.delete(clientId);
 }
@@ -396,6 +450,7 @@ async function runSync(): Promise<void> {
       });
       if (results.length < batch.length) return;
     }
+    if (!(await pushPositions(meta.orgId))) return;
     const res = await fetch(`/api/v1/sync?org_id=${meta.orgId}`, { cache: "no-store" });
     if (res.ok) await applySnapshot((await res.json()) as CaptainSnapshot);
   } catch {

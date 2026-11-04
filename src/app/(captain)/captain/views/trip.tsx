@@ -13,6 +13,7 @@ import { go } from "../nav";
 import { SyncBadge } from "../parts";
 import { BoardTicket } from "./board-ticket";
 import { SafetyPanel } from "./safety-panel";
+import { Tracking } from "./tracking";
 
 const big = "h-14 w-full rounded-sm label-mono disabled:opacity-40";
 const input = "h-14 w-full rounded-sm border border-hairline-strong bg-surface-sunken px-4 text-lg text-foreground";
@@ -106,6 +107,7 @@ export function TripView({ tripKey }: { tripKey: string }) {
         </p>
       )}
 
+      {sailing && <Tracking tripKey={tripKey} />}
       {sailing && (
         <p className="rounded-sm border border-warning/40 bg-warning/10 p-3 text-sm text-foreground">
           {t("amendmentNote")}

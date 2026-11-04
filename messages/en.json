@@ -602,7 +602,8 @@
     "captain": "Captain mode",
     "safety": "Safety",
     "billing": "Billing",
-    "book": "Book a boat"
+    "book": "Book a boat",
+    "map": "Live map"
   },
   "dashboard": {
     "title": "Welcome, {name}",
@@ -1291,7 +1292,8 @@
     "showAtJetty": "Show this code at the jetty.",
     "seats": "{count, plural, one {# seat} other {# seats}}",
     "paid": "Paid {amount}",
-    "notFound": "No ticket with that code."
+    "notFound": "No ticket with that code.",
+    "tripStatus": "Follow this trip"
   },
   "devPay": {
     "title": "Test payment",
@@ -1345,5 +1347,35 @@
     "ferry_fleet": "Ferry Fleet",
     "charter_standard": "Charter Standard",
     "charter_fleet": "Charter Fleet"
+  },
+  "tracking": {
+    "tracking": "Tracking: your position is shared every 30 seconds.",
+    "paused": "Tracking paused. Keep this screen open and on.",
+    "denied": "Tracking off: allow location for Tideline in your browser settings.",
+    "unavailable": "This phone can’t share its location.",
+    "queued": "{count, plural, one {# point} other {# points}} waiting"
+  },
+  "map": {
+    "title": "Live map",
+    "subtitle": "Where your boats are now. Updates every 15 seconds.",
+    "lastSeen": "Last seen {time}",
+    "never": "No position yet",
+    "noTrip": "Not on a trip",
+    "noToken": "Map tiles appear once a Mapbox token is set (NEXT_PUBLIC_MAPBOX_TOKEN). Positions are listed below.",
+    "track": "Track",
+    "replay": "Replay",
+    "noTrack": "No track recorded for this trip.",
+    "points": "{count, plural, one {# point} other {# points}}"
+  },
+  "tripStatus": {
+    "title": "Trip status",
+    "by": "{vessel} · {operator}",
+    "scheduled": "Due to leave {time}",
+    "departed": "Left {time}",
+    "eta": "Expected about {time}",
+    "arrived": "Arrived {time}",
+    "cancelled": "This trip was cancelled.",
+    "lastSeen": "Last update from the boat {time}",
+    "refresh": "This page refreshes every minute."
   }
 }

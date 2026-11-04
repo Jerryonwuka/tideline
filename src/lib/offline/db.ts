@@ -17,6 +17,18 @@ export interface OutboxItem {
   createdAt: string;
 }
 
+/** A GPS point waiting to upload (append-only; uploaded in time order). */
+export interface QueuedPosition {
+  clientId: string;
+  orgId: string;
+  tripKey: string;
+  recordedAt: string;
+  lat: number;
+  lng: number;
+  speedKn: number | null;
+  accuracyM: number | null;
+}
+
 export type CaptainDb = Dexie & {
   meta: EntityTable<CachedMeta, "key">;
   vessels: EntityTable<CaptainSnapshot["vessels"][number], "id">;
@@ -24,6 +36,7 @@ export type CaptainDb = Dexie & {
   trips: EntityTable<LocalTrip, "key">;
   manifest: EntityTable<LocalEntry, "key">;
   outbox: EntityTable<OutboxItem, "clientId">;
+  positions: EntityTable<QueuedPosition, "clientId">;
 };
 
 let instance: CaptainDb | null = null;
@@ -39,6 +52,7 @@ export function captainDb(): CaptainDb {
     manifest: "key, tripKey",
     outbox: "clientId, state, createdAt",
   });
+  db.version(2).stores({ positions: "clientId, recordedAt, tripKey" });
   instance = db;
   return db;
 }

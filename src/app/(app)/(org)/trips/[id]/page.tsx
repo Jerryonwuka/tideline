@@ -9,6 +9,8 @@ import { orgBasics } from "@/server/org-context";
 import { ServiceError } from "@/server/services/errors";
 import { getTrip, listManifest, tripLabel } from "@/server/services/ferry";
 import { listChecks } from "@/server/services/safety";
+import { tripTrack } from "@/server/services/tracking";
+import { TrackReplay } from "@/components/map/track-replay";
 import { SaleForm } from "@/components/ferry/sale-form";
 import type { Reason } from "@/lib/safety/engine";
 
@@ -20,13 +22,15 @@ export default async function TripPage({ params }: { params: Promise<{ id: strin
     throw err;
   });
   const org = await orgBasics(db, membership.orgId);
-  const [t, tSafety, tSales, format, manifest, checks] = await Promise.all([
+  const [t, tSafety, tSales, format, manifest, checks, track, tMap] = await Promise.all([
     getTranslations("ferry.trip"),
     getTranslations("safety"),
     getTranslations("sales"),
     getFormatter(),
     listManifest(db, id),
     listChecks(db, id),
+    tripTrack(db, id),
+    getTranslations("map"),
   ]);
   const one = <T,>(v: T | T[] | null): T | null => (Array.isArray(v) ? (v[0] ?? null) : v);
   const when = (iso: string | null) =>
@@ -100,6 +104,14 @@ export default async function TripPage({ params }: { params: Promise<{ id: strin
           </h2>
           <p className="text-sm text-body">{tSales("hint")}</p>
           <SaleForm tripId={trip.id} />
+        </section>
+      )}
+      {trip.actual_departure && (
+        <section aria-labelledby="track" className="flex flex-col gap-3">
+          <h2 id="track" className="title-md text-foreground">
+            {tMap("track")}
+          </h2>
+          <TrackReplay points={track} timeZone={org.time_zone} />
         </section>
       )}
       {checks.length > 0 && (
