@@ -4,6 +4,7 @@ import { createDocumentSchema, documentStatusSchema, subjectTypeSchema } from "@
 import { parseJson, route } from "@/server/http";
 import { createDocument, getDocument, listDocuments } from "@/server/services/documents";
 import { ServiceError } from "@/server/services/errors";
+import { runExtraction } from "@/server/services/extraction";
 import { getMe } from "@/server/services/profile";
 import { supabaseForRequest } from "@/server/supabase/server";
 
@@ -31,6 +32,8 @@ export const POST = route(async (request) => {
   const db = await supabaseForRequest(request);
   const me = await getMe(db);
   if (!me) throw new ServiceError("not_authenticated");
-  const id = await createDocument(db, me.userId, await parseJson(request, createDocumentSchema));
+  const input = await parseJson(request, createDocumentSchema);
+  const id = await createDocument(db, me.userId, input);
+  if (input.filePath && !input.expiryDate) await runExtraction(db, id).catch(() => "failed");
   return NextResponse.json(await getDocument(db, id), { status: 201 });
 });

@@ -1,4 +1,5 @@
 import { serverEnv } from "@/server/env";
+import { registerDevResponders } from "./llm/dev-responders";
 import { FakeLlmClient } from "./llm/fake";
 import type { LlmClient } from "./llm/types";
 import { FakeMessagingClient } from "./messaging/fake";
@@ -26,7 +27,8 @@ export function createFakeIntegrations(): Integrations {
   return {
     paymentProviders: [new FakePaymentProvider()],
     messaging: new FakeMessagingClient({ printOtp: serverEnv().NODE_ENV !== "test" }),
-    llm: new FakeLlmClient(),
+    // Tests register their own responses; local dev gets plausible stand-ins.
+    llm: serverEnv().NODE_ENV === "test" ? new FakeLlmClient() : registerDevResponders(new FakeLlmClient()),
     stt: new FakeSttClient(),
     ocr: new FakeOcrClient(),
     weather: new FakeWeatherClient(),

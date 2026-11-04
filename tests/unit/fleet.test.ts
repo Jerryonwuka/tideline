@@ -46,3 +46,19 @@ describe("vessel input", () => {
     expect(vesselInputSchema.parse({ name: "MV Star", type: "ferry", imo: "" }).imo).toBeUndefined();
   });
 });
+
+describe("expiry alert offsets", async () => {
+  const { alertOffsetsFor, dueOffset, DEFAULT_ALERT_OFFSETS } = await import("@/server/jobs/expiry-alerts");
+  it("alerts at 90, 60, 30, 14, 7 and 1 days and on the day", () => {
+    expect(DEFAULT_ALERT_OFFSETS).toEqual([90, 60, 30, 14, 7, 1, 0]);
+    expect(dueOffset(30, DEFAULT_ALERT_OFFSETS)).toBe(30);
+    expect(dueOffset(0, DEFAULT_ALERT_OFFSETS)).toBe(0);
+    expect(dueOffset(29, DEFAULT_ALERT_OFFSETS)).toBeNull();
+    expect(dueOffset(-1, DEFAULT_ALERT_OFFSETS)).toBeNull();
+  });
+  it("uses an org's own offsets when they are valid", () => {
+    expect(alertOffsetsFor({ alert_offsets: [45, 10] })).toEqual([45, 10]);
+    expect(alertOffsetsFor({ alert_offsets: ["x"] })).toEqual(DEFAULT_ALERT_OFFSETS);
+    expect(alertOffsetsFor(null)).toEqual(DEFAULT_ALERT_OFFSETS);
+  });
+});

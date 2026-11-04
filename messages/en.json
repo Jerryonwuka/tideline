@@ -574,7 +574,8 @@
     "admin": "Admin",
     "vessels": "Vessels",
     "crew": "Crew",
-    "documents": "Documents"
+    "documents": "Documents",
+    "notifications": "Notifications"
   },
   "dashboard": {
     "title": "Welcome, {name}",
@@ -951,7 +952,32 @@
         "issueDate": "Issued",
         "expiryDate": "Expires",
         "status": "Status"
-      }
+      },
+      "readTitle": "Read from the photo",
+      "readBody": "Checked by AI. Nothing counts until you confirm it.",
+      "lowConfidence": "Check this",
+      "suggestedExpiry": "No expiry date was found. Based on the issue date, it’s usually {date}.",
+      "flags": {
+        "name_mismatch": "The name on the document doesn’t match this vessel or person.",
+        "expired": "The expiry date read from the document has already passed.",
+        "type_mismatch": "This looks like a different type of document than the one selected.",
+        "no_expiry": "No expiry date could be read."
+      },
+      "extractionFailed": "We couldn’t read this document automatically. Please enter the details."
     }
+  },
+  "alerts": {
+    "sms": {
+      "soon": "Tideline: {document} for {subject} expires on {date} ({days, plural, one {in # day} other {in # days}}). Renew and upload: {link}",
+      "today": "Tideline: {document} for {subject} expires today. Renew and upload: {link}"
+    }
+  },
+  "notifications": {
+    "title": "Notifications",
+    "empty": "No notifications yet.",
+    "templates": {
+      "document_expiry": "{document} for {subject} expires {days, plural, =0 {today} one {tomorrow} other {in # days}} ({date})."
+    },
+    "markRead": "Mark all as read"
   }
 }

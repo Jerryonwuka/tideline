@@ -22,6 +22,13 @@
       "when": 1793800036235,
       "tag": "20261104134716_m2_fleet_documents",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1793800993516,
+      "tag": "20261104140313_m3_ai_notifications",
+      "breakpoints": true
     }
   ]
 }

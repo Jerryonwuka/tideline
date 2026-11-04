@@ -47,7 +47,8 @@ jobs:
       - name: Export Supabase settings
         run: |
           pnpm exec supabase status -o env \
-            | sed -n 's/^API_URL="\(.*\)"/NEXT_PUBLIC_SUPABASE_URL=\1/p; s/^ANON_KEY="\(.*\)"/NEXT_PUBLIC_SUPABASE_ANON_KEY=\1/p; s/^DB_URL="\(.*\)"/DATABASE_URL=\1/p' >> "$GITHUB_ENV"
+            | sed -n 's/^API_URL="\(.*\)"/NEXT_PUBLIC_SUPABASE_URL=\1/p; s/^ANON_KEY="\(.*\)"/NEXT_PUBLIC_SUPABASE_ANON_KEY=\1/p; s/^DB_URL="\(.*\)"/DATABASE_URL=\1/p; s/^SERVICE_ROLE_KEY="\(.*\)"/SUPABASE_SERVICE_ROLE_KEY=\1/p' >> "$GITHUB_ENV"
+          echo "CRON_SECRET=ci-$(openssl rand -hex 16)" >> "$GITHUB_ENV"
           # The local-only hook secret lives in supabase/config.toml.
           echo "SEND_SMS_HOOK_SECRET=$(sed -n '/\[auth.hook.send_sms\]/,/secrets/ s/^secrets = "\(.*\)"/\1/p' supabase/config.toml)" >> "$GITHUB_ENV"
       - run: pnpm test:rls

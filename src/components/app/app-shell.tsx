@@ -4,11 +4,13 @@ import type { ReactNode } from "react";
 import { Logo } from "@/components/brand/logo";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { NativeSelect } from "@/components/ui/select";
+import { Bell } from "lucide-react";
 import type { Role } from "@/lib/schemas/common";
 import { signOutAction } from "@/server/auth/actions";
 import type { Me, MembershipSummary } from "@/server/services/profile";
 import { switchOrgAction } from "@/app/(app)/(org)/actions";
 import { AppNav } from "./app-nav";
+import { supabaseServer } from "@/server/supabase/server";
 
 const MANAGES_TEAM: Role[] = ["owner", "manager"];
 
@@ -25,6 +27,14 @@ export async function AppShell({
   const t = await getTranslations("shell");
   const tRoles = await getTranslations("roles");
   const orgs = me.memberships.filter((m) => m.status === "active");
+  const { count: unread } = await (
+    await supabaseServer()
+  )
+    .from("notifications")
+    .select("id", { count: "exact", head: true })
+    .eq("user_id", me.userId)
+    .eq("org_id", membership.orgId)
+    .is("read_at", null);
   const manages = MANAGES_TEAM.includes(membership.role);
   const links = [
     { href: "/dashboard", label: t("dashboard") },
@@ -77,6 +87,18 @@ export async function AppShell({
           </span>
           <AppNav links={links} label={t("menu")} />
           <div className="ml-auto flex items-center gap-3">
+            <Link
+              href="/notifications"
+              aria-label={`${t("notifications")}${unread ? ` (${unread})` : ""}`}
+              className="relative flex size-8 items-center justify-center rounded-xs text-body hover:bg-surface-raised hover:text-foreground"
+            >
+              <Bell className="size-4" />
+              {!!unread && (
+                <span className="absolute -top-0.5 -right-0.5 flex min-w-4 items-center justify-center rounded-pill bg-accent px-1 text-[10px] font-medium text-accent-foreground">
+                  {unread > 9 ? "9+" : unread}
+                </span>
+              )}
+            </Link>
             <ThemeToggle className="hidden sm:inline-flex" />
             <span className="hidden text-sm text-body md:inline">{me.fullName}</span>
             <form action={signOutAction}>

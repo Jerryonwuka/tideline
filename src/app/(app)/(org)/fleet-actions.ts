@@ -15,6 +15,7 @@ import { requireOrgContext, safeNext } from "@/server/auth/session";
 import { sendInvitation } from "@/server/invites";
 import { createCrewMember } from "@/server/services/crew";
 import { confirmDocument, createDocument, createUploadUrl } from "@/server/services/documents";
+import { runExtraction } from "@/server/services/extraction";
 import { ServiceError, type ErrorCode } from "@/server/services/errors";
 import { getOrg } from "@/server/services/orgs";
 import { assignCrew, createVessel, deleteVessel, endAssignment, updateVessel } from "@/server/services/vessels";
@@ -147,6 +148,8 @@ export async function createDocumentAction(
   if (!parsed.success) return { error: "validation" };
   try {
     const id = await createDocument(db, me.userId, parsed.data);
+    // A photo without dates is read by OCR + AI into a draft for review (§10.1).
+    if (parsed.data.filePath && !parsed.data.expiryDate) await runExtraction(db, id).catch(() => "failed");
     revalidatePath("/documents");
     revalidatePath(`/vessels/${parsed.data.subjectId}`);
     return { ok: true, id };

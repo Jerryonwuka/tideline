@@ -8,6 +8,14 @@ import { getDocument } from "@/server/services/documents";
 import { ServiceError } from "@/server/services/errors";
 import { subjectNames } from "@/server/upload-subjects";
 
+interface ExtractedDraft {
+  number: string | null;
+  issuer: string | null;
+  issue_date: string | null;
+  expiry_date: string | null;
+  review: { lowConfidence: string[]; flags: string[]; suggestedExpiry: string | null };
+}
+
 export default async function DocumentPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const { db, membership } = await requireOrgContext(`/documents/${id}`);
@@ -24,6 +32,8 @@ export default async function DocumentPage({ params }: { params: Promise<{ id: s
   const canManage = membership.role === "owner" || membership.role === "manager";
   const date = (d: string | null) => (d ? format.dateTime(new Date(`${d}T00:00:00`), { dateStyle: "medium" }) : "—");
   const isPdf = doc.file_path?.endsWith(".pdf");
+  const needsReview = doc.effective_status === "needs_review";
+  const extracted = doc.extracted as unknown as ExtractedDraft | null;
 
   return (
     <div className="flex flex-col gap-8">
@@ -84,15 +94,39 @@ export default async function DocumentPage({ params }: { params: Promise<{ id: s
               {t("reviewed", { date: format.dateTime(new Date(doc.reviewed_at), { dateStyle: "medium" }) })}
             </p>
           )}
-          {canManage && doc.effective_status === "needs_review" && doc.id && (
+          {needsReview && extracted && (
+            <section aria-labelledby="read" className="flex flex-col gap-2 rounded-md border border-hairline p-4">
+              <h2 id="read" className="label-mono-sm text-accent">
+                {t("readTitle")}
+              </h2>
+              <p className="text-xs text-meta">{t("readBody")}</p>
+              {extracted.review.flags.length > 0 && (
+                <ul className="mt-1 flex flex-col gap-1">
+                  {extracted.review.flags.map((f) => (
+                    <li key={f} className="text-sm text-warning">
+                      {t(`flags.${f}`)}
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {extracted.review.suggestedExpiry && (
+                <p className="text-sm text-body">
+                  {t("suggestedExpiry", { date: date(extracted.review.suggestedExpiry) })}
+                </p>
+              )}
+            </section>
+          )}
+          {needsReview && !extracted && doc.file_path && <p className="text-sm text-body">{t("extractionFailed")}</p>}
+          {canManage && needsReview && doc.id && (
             <ReviewForm
-              doc={{
-                id: doc.id,
-                number: doc.number,
-                issuer: doc.issuer,
-                issue_date: doc.issue_date,
-                expiry_date: doc.expiry_date,
+              id={doc.id}
+              values={{
+                number: doc.number ?? extracted?.number ?? null,
+                issuer: doc.issuer ?? extracted?.issuer ?? null,
+                issue_date: doc.issue_date ?? extracted?.issue_date ?? null,
+                expiry_date: doc.expiry_date ?? extracted?.expiry_date ?? null,
               }}
+              lowConfidence={extracted?.review.lowConfidence}
             />
           )}
         </div>

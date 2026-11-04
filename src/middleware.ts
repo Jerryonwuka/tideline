@@ -24,5 +24,5 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   // Skip static assets, the health check and webhooks (which carry their own auth).
-  matcher: ["/((?!_next/static|_next/image|favicon|brand/|api/health|api/webhooks|api/auth/hooks).*)"],
+  matcher: ["/((?!_next/static|_next/image|favicon|brand/|api/health|api/webhooks|api/auth/hooks|api/jobs).*)"],
 };

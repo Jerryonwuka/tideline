@@ -3,6 +3,66 @@ export type Json = string | number | boolean | null | { [key: string]: Json | un
 export type Database = {
   public: {
     Tables: {
+      ai_jobs: {
+        Row: {
+          cost_estimate_minor: number | null;
+          created_at: string;
+          error: string | null;
+          id: string;
+          input_ref: string;
+          kind: Database["public"]["Enums"]["ai_job_kind"];
+          latency_ms: number | null;
+          model: string | null;
+          org_id: string;
+          output: Json | null;
+          prompt_version: string;
+          status: Database["public"]["Enums"]["ai_job_status"];
+          tokens_in: number | null;
+          tokens_out: number | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          cost_estimate_minor?: number | null;
+          created_at?: string;
+          error?: string | null;
+          id?: string;
+          input_ref: string;
+          kind: Database["public"]["Enums"]["ai_job_kind"];
+          latency_ms?: number | null;
+          model?: string | null;
+          org_id: string;
+          output?: Json | null;
+          prompt_version: string;
+          status?: Database["public"]["Enums"]["ai_job_status"];
+          tokens_in?: number | null;
+          tokens_out?: number | null;
+        };
+        Update: {
+          cost_estimate_minor?: number | null;
+          created_at?: string;
+          error?: string | null;
+          id?: string;
+          input_ref?: string;
+          kind?: Database["public"]["Enums"]["ai_job_kind"];
+          latency_ms?: number | null;
+          model?: string | null;
+          org_id?: string;
+          output?: Json | null;
+          prompt_version?: string;
+          status?: Database["public"]["Enums"]["ai_job_status"];
+          tokens_in?: number | null;
+          tokens_out?: number | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "ai_jobs_org_id_orgs_id_fk";
+            columns: ["org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       audit_logs: {
         Row: {
           action: string;
@@ -695,6 +755,58 @@ export type Database = {
           },
         ];
       };
+      notifications: {
+        Row: {
+          channel: string;
+          id: string;
+          org_id: string;
+          payload: NonNullable<Json>;
+          read_at: string | null;
+          sent_at: string;
+          status: string;
+          template: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          channel?: string;
+          id?: string;
+          org_id: string;
+          payload: NonNullable<Json>;
+          read_at?: string | null;
+          sent_at?: string;
+          status?: string;
+          template: string;
+          user_id: string;
+        };
+        Update: {
+          channel?: string;
+          id?: string;
+          org_id?: string;
+          payload?: NonNullable<Json>;
+          read_at?: string | null;
+          sent_at?: string;
+          status?: string;
+          template?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "notifications_org_id_orgs_id_fk";
+            columns: ["org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "notifications_user_id_profiles_id_fk";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       orgs: {
         Row: {
           address: string | null;
@@ -1278,6 +1390,15 @@ export type Database = {
       publish_rule_set: { Args: { p_id: string; p_note?: string }; Returns: undefined };
     };
     Enums: {
+      ai_job_kind:
+        | "ocr_extract"
+        | "voice_log"
+        | "tender_parse"
+        | "tender_draft"
+        | "price_rationale"
+        | "weather_explain"
+        | "assistant";
+      ai_job_status: "queued" | "done" | "failed";
       alert_channel: "whatsapp" | "sms" | "email" | "in_app";
       applies_to: "vessel" | "crew" | "org";
       crew_role: "captain" | "engineer" | "deckhand" | "ticket_agent" | "other";
@@ -1403,6 +1524,16 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      ai_job_kind: [
+        "ocr_extract",
+        "voice_log",
+        "tender_parse",
+        "tender_draft",
+        "price_rationale",
+        "weather_explain",
+        "assistant",
+      ],
+      ai_job_status: ["queued", "done", "failed"],
       alert_channel: ["whatsapp", "sms", "email", "in_app"],
       applies_to: ["vessel", "crew", "org"],
       crew_role: ["captain", "engineer", "deckhand", "ticket_agent", "other"],

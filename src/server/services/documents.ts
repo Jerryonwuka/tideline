@@ -18,7 +18,7 @@ const EXTENSIONS: Record<string, string> = {
 };
 
 const LIVE_COLUMNS =
-  "id, org_id, subject_type, subject_id, document_type_code, number, issuer, issue_date, expiry_date, file_path, status, effective_status, days_to_expiry, reviewed_at, created_at";
+  "id, org_id, subject_type, subject_id, document_type_code, number, issuer, issue_date, expiry_date, file_path, status, effective_status, days_to_expiry, reviewed_at, created_at, extracted, extraction_confidence";
 
 export function storagePath(orgId: string, subjectType: SubjectType, subjectId: string, contentType: string): string {
   const ext = EXTENSIONS[contentType];
