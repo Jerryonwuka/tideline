@@ -7,13 +7,15 @@ import { formatMoney, money } from "@/lib/money";
 import { requireOrgContext } from "@/server/auth/session";
 import { orgBasics } from "@/server/org-context";
 import { listOwnListings } from "@/server/services/charter";
+import { listCharters } from "@/server/services/contracts";
+import { RecordCharterForm } from "@/components/charter/contract-forms";
 import { listDocuments } from "@/server/services/documents";
 import { listVessels } from "@/server/services/vessels";
 
 /** Owner: listings on the public charter board. */
 export default async function ChartersPage() {
   const { db, membership } = await requireOrgContext("/charters");
-  const [t, tc, tDocs, locale, org, listings, vessels, docs] = await Promise.all([
+  const [t, tc, tDocs, locale, org, listings, vessels, docs, charters, tCh] = await Promise.all([
     getTranslations("charter.listings"),
     getTranslations("charter"),
     getTranslations("documentTypes"),
@@ -22,6 +24,8 @@ export default async function ChartersPage() {
     listOwnListings(db, membership.orgId),
     listVessels(db, membership.orgId),
     listDocuments(db, { orgId: membership.orgId }),
+    listCharters(db, membership.orgId),
+    getTranslations("charter.charters"),
   ]);
   const charterVessels = vessels.filter((v) => v.charter_enabled);
   const canManage = membership.role === "owner" || membership.role === "manager";
@@ -89,6 +93,46 @@ export default async function ChartersPage() {
           ))}
         </ul>
       )}
+      <section className="flex flex-col gap-4" aria-labelledby="charters-list">
+        <h2 id="charters-list" className="title-md text-foreground">
+          {tCh("title")}
+        </h2>
+        {charters.length === 0 ? (
+          <p className="text-body">{tCh("empty")}</p>
+        ) : (
+          <ul className="rounded-md border border-hairline" data-testid="charters-list">
+            {charters.map((c) => (
+              <li key={c.id} className="border-b border-hairline last:border-b-0">
+                <Link
+                  href={`/charters/${c.id}`}
+                  className="flex flex-wrap items-center justify-between gap-3 px-5 py-3 hover:bg-surface"
+                >
+                  <span className="flex flex-col">
+                    <span className="text-foreground">
+                      {c.vesselName} · {c.side === "owner" ? c.chartererName : c.ownerName}
+                    </span>
+                    <span className="text-sm text-body">
+                      {c.start_date} – {c.end_date}
+                      {!c.booked_on_platform && ` · ${tCh("offPlatform")}`}
+                    </span>
+                  </span>
+                  <StatusChip tone="info">{tCh(`status.${c.status}`)}</StatusChip>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+        {canManage && charterVessels.length > 0 && (
+          <div className="rounded-md border border-hairline p-5">
+            <h3 className="title-md text-foreground">{tCh("recordTitle")}</h3>
+            <p className="mb-3 text-sm text-body">{tCh("recordHint")}</p>
+            <RecordCharterForm
+              vessels={charterVessels.map((v) => ({ id: v.id, label: v.name }))}
+              currency={org.currency}
+            />
+          </div>
+        )}
+      </section>
     </div>
   );
 }

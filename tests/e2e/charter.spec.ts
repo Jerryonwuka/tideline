@@ -43,7 +43,7 @@ test("charterer requests a listed vessel, the owner quotes, the charterer accept
 
   // List it on the board.
   await page.goto("/charters");
-  await page.getByLabel(/Day rate/).fill("1500000");
+  await page.locator("#dayRate").fill("1500000");
   await page.getByLabel("Operating area").fill("Bonny and Onne");
   await page.getByLabel("Minimum days").fill("2");
   await page.getByRole("button", { name: "Save listing" }).click();
@@ -102,8 +102,32 @@ test("charterer requests a listed vessel, the owner quotes, the charterer accept
   await expect(quote).toContainText(vesselName);
   await quote.getByRole("button", { name: "Accept" }).click();
   await expect(charterer.getByText("Accepted. A charter was created")).toBeVisible();
-  await ctx.close();
 
   await page.reload();
   await expect(page.getByTestId("charter-quote").first()).toContainText("Accepted");
+
+  // M12: the owner creates the contract; both sides accept it; the PDF is stored.
+  await page.goto("/charters");
+  await page
+    .getByTestId("charters-list")
+    .getByRole("link", { name: new RegExp(vesselName) })
+    .click();
+  await expect(page).toHaveURL(/\/charters\/[0-9a-f-]{36}$/);
+  const charterUrl = page.url();
+  await page.getByRole("button", { name: "Create contract" }).click();
+  await expect(page.getByTestId("contract-body")).toContainText("Gulf Energy Ltd");
+  await expect(page.getByTestId("contract-body")).toContainText("1,400,000.00 per day");
+  await page.getByLabel("Full name").fill("Owner Charter");
+  await page.getByRole("button", { name: "Accept contract" }).click();
+  await expect(page.getByTestId("contract-acceptance")).toContainText("Owner accepted: Owner Charter");
+
+  await charterer.goto(new URL(charterUrl).pathname);
+  await expect(charterer.getByTestId("contract-acceptance")).toContainText("Waiting for the charterer");
+  await charterer.getByLabel("Full name").fill("Ada Charterer");
+  await charterer.getByRole("button", { name: "Accept contract" }).click();
+  await expect(charterer.getByText("Both parties have accepted. Next: payment.")).toBeVisible();
+  const pdf = await charterer.getByTestId("contract-pdf").getAttribute("href");
+  const file = await charterer.request.get(pdf!);
+  expect(file.headers()["content-type"]).toContain("application/pdf");
+  await ctx.close();
 });

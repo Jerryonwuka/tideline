@@ -453,6 +453,7 @@ export type Database = {
         Row: {
           booked_on_platform: boolean;
           charterer_org_id: string | null;
+          client_name: string | null;
           commission_bps: number;
           created_at: string;
           currency: string;
@@ -475,6 +476,7 @@ export type Database = {
         Insert: {
           booked_on_platform?: boolean;
           charterer_org_id?: string | null;
+          client_name?: string | null;
           commission_bps?: number;
           created_at?: string;
           currency: string;
@@ -496,6 +498,7 @@ export type Database = {
         Update: {
           booked_on_platform?: boolean;
           charterer_org_id?: string | null;
+          client_name?: string | null;
           commission_bps?: number;
           created_at?: string;
           currency?: string;
@@ -607,6 +610,142 @@ export type Database = {
             columns: ["reviewed_by"];
             isOneToOne: false;
             referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      contract_templates: {
+        Row: {
+          body_template: string;
+          country_code: string | null;
+          created_at: string;
+          id: string;
+          locale: string;
+          name: string;
+          org_id: string | null;
+          updated_at: string;
+          variables: NonNullable<Json>;
+        };
+        ComputedFields: never;
+        Insert: {
+          body_template: string;
+          country_code?: string | null;
+          created_at?: string;
+          id?: string;
+          locale?: string;
+          name: string;
+          org_id?: string | null;
+          updated_at?: string;
+          variables?: NonNullable<Json>;
+        };
+        Update: {
+          body_template?: string;
+          country_code?: string | null;
+          created_at?: string;
+          id?: string;
+          locale?: string;
+          name?: string;
+          org_id?: string | null;
+          updated_at?: string;
+          variables?: NonNullable<Json>;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "contract_templates_country_code_countries_code_fk";
+            columns: ["country_code"];
+            isOneToOne: false;
+            referencedRelation: "countries";
+            referencedColumns: ["code"];
+          },
+          {
+            foreignKeyName: "contract_templates_org_id_orgs_id_fk";
+            columns: ["org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      contracts: {
+        Row: {
+          acceptance_meta: NonNullable<Json>;
+          body_hash: string;
+          body_html: string;
+          charter_id: string;
+          charterer_accepted_at: string | null;
+          charterer_accepted_by: string | null;
+          charterer_org_id: string | null;
+          created_at: string;
+          id: string;
+          owner_accepted_at: string | null;
+          owner_accepted_by: string | null;
+          owner_org_id: string;
+          pdf_path: string | null;
+          template_id: string | null;
+          updated_at: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          acceptance_meta?: NonNullable<Json>;
+          body_hash: string;
+          body_html: string;
+          charter_id: string;
+          charterer_accepted_at?: string | null;
+          charterer_accepted_by?: string | null;
+          charterer_org_id?: string | null;
+          created_at?: string;
+          id?: string;
+          owner_accepted_at?: string | null;
+          owner_accepted_by?: string | null;
+          owner_org_id: string;
+          pdf_path?: string | null;
+          template_id?: string | null;
+          updated_at?: string;
+        };
+        Update: {
+          acceptance_meta?: NonNullable<Json>;
+          body_hash?: string;
+          body_html?: string;
+          charter_id?: string;
+          charterer_accepted_at?: string | null;
+          charterer_accepted_by?: string | null;
+          charterer_org_id?: string | null;
+          created_at?: string;
+          id?: string;
+          owner_accepted_at?: string | null;
+          owner_accepted_by?: string | null;
+          owner_org_id?: string;
+          pdf_path?: string | null;
+          template_id?: string | null;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "contracts_charter_id_charters_id_fk";
+            columns: ["charter_id"];
+            isOneToOne: true;
+            referencedRelation: "charters";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "contracts_charterer_org_id_orgs_id_fk";
+            columns: ["charterer_org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "contracts_owner_org_id_orgs_id_fk";
+            columns: ["owner_org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "contracts_template_id_contract_templates_id_fk";
+            columns: ["template_id"];
+            isOneToOne: false;
+            referencedRelation: "contract_templates";
             referencedColumns: ["id"];
           },
         ];
@@ -1263,6 +1402,146 @@ export type Database = {
           },
           {
             foreignKeyName: "invitations_org_id_orgs_id_fk";
+            columns: ["org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      invoice_series: {
+        Row: {
+          next_number: number;
+          org_id: string;
+          prefix: string;
+          year: number;
+        };
+        ComputedFields: never;
+        Insert: {
+          next_number?: number;
+          org_id: string;
+          prefix?: string;
+          year: number;
+        };
+        Update: {
+          next_number?: number;
+          org_id?: string;
+          prefix?: string;
+          year?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "invoice_series_org_id_orgs_id_fk";
+            columns: ["org_id"];
+            isOneToOne: true;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      invoices: {
+        Row: {
+          amount_paid_minor: number;
+          bill_to: NonNullable<Json>;
+          charter_id: string | null;
+          created_at: string;
+          currency: string;
+          discount_minor: number;
+          due_date: string | null;
+          id: string;
+          issue_date: string;
+          last_reminded_at: string | null;
+          line_items: NonNullable<Json>;
+          locale: string;
+          notes: string | null;
+          number: string;
+          org_id: string;
+          payment_link: string | null;
+          pdf_path: string | null;
+          public_token: string;
+          sent_at: string | null;
+          status: Database["public"]["Enums"]["invoice_status"];
+          subtotal_minor: number;
+          tax_minor: number;
+          tax_rate_bps: number | null;
+          tax_rule_code: string | null;
+          total_minor: number;
+          updated_at: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          amount_paid_minor?: number;
+          bill_to: NonNullable<Json>;
+          charter_id?: string | null;
+          created_at?: string;
+          currency: string;
+          discount_minor?: number;
+          due_date?: string | null;
+          id?: string;
+          issue_date?: string;
+          last_reminded_at?: string | null;
+          line_items: NonNullable<Json>;
+          locale?: string;
+          notes?: string | null;
+          number: string;
+          org_id: string;
+          payment_link?: string | null;
+          pdf_path?: string | null;
+          public_token: string;
+          sent_at?: string | null;
+          status?: Database["public"]["Enums"]["invoice_status"];
+          subtotal_minor: number;
+          tax_minor?: number;
+          tax_rate_bps?: number | null;
+          tax_rule_code?: string | null;
+          total_minor: number;
+          updated_at?: string;
+        };
+        Update: {
+          amount_paid_minor?: number;
+          bill_to?: NonNullable<Json>;
+          charter_id?: string | null;
+          created_at?: string;
+          currency?: string;
+          discount_minor?: number;
+          due_date?: string | null;
+          id?: string;
+          issue_date?: string;
+          last_reminded_at?: string | null;
+          line_items?: NonNullable<Json>;
+          locale?: string;
+          notes?: string | null;
+          number?: string;
+          org_id?: string;
+          payment_link?: string | null;
+          pdf_path?: string | null;
+          public_token?: string;
+          sent_at?: string | null;
+          status?: Database["public"]["Enums"]["invoice_status"];
+          subtotal_minor?: number;
+          tax_minor?: number;
+          tax_rate_bps?: number | null;
+          tax_rule_code?: string | null;
+          total_minor?: number;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "invoices_charter_id_charters_id_fk";
+            columns: ["charter_id"];
+            isOneToOne: false;
+            referencedRelation: "charters";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "invoices_currency_currencies_code_fk";
+            columns: ["currency"];
+            isOneToOne: false;
+            referencedRelation: "currencies";
+            referencedColumns: ["code"];
+          },
+          {
+            foreignKeyName: "invoices_org_id_orgs_id_fk";
             columns: ["org_id"];
             isOneToOne: false;
             referencedRelation: "orgs";
@@ -3246,6 +3525,10 @@ export type Database = {
     };
     Functions: {
       accept_charter_quote: { Args: { p_quote: string }; Returns: string };
+      accept_contract: {
+        Args: { p_contract: string; p_ip: string; p_name: string; p_user_agent: string };
+        Returns: string;
+      };
       accept_invitation: { Args: { p_token: string }; Returns: string };
       compliance_requirements: {
         Args: {
@@ -3324,6 +3607,7 @@ export type Database = {
       is_platform_admin: { Args: Record<PropertyKey, never>; Returns: boolean };
       materialise_schedule_trips: { Args: { p_date: string; p_org: string }; Returns: number };
       new_rule_set_version: { Args: { p_id: string }; Returns: string };
+      next_invoice_number: { Args: { p_org: string }; Returns: string };
       publish_rule_set: { Args: { p_id: string; p_note?: string }; Returns: undefined };
       reserve_ticket: {
         Args: {
@@ -3381,6 +3665,7 @@ export type Database = {
           permitted_start: string;
         }[];
       };
+      tax_rate_for: { Args: { p_code: string; p_country: string }; Returns: number };
     };
     Enums: {
       age_band: "child" | "adult" | "senior";
@@ -3404,6 +3689,7 @@ export type Database = {
       document_status: "needs_review" | "valid" | "expiring" | "expired" | "rejected";
       fee_bearer: "passenger" | "operator";
       incident_status: "open" | "acknowledged" | "closed";
+      invoice_status: "draft" | "sent" | "part_paid" | "paid" | "overdue" | "void";
       jetty_status: "proposed" | "active";
       launch_status: "planned" | "validating" | "pilot" | "live";
       ledger_account: "escrow" | "platform_revenue" | "payee_payable" | "provider_fees";
@@ -3563,6 +3849,7 @@ export const Constants = {
       document_status: ["needs_review", "valid", "expiring", "expired", "rejected"],
       fee_bearer: ["passenger", "operator"],
       incident_status: ["open", "acknowledged", "closed"],
+      invoice_status: ["draft", "sent", "part_paid", "paid", "overdue", "void"],
       jetty_status: ["proposed", "active"],
       launch_status: ["planned", "validating", "pilot", "live"],
       ledger_account: ["escrow", "platform_revenue", "payee_payable", "provider_fees"],

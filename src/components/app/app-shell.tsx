@@ -48,6 +48,7 @@ export async function AppShell({
           { href: "/reports/daily", label: t("reports") },
           { href: "/assistant", label: t("assistant") },
           { href: "/charters", label: t("charters") },
+          { href: "/invoices", label: t("invoices") },
           { href: "/crew", label: t("crew") },
           { href: "/documents", label: t("documents") },
           { href: "/members", label: t("members") },

@@ -11,6 +11,7 @@ import type { Me } from "@/server/services/profile";
 import { supabaseAdmin, type AdminDb } from "@/server/supabase/admin";
 import type { Db } from "@/server/supabase/server";
 import { fromDbError, ServiceError } from "./errors";
+import { applyInvoicePayment } from "./invoices";
 
 // §11 tickets and subscriptions. The server (service role) writes payments, tickets, the ledger and
 // webhook events; people only read them. A payment is only trusted once the provider confirms it
@@ -410,6 +411,8 @@ export async function applyChargeSuccess(
   }
   if (payment.reference_type === "ticket") await fulfilTicket(db, payment.reference_id, payment.id);
   else if (payment.reference_type === "subscription") await fulfilSubscription(db, payment.reference_id);
+  else if (payment.reference_type === "invoice")
+    await applyInvoicePayment(db, payment.reference_id, BigInt(payment.amount_minor));
   return "applied";
 }
 

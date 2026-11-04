@@ -519,7 +519,8 @@
     "currency_mismatch": "The amount is in the wrong currency.",
     "payments_unavailable": "Online payment isn’t available here yet. Pay at the jetty.",
     "billing_read_only": "Your subscription has lapsed, so this is read-only. Renew under Billing. Trips, manifests and safety checks still work.",
-    "quote_expired": "This quote has expired. Ask the owner for a new one."
+    "quote_expired": "This quote has expired. Ask the owner for a new one.",
+    "contract_locked": "The contract can’t change after it has been accepted."
   },
   "auth": {
     "title": "Log in to Tideline",
@@ -607,7 +608,8 @@
     "map": "Live map",
     "assistant": "Assistant",
     "charters": "Charters",
-    "board": "Charter board"
+    "board": "Charter board",
+    "invoices": "Invoices"
   },
   "dashboard": {
     "title": "Welcome, {name}",
@@ -1639,6 +1641,123 @@
       }
     },
     "nav": "Charters",
-    "requestsNav": "Requests"
+    "requestsNav": "Requests",
+    "charters": {
+      "title": "Charters",
+      "empty": "No charters yet.",
+      "offPlatform": "Off platform",
+      "recordTitle": "Record a charter agreed outside Tideline",
+      "recordHint": "For invoicing only; no commission.",
+      "fields": {
+        "vessel": "Vessel",
+        "client": "Client",
+        "from": "From",
+        "to": "To",
+        "dayRate": "Day rate ({currency})",
+        "mobilisation": "Mobilisation",
+        "save": "Record charter"
+      },
+      "status": {
+        "pending_contract": "Waiting for contract",
+        "pending_payment": "Waiting for payment",
+        "active": "Active",
+        "completed": "Completed",
+        "disputed": "Disputed",
+        "cancelled": "Cancelled"
+      },
+      "detailTitle": "{vessel} for {client}",
+      "dates": "{from} – {to}",
+      "total": "Total value {amount}",
+      "commission": "Platform commission {pct}%"
+    }
+  },
+  "invoices": {
+    "title": "Invoices",
+    "subtitle": "Invoices from charters and manual invoices, numbered per company.",
+    "new": "New invoice",
+    "empty": "No invoices yet.",
+    "status": {
+      "draft": "Draft",
+      "sent": "Sent",
+      "part_paid": "Part paid",
+      "paid": "Paid",
+      "overdue": "Overdue",
+      "void": "Void"
+    },
+    "columns": {
+      "number": "Number",
+      "client": "Client",
+      "total": "Total",
+      "due": "Due",
+      "status": "Status"
+    },
+    "fields": {
+      "billTo": "Bill to",
+      "address": "Address (optional)",
+      "description": "Description",
+      "quantity": "Qty",
+      "unitPrice": "Unit price ({currency})",
+      "discount": "Discount",
+      "addLine": "Add line",
+      "addVat": "Add VAT ({rate}%)",
+      "noVat": "VAT isn’t available: your country’s tax rules aren’t published yet.",
+      "dueDate": "Due date",
+      "notes": "Notes",
+      "create": "Create invoice"
+    },
+    "detail": {
+      "issued": "Issued {date}",
+      "due": "Due {date}",
+      "subtotal": "Subtotal",
+      "discount": "Discounts",
+      "vat": "VAT ({rate}%)",
+      "total": "Total",
+      "paid": "Paid",
+      "outstanding": "Outstanding",
+      "pdf": "Download PDF",
+      "publicLink": "Client’s invoice page",
+      "send": "Send",
+      "sendTitle": "Send invoice",
+      "whatsapp": "WhatsApp number",
+      "email": "Email",
+      "sent": "Sent.",
+      "recordTitle": "Record a payment",
+      "amount": "Amount",
+      "method": "Paid by",
+      "cash": "Cash",
+      "transfer": "Bank transfer",
+      "record": "Record payment"
+    },
+    "fromCharter": "Invoice this charter",
+    "message": "{org} has sent you invoice {number} for {total}. View and pay: {link}",
+    "subject": "Invoice {number} from {org}",
+    "reminder": "Reminder: invoice {number} from {org} is overdue. {amount} is outstanding. Pay here: {link}",
+    "reminderSubject": "Overdue: invoice {number}",
+    "public": {
+      "title": "Invoice {number}",
+      "from": "From {org}",
+      "pay": "Pay {amount} now",
+      "paid": "Paid in full. Thank you.",
+      "void": "This invoice was cancelled."
+    }
+  },
+  "contracts": {
+    "title": "Contract",
+    "none": "No contract yet.",
+    "generate": "Create contract",
+    "regenerate": "Recreate from template",
+    "template": "Template",
+    "accepted": "{side} accepted: {name}, {date}",
+    "pending": "Waiting for the {side}.",
+    "sides": {
+      "owner": "Owner",
+      "charterer": "Charterer"
+    },
+    "acceptTitle": "Accept this contract",
+    "acceptHint": "Type your full name to accept. Your name, the time and your IP address are recorded.",
+    "name": "Full name",
+    "accept": "Accept contract",
+    "pdf": "Download PDF",
+    "bothAccepted": "Both parties have accepted. Next: payment."
   }
 }

@@ -85,6 +85,13 @@
       "when": 1793818726433,
       "tag": "20261104185846_m11_charter",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1793823041019,
+      "tag": "20261104201041_m12_contracts_invoices",
+      "breakpoints": true
     }
   ]
 }

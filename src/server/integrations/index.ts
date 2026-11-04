@@ -1,4 +1,6 @@
 import { serverEnv } from "@/server/env";
+import { FakeEmailClient } from "./email/fake";
+import type { EmailClient } from "./email/types";
 import { registerDevResponders } from "./llm/dev-responders";
 import { FakeLlmClient } from "./llm/fake";
 import type { LlmClient } from "./llm/types";
@@ -24,6 +26,7 @@ export interface Integrations {
   stt: SttClient;
   ocr: OcrClient;
   weather: WeatherClient;
+  email: EmailClient;
 }
 
 /**
@@ -51,6 +54,7 @@ export function createFakeIntegrations(): Integrations {
     llm: serverEnv().NODE_ENV === "test" ? new FakeLlmClient() : registerDevResponders(new FakeLlmClient()),
     stt: new FakeSttClient(),
     ocr: new FakeOcrClient(),
+    email: new FakeEmailClient(),
     weather: serverEnv().WEATHER_PROVIDER === "open-meteo" ? new OpenMeteoWeatherClient() : new FakeWeatherClient(),
   };
 }

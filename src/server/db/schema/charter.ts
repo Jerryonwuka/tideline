@@ -11,6 +11,7 @@ import {
   pgTable,
   text,
   timestamp,
+  uniqueIndex,
   uuid,
 } from "drizzle-orm/pg-core";
 import { vessels } from "./fleet";
@@ -160,8 +161,107 @@ export const charters = pgTable(
     totalValueMinor: bigint("total_value_minor", { mode: "bigint" }).notNull(),
     commissionBps: integer("commission_bps").notNull().default(0),
     bookedOnPlatform: boolean("booked_on_platform").notNull().default(true),
+    /** Off-platform charters: who the client is (no charterer org on Tideline). */
+    clientName: text("client_name"),
     status: charterStatus("status").notNull().default("pending_contract"),
     ...ts,
   },
   (t) => [index("charters_owner_idx").on(t.ownerOrgId), index("charters_charterer_idx").on(t.chartererOrgId)],
 );
+
+export const invoiceStatus = pgEnum("invoice_status", ["draft", "sent", "part_paid", "paid", "overdue", "void"]);
+
+/** Global (org_id null) or an org's own; body uses {{variables}}. */
+export const contractTemplates = pgTable("contract_templates", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  orgId: uuid("org_id").references(() => orgs.id, { onDelete: "cascade" }),
+  countryCode: char("country_code", { length: 2 }).references(() => countries.code),
+  locale: text("locale").notNull().default("en"),
+  name: text("name").notNull(),
+  bodyTemplate: text("body_template").notNull(),
+  variables: jsonb("variables").notNull().default([]),
+  ...ts,
+});
+
+export const contracts = pgTable("contracts", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  ownerOrgId: uuid("owner_org_id")
+    .notNull()
+    .references(() => orgs.id, { onDelete: "cascade" }),
+  chartererOrgId: uuid("charterer_org_id").references(() => orgs.id, { onDelete: "set null" }),
+  charterId: uuid("charter_id")
+    .notNull()
+    .unique()
+    .references(() => charters.id, { onDelete: "cascade" }),
+  templateId: uuid("template_id").references(() => contractTemplates.id),
+  /** Rendered text both sides accept; locked once anyone has accepted. */
+  bodyHtml: text("body_html").notNull(),
+  bodyHash: text("body_hash").notNull(),
+  pdfPath: text("pdf_path"),
+  ownerAcceptedBy: uuid("owner_accepted_by"),
+  ownerAcceptedAt: timestamp("owner_accepted_at", { withTimezone: true }),
+  chartererAcceptedBy: uuid("charterer_accepted_by"),
+  chartererAcceptedAt: timestamp("charterer_accepted_at", { withTimezone: true }),
+  /** {owner: {name, ip, user_agent}, charterer: {...}} */
+  acceptanceMeta: jsonb("acceptance_meta").notNull().default({}),
+  ...ts,
+});
+
+export const invoices = pgTable(
+  "invoices",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    orgId: uuid("org_id")
+      .notNull()
+      .references(() => orgs.id, { onDelete: "cascade" }),
+    charterId: uuid("charter_id").references(() => charters.id, { onDelete: "set null" }),
+    number: text("number").notNull(),
+    /** {name, org_id?, phone?, email?, address?} */
+    billTo: jsonb("bill_to").notNull(),
+    /** [{description, quantity, unit_minor, kind}] */
+    lineItems: jsonb("line_items").notNull(),
+    currency: char("currency", { length: 3 })
+      .notNull()
+      .references(() => currencies.code),
+    locale: text("locale").notNull().default("en"),
+    subtotalMinor: bigint("subtotal_minor", { mode: "bigint" }).notNull(),
+    discountMinor: bigint("discount_minor", { mode: "bigint" })
+      .notNull()
+      .default(sql`0`),
+    taxMinor: bigint("tax_minor", { mode: "bigint" })
+      .notNull()
+      .default(sql`0`),
+    taxRuleCode: text("tax_rule_code"),
+    taxRateBps: integer("tax_rate_bps"),
+    totalMinor: bigint("total_minor", { mode: "bigint" }).notNull(),
+    amountPaidMinor: bigint("amount_paid_minor", { mode: "bigint" })
+      .notNull()
+      .default(sql`0`),
+    issueDate: date("issue_date").notNull().defaultNow(),
+    dueDate: date("due_date"),
+    status: invoiceStatus("status").notNull().default("draft"),
+    pdfPath: text("pdf_path"),
+    paymentLink: text("payment_link"),
+    /** Unguessable token for the client's invoice page (no login). */
+    publicToken: text("public_token").notNull(),
+    sentAt: timestamp("sent_at", { withTimezone: true }),
+    lastRemindedAt: timestamp("last_reminded_at", { withTimezone: true }),
+    notes: text("notes"),
+    ...ts,
+  },
+  (t) => [
+    uniqueIndex("invoices_org_number_key").on(t.orgId, t.number),
+    uniqueIndex("invoices_public_token_key").on(t.publicToken),
+    index("invoices_status_idx").on(t.status, t.dueDate),
+  ],
+);
+
+/** Per-org invoice number series, e.g. INV-2026-0001. */
+export const invoiceSeries = pgTable("invoice_series", {
+  orgId: uuid("org_id")
+    .primaryKey()
+    .references(() => orgs.id, { onDelete: "cascade" }),
+  prefix: text("prefix").notNull().default("INV"),
+  year: integer("year").notNull(),
+  nextNumber: integer("next_number").notNull().default(1),
+});

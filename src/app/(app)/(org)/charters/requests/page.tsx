@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getFormatter, getLocale, getTranslations } from "next-intl/server";
 import { QuoteDecision, QuoteForm } from "@/components/charter/forms";
 import { PageHeader } from "@/components/fleet/page-header";
@@ -12,8 +13,9 @@ import { listVessels } from "@/server/services/vessels";
 /** Requests sent (charterer: accept or decline quotes) and received (owner: send quotes). */
 export default async function CharterRequestsPage() {
   const { db, membership } = await requireOrgContext("/charters/requests");
-  const [t, format, locale, org, requests, vessels] = await Promise.all([
+  const [t, tc, format, locale, org, requests, vessels] = await Promise.all([
     getTranslations("charter.requests"),
+    getTranslations("charter"),
     getFormatter(),
     getLocale(),
     orgBasics(db, membership.orgId),
@@ -79,7 +81,14 @@ export default async function CharterRequestsPage() {
                   )}
                 </div>
               ))}
-              {r.status === "accepted" && <p className="text-sm text-foreground">{t("accepted")}</p>}
+              {r.status === "accepted" && (
+                <p className="text-sm text-foreground">
+                  {t("accepted")}{" "}
+                  <Link href="/charters#charters-list" className="text-accent underline">
+                    {tc("charters.title")}
+                  </Link>
+                </p>
+              )}
               {r.side === "owner" &&
                 canManage &&
                 (r.status === "open" || r.status === "quoted") &&
