@@ -208,6 +208,11 @@ describe("public board", () => {
       expect(json).not.toContain("CLASS-SHOWN-1"); // nor document numbers
     }
     expect(detail).toContain("class_certificate");
+    // Compliance is a whole percentage (the engine scores 0–1).
+    const { compliance } = await boardListing(listing!.id as string);
+    expect(Number.isInteger(compliance)).toBe(true);
+    expect(compliance).toBeGreaterThanOrEqual(0);
+    expect(compliance).toBeLessThanOrEqual(100);
     expect(list).toContain("MV Public");
   });
 });

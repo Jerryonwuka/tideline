@@ -119,7 +119,8 @@ async function complianceFor(db: AdminDb, row: PublicRow): Promise<number | null
       charter_enabled: row.vessel.charter_enabled,
     },
   ]);
-  return c?.score.score ?? null;
+  // Whole percent for display (the engine scores 0–1).
+  return c ? Math.round(c.score.score * 100) : null;
 }
 
 function publicShape(row: PublicRow, compliance: number | null) {
