@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { flagEnabled } from "@/server/features";
 import Link from "next/link";
 import { getFormatter, getLocale, getTranslations } from "next-intl/server";
 import { AuthShell } from "@/components/auth/auth-shell";
@@ -20,6 +22,7 @@ const TYPES = ["crew_boat", "osv", "tug", "barge", "speedboat", "ferry", "other"
 
 /** Public spot-charter board (§4.3): live listings, filters; never private documents. */
 export default async function BoardPage({ searchParams }: { searchParams: Promise<Record<string, string>> }) {
+  if (!(await flagEnabled("charter"))) notFound();
   const parsed = boardQuerySchema.safeParse(await searchParams);
   const q = parsed.success ? parsed.data : {};
   // Signed-in charterers' searches (type and area only) help owners find likely buyers (§10.4).

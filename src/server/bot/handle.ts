@@ -1,4 +1,5 @@
 import "server-only";
+import { reportError } from "@/server/log";
 import { randomUUID } from "node:crypto";
 import { createTranslator } from "next-intl";
 import { speechFor } from "@/config/languages";
@@ -231,10 +232,7 @@ export async function handleInbound(msg: InboundMessage, deps: Turn["deps"] = in
   try {
     await dispatch(turn);
   } catch (err) {
-    console.error("[bot] message failed", {
-      from: hashPhone(msg.fromE164),
-      error: err instanceof Error ? err.name : typeof err,
-    });
+    await reportError("bot.message", err, { from: `phone#${hashPhone(msg.fromE164)}` });
     await db.from("wa_messages").update({ state: "failed" }).eq("id", turn.rowId);
     await reply(turn, turn.t("bot.notUnderstood")).catch(() => null);
   }

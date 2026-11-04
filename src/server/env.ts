@@ -26,6 +26,8 @@ const schema = z
     SMS_WEBHOOK_TOKEN: z.string().optional(),
     /** Escrow is off in production unless this is "on" (legal structure first, §11). */
     ESCROW_ENABLED: z.enum(["on", "off"]).optional(),
+    /** Error reporting (Sentry). Unset: errors are recorded in memory (local) and logged. */
+    SENTRY_DSN: z.preprocess((v) => (v === "" ? undefined : v), z.string().url().optional()),
   })
   .refine((env) => env.APP_ENV === "local" || env.INTEGRATIONS_MODE === "live", {
     message: "Fake integrations are only allowed when APP_ENV=local",

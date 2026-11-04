@@ -3,6 +3,37 @@ export type Json = string | number | boolean | null | { [key: string]: Json | un
 export type Database = {
   public: {
     Tables: {
+      admin_access_logs: {
+        Row: {
+          admin_user_id: string;
+          created_at: string;
+          id: string;
+          reason: string;
+          rows_returned: number;
+          subject_id: string;
+          subject_type: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          admin_user_id: string;
+          created_at?: string;
+          id?: string;
+          reason: string;
+          rows_returned?: number;
+          subject_id: string;
+          subject_type: string;
+        };
+        Update: {
+          admin_user_id?: string;
+          created_at?: string;
+          id?: string;
+          reason?: string;
+          rows_returned?: number;
+          subject_id?: string;
+          subject_type?: string;
+        };
+        Relationships: [];
+      };
       ai_jobs: {
         Row: {
           cost_estimate_minor: number | null;
@@ -727,6 +758,48 @@ export type Database = {
           },
         ];
       };
+      consents: {
+        Row: {
+          created_at: string;
+          granted: boolean;
+          id: string;
+          notice_version: string;
+          phone_hash: string | null;
+          purpose: Database["public"]["Enums"]["consent_purpose"];
+          source: string;
+          user_id: string | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          granted: boolean;
+          id?: string;
+          notice_version: string;
+          phone_hash?: string | null;
+          purpose: Database["public"]["Enums"]["consent_purpose"];
+          source: string;
+          user_id?: string | null;
+        };
+        Update: {
+          created_at?: string;
+          granted?: boolean;
+          id?: string;
+          notice_version?: string;
+          phone_hash?: string | null;
+          purpose?: Database["public"]["Enums"]["consent_purpose"];
+          source?: string;
+          user_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "consents_user_id_profiles_id_fk";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       contract_templates: {
         Row: {
           body_template: string;
@@ -1000,6 +1073,57 @@ export type Database = {
           symbol?: string;
         };
         Relationships: [];
+      };
+      data_requests: {
+        Row: {
+          created_at: string;
+          due_at: string;
+          export_path: string | null;
+          handled_at: string | null;
+          handled_by: string | null;
+          id: string;
+          kind: Database["public"]["Enums"]["data_request_kind"];
+          note: string | null;
+          status: Database["public"]["Enums"]["data_request_status"];
+          updated_at: string;
+          user_id: string | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          due_at?: string;
+          export_path?: string | null;
+          handled_at?: string | null;
+          handled_by?: string | null;
+          id?: string;
+          kind: Database["public"]["Enums"]["data_request_kind"];
+          note?: string | null;
+          status?: Database["public"]["Enums"]["data_request_status"];
+          updated_at?: string;
+          user_id?: string | null;
+        };
+        Update: {
+          created_at?: string;
+          due_at?: string;
+          export_path?: string | null;
+          handled_at?: string | null;
+          handled_by?: string | null;
+          id?: string;
+          kind?: Database["public"]["Enums"]["data_request_kind"];
+          note?: string | null;
+          status?: Database["public"]["Enums"]["data_request_status"];
+          updated_at?: string;
+          user_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "data_requests_user_id_profiles_id_fk";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       document_alerts: {
         Row: {
@@ -1490,6 +1614,31 @@ export type Database = {
             referencedColumns: ["id"];
           },
         ];
+      };
+      feature_flags: {
+        Row: {
+          description: string;
+          enabled: boolean;
+          key: string;
+          updated_at: string;
+          updated_by: string | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          description: string;
+          enabled: boolean;
+          key: string;
+          updated_at?: string;
+          updated_by?: string | null;
+        };
+        Update: {
+          description?: string;
+          enabled?: boolean;
+          key?: string;
+          updated_at?: string;
+          updated_by?: string | null;
+        };
+        Relationships: [];
       };
       fee_config: {
         Row: {
@@ -2571,6 +2720,25 @@ export type Database = {
           time_zone?: string | null;
           updated_at?: string | null;
           whatsapp_opt_in?: boolean;
+        };
+        Relationships: [];
+      };
+      rate_limits: {
+        Row: {
+          count: number;
+          key: string;
+          window_start: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          count: number;
+          key: string;
+          window_start: string;
+        };
+        Update: {
+          count?: number;
+          key?: string;
+          window_start?: string;
         };
         Relationships: [];
       };
@@ -4074,6 +4242,19 @@ export type Database = {
         Returns: string;
       };
       accept_invitation: { Args: { p_token: string }; Returns: string };
+      admin_read_manifest: {
+        Args: { p_reason: string; p_trip: string };
+        Returns: {
+          age_band: string;
+          boarded_at: string;
+          full_name: string;
+          id: string;
+          next_of_kin_phone: string;
+          phone_e164: string;
+          seats: number;
+        }[];
+      };
+      anonymise_trips_before: { Args: { p_before: string; p_org: string }; Returns: Json };
       compliance_requirements: {
         Args: {
           p_applies_to?: Database["public"]["Enums"]["applies_to"];
@@ -4137,12 +4318,14 @@ export type Database = {
         };
         Returns: Database["public"]["Enums"]["document_status"];
       };
+      erase_person: { Args: { p_phone: string; p_phone_hash: string; p_user: string }; Returns: Json };
       fee_bps: { Args: { p_country: string; p_key: string; p_on?: string }; Returns: number };
       fund_escrow: { Args: { p_payment: string }; Returns: string };
       has_role: {
         Args: { p_org: string; p_roles?: Database["public"]["Enums"]["membership_role"][] };
         Returns: boolean;
       };
+      hit_rate_limit: { Args: { p_key: string; p_limit: number; p_window_seconds: number }; Returns: boolean };
       invitation_preview: {
         Args: { p_token: string };
         Returns: {
@@ -4232,9 +4415,12 @@ export type Database = {
       charter_quote_status: "sent" | "accepted" | "declined" | "expired";
       charter_request_status: "open" | "quoted" | "accepted" | "declined" | "expired";
       charter_status: "pending_contract" | "pending_payment" | "active" | "completed" | "disputed" | "cancelled";
+      consent_purpose: "privacy_notice" | "marketing" | "optional_fields";
       crew_role: "captain" | "engineer" | "deckhand" | "ticket_agent" | "other";
       crew_status: "active" | "inactive";
       data_region: "af" | "eu" | "us";
+      data_request_kind: "export" | "delete";
+      data_request_status: "pending" | "completed" | "rejected";
       document_status: "needs_review" | "valid" | "expiring" | "expired" | "rejected";
       escrow_status: "held" | "partially_released" | "released" | "refunded" | "disputed";
       fee_bearer: "passenger" | "operator";
@@ -4397,9 +4583,12 @@ export const Constants = {
       charter_quote_status: ["sent", "accepted", "declined", "expired"],
       charter_request_status: ["open", "quoted", "accepted", "declined", "expired"],
       charter_status: ["pending_contract", "pending_payment", "active", "completed", "disputed", "cancelled"],
+      consent_purpose: ["privacy_notice", "marketing", "optional_fields"],
       crew_role: ["captain", "engineer", "deckhand", "ticket_agent", "other"],
       crew_status: ["active", "inactive"],
       data_region: ["af", "eu", "us"],
+      data_request_kind: ["export", "delete"],
+      data_request_status: ["pending", "completed", "rejected"],
       document_status: ["needs_review", "valid", "expiring", "expired", "rejected"],
       escrow_status: ["held", "partially_released", "released", "refunded", "disputed"],
       fee_bearer: ["passenger", "operator"],

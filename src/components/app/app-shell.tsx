@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { flagEnabled } from "@/server/features";
 import { getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
 import { Logo } from "@/components/brand/logo";
@@ -36,6 +37,7 @@ export async function AppShell({
     .eq("org_id", membership.orgId)
     .is("read_at", null);
   const manages = MANAGES_TEAM.includes(membership.role);
+  const charter = await flagEnabled("charter");
   const links = [
     { href: "/dashboard", label: t("dashboard") },
     { href: "/vessels", label: t("vessels") },
@@ -47,9 +49,9 @@ export async function AppShell({
           { href: "/safety", label: t("safety") },
           { href: "/reports/daily", label: t("reports") },
           { href: "/assistant", label: t("assistant") },
-          { href: "/charters", label: t("charters") },
+          ...(charter ? [{ href: "/charters", label: t("charters") }] : []),
           { href: "/invoices", label: t("invoices") },
-          { href: "/tenders", label: t("tenders") },
+          ...(charter ? [{ href: "/tenders", label: t("tenders") }] : []),
           ...(membership.role === "owner" ? [{ href: "/payouts", label: t("payouts") }] : []),
           { href: "/crew", label: t("crew") },
           { href: "/documents", label: t("documents") },
@@ -58,6 +60,7 @@ export async function AppShell({
         ]
       : []),
     { href: "/captain", label: t("captain") },
+    { href: "/settings/privacy", label: t("privacy") },
     ...(me.isPlatformAdmin ? [{ href: "/admin/countries", label: t("admin") }] : []),
   ];
 

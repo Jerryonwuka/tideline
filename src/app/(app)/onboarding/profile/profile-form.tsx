@@ -33,6 +33,15 @@ export function ProfileForm({ next }: { next: string }) {
           placeholder={t("profile.namePlaceholder")}
         />
       </div>
+      <p className="text-xs text-meta">
+        {t.rich("profile.privacy", {
+          link: (chunks) => (
+            <a href="/privacy" className="text-accent hover:underline">
+              {chunks}
+            </a>
+          ),
+        })}
+      </p>
       <Button type="submit" size="lg" disabled={pending}>
         {t("profile.submit")}
       </Button>

@@ -153,6 +153,7 @@ export function TripView({ tripKey }: { tripKey: string }) {
           >
             {full && !sailing ? t("full") : t("add")}
           </button>
+          <p className="text-xs text-meta">{t("privacyNote")}</p>
         </form>
       )}
 

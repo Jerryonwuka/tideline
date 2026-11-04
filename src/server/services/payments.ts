@@ -1,4 +1,6 @@
 import "server-only";
+import { recordConsent } from "@/server/services/privacy";
+import { enforceIpLimit } from "@/server/rate-limit";
 import { randomBytes } from "node:crypto";
 import { subscriptionAmount, ticketPrice, type FeeBearer } from "@/lib/fees";
 import { money, type Money } from "@/lib/money";
@@ -164,10 +166,12 @@ export interface TicketPurchase {
   qty: number;
   name: string;
   phone?: string;
+  marketing?: boolean;
 }
 
 /** Holds the seats, records an initiated payment and returns the provider's checkout page. */
 export async function startTicketCheckout(input: TicketPurchase, passengerUserId?: string) {
+  await enforceIpLimit("checkoutPerIp");
   const db = supabaseAdmin();
   const quote = await saleQuote(input.tripId, input.qty);
   const country = quote.trip.org!.country_code;
@@ -181,6 +185,12 @@ export async function startTicketCheckout(input: TicketPurchase, passengerUserId
     quote,
     passengerUserId,
   );
+  // The notice was shown on the form; record it, and the marketing choice, against the buyer.
+  if (phoneE164 || passengerUserId) {
+    const who = { userId: passengerUserId, phoneE164: phoneE164 ?? undefined };
+    await recordConsent(who, "privacy_notice", true, "booking");
+    await recordConsent(who, "marketing", input.marketing === true, "booking");
+  }
   const reference = `TKT-${ticket.code}-${randomBytes(3).toString("hex").toUpperCase()}`;
   const { data: payment, error } = await db
     .from("payments")

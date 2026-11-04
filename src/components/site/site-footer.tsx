@@ -15,7 +15,7 @@ export async function SiteFooter() {
   return (
     <footer className="border-t border-hairline">
       <div className="mx-auto max-w-[84rem] border-x border-hairline">
-        <div className="grid gap-12 px-6 py-16 sm:px-12 md:grid-cols-[2fr_1fr_1fr]">
+        <div className="grid gap-12 px-6 py-16 sm:px-12 md:grid-cols-[2fr_1fr_1fr_1fr]">
           <div className="flex flex-col gap-4">
             <Logo size={22} />
             <p className="max-w-[32ch] text-sm text-body">{t("line")}</p>
@@ -34,6 +34,17 @@ export async function SiteFooter() {
             <Link href="/login" className="text-sm text-body transition-colors hover:text-foreground">
               {t("links.login")}
             </Link>
+          </FooterColumn>
+          <FooterColumn title={t("columns.legal")}>
+            {(["privacy", "processors", "terms"] as const).map((k) => (
+              <Link
+                key={k}
+                href={k === "processors" ? "/privacy/processors" : `/${k}`}
+                className="text-sm text-body transition-colors hover:text-foreground"
+              >
+                {t(`links.${k}`)}
+              </Link>
+            ))}
           </FooterColumn>
         </div>
         <div className="flex flex-col gap-4 border-t border-hairline px-6 py-6 sm:flex-row sm:items-center sm:justify-between sm:px-12">

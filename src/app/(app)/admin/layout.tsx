@@ -13,6 +13,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   if (!me.isPlatformAdmin) notFound();
   const t = await getTranslations("admin");
   const tDisputes = await getTranslations("adminDisputes");
+  const tc = await getTranslations("console.nav");
   return (
     <div className="flex min-h-dvh flex-col">
       <header className="sticky top-0 z-40 border-b border-hairline bg-background/80 backdrop-blur-xl">
@@ -26,7 +27,16 @@ export default async function AdminLayout({ children }: { children: ReactNode })
             links={[
               { href: "/admin/countries", label: t("countries.title") },
               { href: "/admin/rule-sets", label: t("ruleSets.title") },
+              { href: "/admin/orgs", label: tc("orgs") },
+              { href: "/admin/documents", label: tc("documents") },
               { href: "/admin/disputes", label: tDisputes("title") },
+              { href: "/admin/escrow", label: tc("escrow") },
+              { href: "/admin/fees", label: tc("fees") },
+              { href: "/admin/jetties", label: tc("jetties") },
+              { href: "/admin/audit", label: tc("audit") },
+              { href: "/admin/flags", label: tc("flags") },
+              { href: "/admin/privacy", label: tc("privacy") },
+              { href: "/admin/passengers", label: tc("passengers") },
             ]}
           />
           <div className="ml-auto flex items-center gap-3">

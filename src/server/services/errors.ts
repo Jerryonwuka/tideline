@@ -55,6 +55,10 @@ export const ERROR_CODES = [
   "tender_blocked",
   "tender_no_text",
   "rate_below_minimum",
+  "request_already_open",
+  "request_closed",
+  "sole_owner",
+  "reason_required",
   "unknown",
 ] as const;
 export type ErrorCode = (typeof ERROR_CODES)[number];
@@ -113,6 +117,10 @@ const STATUS: Partial<Record<ErrorCode, number>> = {
   tender_blocked: 409,
   tender_no_text: 400,
   rate_below_minimum: 400,
+  request_already_open: 409,
+  request_closed: 409,
+  sole_owner: 409,
+  reason_required: 400,
 };
 
 export class ServiceError extends Error {

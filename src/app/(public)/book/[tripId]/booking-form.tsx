@@ -37,6 +37,7 @@ export function BookingForm(props: {
         qty,
         name: String(form.get("name") ?? ""),
         phone: String(form.get("phone") ?? "") || undefined,
+        marketing: form.get("marketing") === "on",
       }),
     }).catch(() => null);
     const body = (await res?.json().catch(() => null)) as { checkoutUrl?: string; error?: { code: string } } | null;
@@ -72,6 +73,19 @@ export function BookingForm(props: {
         <Label htmlFor="phone">{t("phone")}</Label>
         <Input id="phone" name="phone" type="tel" inputMode="tel" autoComplete="tel" />
       </div>
+      <label className="flex items-center gap-2 text-sm text-body">
+        <input type="checkbox" name="marketing" />
+        {t("marketing")}
+      </label>
+      <p className="text-xs text-meta" data-testid="booking-privacy">
+        {t.rich("privacy", {
+          link: (chunks) => (
+            <a href="/privacy" className="text-accent hover:underline">
+              {chunks}
+            </a>
+          ),
+        })}
+      </p>
       <dl className="flex flex-col gap-1 rounded-sm border border-hairline p-3 text-sm">
         {props.bearer === "passenger" ? (
           <div className="flex justify-between text-body">

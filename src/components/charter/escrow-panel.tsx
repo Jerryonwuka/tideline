@@ -25,7 +25,7 @@ export async function EscrowPanel({ charter, escrow }: { charter: Charter; escro
   const [t, format, locale] = await Promise.all([getTranslations("escrow"), getFormatter(), getLocale()]);
   const m = (minor: number | string | bigint) => formatMoney(money(BigInt(minor), charter.currency), locale);
   const when = (iso: string) => format.dateTime(new Date(iso), { dateStyle: "medium", timeStyle: "short" });
-  if (!escrowEnabled()) return <p className="text-sm text-body">{t("disabled")}</p>;
+  if (!(await escrowEnabled())) return <p className="text-sm text-body">{t("disabled")}</p>;
   if (!escrow) {
     if (charter.status !== "pending_payment") return null;
     return charter.side === "charterer" ? (

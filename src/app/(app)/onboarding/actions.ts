@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { recordConsent } from "@/server/services/privacy";
 import { createOrgSchema } from "@/lib/schemas/orgs";
 import { updateProfileSchema } from "@/lib/schemas/profile";
 import { safeNext, setActiveOrg } from "@/server/auth/session";
@@ -19,6 +20,7 @@ export async function saveProfileAction(_: FormState, formData: FormData): Promi
   if (!me) redirect("/login");
   try {
     await updateMe(db, me.userId, parsed.data);
+    await recordConsent({ userId: me.userId }, "privacy_notice", true, "sign_up");
   } catch (err) {
     return { error: err instanceof ServiceError ? err.code : "unknown" };
   }

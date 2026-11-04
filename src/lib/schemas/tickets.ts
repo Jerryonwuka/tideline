@@ -6,9 +6,11 @@ export const ticketPurchaseSchema = z.object({
   qty: z.coerce.number().int().min(1).max(20),
   name: z.string().trim().min(2).max(120),
   phone: z.string().trim().max(24).optional(),
+  /** Optional opt-in to offers (§12); only meaningful with a phone number. */
+  marketing: z.boolean().optional(),
 });
 
-export const agentSaleSchema = ticketPurchaseSchema.omit({ tripId: true }).extend({
+export const agentSaleSchema = ticketPurchaseSchema.omit({ tripId: true, marketing: true }).extend({
   method: z.enum(["cash", "transfer"]),
 });
 

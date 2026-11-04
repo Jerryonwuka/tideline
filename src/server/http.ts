@@ -1,4 +1,5 @@
 import "server-only";
+import { reportError } from "@/server/log";
 import { NextResponse } from "next/server";
 import { getTranslations } from "next-intl/server";
 import { z, ZodError } from "zod";
@@ -22,8 +23,8 @@ export function route<C>(handler: (request: Request, ctx: C) => Promise<Response
         return errorResponse("validation", 422, fields);
       }
       if (err instanceof ServiceError) return errorResponse(err.code, err.status, err.fields);
-      // No request data in logs (CLAUDE.md rule 10).
-      console.error("[api] unhandled error", err instanceof Error ? err.name : typeof err);
+      // No request data in logs (CLAUDE.md rule 10); the message is redacted.
+      await reportError("api.unhandled", err, { path: new URL(request.url).pathname });
       return errorResponse("unknown", 500);
     }
   };

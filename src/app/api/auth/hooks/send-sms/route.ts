@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { reportError } from "@/server/log";
 import { z } from "zod";
 import { serverEnv } from "@/server/env";
 import { integrations } from "@/server/integrations";
@@ -29,7 +30,7 @@ export async function POST(request: Request) {
     typeof parsed.data.user.user_metadata?.locale === "string" ? parsed.data.user.user_metadata.locale : "en";
   const result = await integrations().messaging.sendOtp(phone, parsed.data.sms.otp, locale);
   if (result.status !== "accepted") {
-    console.error(`[send-sms] delivery failed for phone#${hashPhone(phone)}`);
+    await reportError("otp.delivery", new Error("delivery failed"), { to: `phone#${hashPhone(phone)}` });
     return NextResponse.json({ error: { http_code: 502, message: "Delivery failed" } }, { status: 502 });
   }
   return NextResponse.json({});

@@ -19,8 +19,8 @@ import { paymentRouter } from "./payments";
 
 const appUrl = () => serverEnv().NEXT_PUBLIC_APP_URL.replace(/\/$/, "");
 
-function assertEnabled() {
-  if (!escrowEnabled()) throw new ServiceError("escrow_disabled");
+async function assertEnabled() {
+  if (!(await escrowEnabled())) throw new ServiceError("escrow_disabled");
 }
 
 export async function escrowForCharter(db: Db, charterId: string) {
@@ -38,7 +38,7 @@ export async function escrowForCharter(db: Db, charterId: string) {
 
 /** Charterer pays the charter's value into escrow (after both accepted the contract). */
 export async function startEscrowCheckout(db: Db, me: Me, charterId: string) {
-  assertEnabled();
+  await assertEnabled();
   const { data: c } = await db.from("charters").select("*").eq("id", charterId).maybeSingle();
   if (!c || !c.charterer_org_id) throw new ServiceError("not_found");
   const role = me.memberships.find((m) => m.orgId === c.charterer_org_id && m.status === "active")?.role;
@@ -80,7 +80,7 @@ export async function fundEscrow(admin: AdminDb, paymentId: string) {
 
 /** One side confirms on-hire / off-hire; when both have, the matching tranche is released. */
 export async function confirmHire(db: Db, me: Me, charterId: string, stage: "on" | "off") {
-  assertEnabled();
+  await assertEnabled();
   const { data: state, error } = await db.rpc("confirm_hire", { p_charter: charterId, p_stage: stage });
   if (error) throw fromDbError(error);
   if (state !== "both") return { state, payout: null };
@@ -177,7 +177,7 @@ export async function applyTransferEvent(admin: AdminDb, event: Extract<PaymentE
 
 /** The charterer releases what's left early (e.g. a short charter); same once-only rule. */
 export async function releaseEarly(db: Db, me: Me, holdId: string) {
-  assertEnabled();
+  await assertEnabled();
   const { data: h } = await db
     .from("escrow_holds")
     .select("id, payer_org_id, amount_minor")
@@ -190,7 +190,7 @@ export async function releaseEarly(db: Db, me: Me, holdId: string) {
 }
 
 export async function disputeEscrow(db: Db, holdId: string, reason: string) {
-  assertEnabled();
+  await assertEnabled();
   const { error } = await db.rpc("dispute_escrow", { p_hold: holdId, p_reason: reason });
   if (error) throw fromDbError(error);
 }

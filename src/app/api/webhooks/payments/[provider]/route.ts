@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { reportError } from "@/server/log";
 import { WEBHOOK_SIGNATURE_ERROR } from "@/server/integrations/payments/types";
 import { ServiceError } from "@/server/services/errors";
 import { handlePaymentWebhook } from "@/server/services/payments";
@@ -22,7 +23,7 @@ export async function POST(request: Request, { params }: Ctx) {
     if (err instanceof Error && err.name === WEBHOOK_SIGNATURE_ERROR)
       return NextResponse.json({ error: "invalid signature" }, { status: 401 });
     if (err instanceof ServiceError && err.code === "not_found") return new NextResponse(null, { status: 404 });
-    console.error("[webhook] payment event failed", err instanceof Error ? err.name : typeof err);
+    await reportError("webhook.payment", err, { provider });
     return NextResponse.json({ error: "failed" }, { status: 500 });
   }
 }

@@ -1,4 +1,5 @@
 import "server-only";
+import { enforceIpLimit, enforceLimit } from "@/server/rate-limit";
 import { platformConfig } from "@/config/platform";
 import { toE164 } from "@/lib/phone";
 import type { Db } from "@/server/supabase/server";
@@ -13,6 +14,8 @@ export function normalisePhone(input: string): string {
 /** Asks Supabase Auth for a one-time code; it is delivered through our send-SMS hook. */
 export async function sendOtp(db: Db, phoneInput: string): Promise<{ phone: string }> {
   const phone = normalisePhone(phoneInput);
+  await enforceLimit("otpPerPhone", phone);
+  await enforceIpLimit("otpPerIp");
   const { error } = await db.auth.signInWithOtp({ phone });
   if (error) throw new ServiceError(error.status === 429 ? "rate_limited" : "delivery_failed");
   return { phone };

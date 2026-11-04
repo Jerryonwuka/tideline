@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { reportError } from "@/server/log";
 import { redirect } from "next/navigation";
 import { mappingSchema, sectionSchema, tenderInputSchema, vesselsSchema } from "@/lib/schemas/tenders";
 import { requireOrgContext } from "@/server/auth/session";
@@ -21,7 +22,7 @@ import {
 export type TenderState = { error?: ErrorCode; ok?: boolean };
 const code = (err: unknown): ErrorCode => {
   if (err instanceof ServiceError) return err.code;
-  console.error("tender action failed", err instanceof Error ? err.message : err);
+  void reportError("tender.action", err);
   return "unknown";
 };
 const MAX_FILE = 15 * 1024 * 1024;

@@ -1,4 +1,5 @@
 import "server-only";
+import { enforceIpLimit } from "@/server/rate-limit";
 import { randomBytes } from "node:crypto";
 import { createTranslator } from "next-intl";
 import type { Json } from "@/lib/database.types";
@@ -297,6 +298,7 @@ export async function invoiceByToken(token: string) {
 
 /** Public: pay the outstanding amount online (provider chosen by route; confirmed by webhook). */
 export async function startInvoiceCheckout(token: string) {
+  await enforceIpLimit("checkoutPerIp");
   const inv = await invoiceByToken(token);
   if (!inv || inv.status === "void" || inv.status === "paid") throw new ServiceError("not_found");
   const due = BigInt(inv.total_minor) - BigInt(inv.amount_paid_minor);

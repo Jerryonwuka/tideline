@@ -12,3 +12,4 @@ export * from "./safety";
 export * from "./payments";
 export * from "./messaging";
 export * from "./charter";
+export * from "./privacy";

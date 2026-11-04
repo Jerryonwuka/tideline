@@ -1,4 +1,6 @@
 import "server-only";
+import { flagEnabled } from "@/server/features";
+import { enforceLimit } from "@/server/rate-limit";
 import { createTranslator } from "next-intl";
 import { formatMoney, fromMajor, money } from "@/lib/money";
 import type { ListingInput, QuoteInput, RequestInput } from "@/lib/schemas/charter";
@@ -153,6 +155,7 @@ function publicShape(row: PublicRow, compliance: number | null) {
 export type PublicListing = ReturnType<typeof publicShape>;
 
 export async function boardListings(filters: BoardFilters): Promise<PublicListing[]> {
+  if (!(await flagEnabled("charter"))) throw new ServiceError("not_found");
   const db = supabaseAdmin();
   let q = db.from("charter_listings").select(PUBLIC_LISTING).eq("status", "live");
   if (filters.area) q = q.ilike("operating_area", `%${filters.area.replace(/[%_]/g, "")}%`);
@@ -172,6 +175,7 @@ export async function boardListings(filters: BoardFilters): Promise<PublicListin
 
 /** One listing for the public page, with only the documents the owner chose to show. */
 export async function boardListing(id: string) {
+  if (!(await flagEnabled("charter"))) throw new ServiceError("not_found");
   const db = supabaseAdmin();
   const { data, error } = await db
     .from("charter_listings")
@@ -207,6 +211,7 @@ const CHARTER_SIDE = ["owner", "manager", "charterer"];
 export async function createRequest(db: Db, me: Me, chartererOrgId: string, input: RequestInput) {
   const role = me.memberships.find((m) => m.orgId === chartererOrgId && m.status === "active")?.role;
   if (!role || !CHARTER_SIDE.includes(role)) throw new ServiceError("forbidden");
+  await enforceLimit("charterRequestPerUser", me.userId);
   const currency = input.currency ?? null;
   const { data, error } = await db
     .from("charter_requests")

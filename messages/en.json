@@ -431,7 +431,8 @@
       "line": "The operating platform for vessel operators.",
       "columns": {
         "product": "Product",
-        "company": "Company"
+        "company": "Company",
+        "legal": "Legal"
       },
       "links": {
         "platform": "Platform",
@@ -439,7 +440,10 @@
         "process": "How it works",
         "modes": "Modes",
         "faq": "FAQ",
-        "login": "Log in"
+        "login": "Log in",
+        "privacy": "Privacy",
+        "processors": "Processors",
+        "terms": "Terms"
       },
       "made": "Made for the water",
       "rights": "© {year} Tideline"
@@ -528,7 +532,11 @@
     "tender_not_reviewed": "Mark the pack as reviewed before exporting.",
     "tender_blocked": "Fill the [MISSING] items and attach the red mandatory documents, or tick “Submit anyway”.",
     "tender_no_text": "Paste the tender text or upload a readable file.",
-    "rate_below_minimum": "That rate is below your minimum rate for this vessel."
+    "rate_below_minimum": "That rate is below your minimum rate for this vessel.",
+    "request_already_open": "You already have a request of this kind in progress.",
+    "request_closed": "This request has already been handled.",
+    "sole_owner": "This person is the only owner of a company. Ownership must be handed over before the account can be deleted.",
+    "reason_required": "Give a reason of at least 10 characters. It is recorded."
   },
   "auth": {
     "title": "Log in to Tideline",
@@ -556,7 +564,8 @@
       "subtitle": "Your name appears on trip logs and when you invite your team.",
       "nameLabel": "Full name",
       "namePlaceholder": "Tunde Adeyemi",
-      "submit": "Continue"
+      "submit": "Continue",
+      "privacy": "By continuing you confirm you’ve read the <link>privacy notice</link>."
     },
     "org": {
       "title": "Set up your company",
@@ -619,7 +628,8 @@
     "board": "Charter board",
     "invoices": "Invoices",
     "payouts": "Payouts",
-    "tenders": "Tenders"
+    "tenders": "Tenders",
+    "privacy": "Privacy"
   },
   "dashboard": {
     "title": "Welcome, {name}",
@@ -1231,7 +1241,8 @@
       "amendmentNote": "The manifest is locked. People added now are recorded as amendments.",
       "back": "All trips",
       "full": "Full",
-      "amendment": "Amendment"
+      "amendment": "Amendment",
+      "privacyNote": "Tell passengers: names and seats are collected for passenger safety. Phone numbers are optional."
     },
     "loading": "Loading your trips…",
     "notCached": "Open Tideline once with a connection, then it works offline.",
@@ -1358,7 +1369,9 @@
     "feeIncluded": "Booking fee paid by the operator.",
     "pay": "Pay {amount}",
     "paying": "Opening payment…",
-    "findTicket": "Find my ticket"
+    "findTicket": "Find my ticket",
+    "marketing": "Send me offers from the operator (optional)",
+    "privacy": "Your name and seats go on the passenger manifest, collected for passenger safety. Your number is used for your ticket. <link>Privacy notice</link>"
   },
   "ticket": {
     "title": "Your ticket",
@@ -1955,5 +1968,262 @@
     "description": "Listing description",
     "published": "Live on the board.",
     "viewListing": "View listing"
+  },
+  "legal": {
+    "updated": "Last updated {date}",
+    "privacy": {
+      "title": "Privacy notice",
+      "intro": "Tideline helps boat and vessel operators run trips, keep passenger manifests, manage documents and handle charters. This notice explains what we collect, why, where it is kept and your rights.",
+      "sections": [
+        {
+          "title": "What we collect",
+          "body": "Account: your name, phone number, language and time zone. Passengers: name and number of seats; a phone number and next-of-kin number only when the operator or regulator needs them. Crew: name, role, phone and certificates. Trips: departure and arrival times, safety checks and, while a trip is running, the vessel’s position. Payments: amounts and references; card and bank details are handled by the payment provider, and we keep only the last 4 digits of payout accounts. Documents you upload, and messages you send to our WhatsApp assistant."
+        },
+        {
+          "title": "Why we use it",
+          "body": "To provide the service you or your operator signed up for (contract); to keep passengers safe and meet maritime rules: passenger manifests are collected for passenger safety (legal obligation and vital interests); to prevent fraud and abuse and improve the service (legitimate interests); and, only if you agree, to send you offers (consent, which you can withdraw at any time)."
+        },
+        {
+          "title": "Who we share it with",
+          "body": "Your operator or charter counterparty, as the service needs. Service providers who process data for us under contract (see the processor list), and authorities where the law requires. We do not sell personal data. AI features receive only the minimum data needed, and a person checks AI output before it counts."
+        },
+        {
+          "title": "Where it is kept",
+          "body": "Data is stored with our database host in the region shown below, and some providers process it in other countries (see the processor list). Transfers outside your country are made only under a lawful basis, such as adequate protection or contractual safeguards."
+        },
+        {
+          "title": "How long we keep it",
+          "body": "Passenger manifests and trip positions: {months} months, then names and numbers are removed and positions deleted. Documents: while the account is active, then for a set period. Payment and invoice records: as long as tax and accounting law requires. Audit records of safety decisions are kept without personal details."
+        },
+        {
+          "title": "Your rights",
+          "body": "You can ask for a copy of your data, ask us to correct or delete it, object to some uses, and withdraw consent. Signed in, go to Settings → Privacy; we answer within 30 days. Deletion can’t remove records the law requires us to keep, but your details are taken out of them. You can also complain to your data protection authority (in Nigeria, the Nigeria Data Protection Commission)."
+        },
+        {
+          "title": "Security",
+          "body": "Encrypted connections everywhere, encryption at rest, private file storage with short-lived links, strict access rules per company, and an audit trail of changes. Staff access to passenger data needs a recorded reason."
+        }
+      ],
+      "hosting": "Database hosting: {hosting}",
+      "hostingUnset": "Database hosting: to be confirmed before launch.",
+      "processorsLink": "See the processor list",
+      "requestLink": "Ask for your data or deletion"
+    },
+    "processors": {
+      "title": "Processors",
+      "intro": "Companies that process personal data on our behalf, what for, and where. “When switched on” means the provider is used only once that feature goes live.",
+      "name": "Provider",
+      "purpose": "Purpose",
+      "data": "Data",
+      "location": "Location",
+      "status": "Status",
+      "purposes": {
+        "hosting_db": "Database and file storage",
+        "hosting_web": "Web hosting",
+        "payments": "Payments and payouts",
+        "messaging": "WhatsApp messages",
+        "sms": "SMS and sign-in codes",
+        "maps": "Maps",
+        "ai": "Document reading, voice and drafting",
+        "monitoring": "Error monitoring",
+        "analytics": "Product analytics",
+        "email": "Email",
+        "weather": "Weather forecasts"
+      },
+      "dataKinds": {
+        "all_app_data": "All app data",
+        "requests": "Web requests",
+        "payment": "Payment details",
+        "phone_messages": "Phone number and messages",
+        "location": "Map views and positions",
+        "documents_voice": "Documents, voice notes, text",
+        "errors": "Error reports (no personal data)",
+        "usage": "Usage events (no personal data)",
+        "email": "Email address and messages",
+        "none_personal": "No personal data"
+      },
+      "statuses": {
+        "in_use": "In use",
+        "when_enabled": "When switched on"
+      }
+    },
+    "terms": {
+      "title": "Terms of use",
+      "intro": "These short terms sit alongside your subscription or charter agreement.",
+      "sections": [
+        {
+          "title": "The safety lock supports, it does not replace",
+          "body": "Tideline’s safety lock checks weather, daylight, passenger numbers, life jackets and certificates before departure. It supports, and does not replace, the captain’s and owner’s responsibility for safe operation. Every override records who approved it and why."
+        },
+        {
+          "title": "AI output is checked by a person",
+          "body": "Dates read from documents, drafted invoices, tender sections and price suggestions are proposals until a person confirms them."
+        },
+        {
+          "title": "Payments",
+          "body": "Payments are processed by licensed providers. Escrow, where offered, is held and released under the rules shown on the charter page."
+        },
+        {
+          "title": "Your data",
+          "body": "How we handle personal data is set out in the privacy notice."
+        }
+      ]
+    }
+  },
+  "settingsPrivacy": {
+    "title": "Privacy",
+    "subtitle": "Your choices and your data.",
+    "notice": "Read the privacy notice",
+    "marketing": "Send me news and offers",
+    "marketingHint": "Optional. You can change this any time.",
+    "save": "Save",
+    "saved": "Saved.",
+    "export": "Get a copy of my data",
+    "exportHint": "We prepare a file with everything we hold about you, within 30 days.",
+    "requestExport": "Request a copy",
+    "delete": "Delete my account",
+    "deleteHint": "Your name and number are removed from trips, tickets and records. Payment and safety records the law requires stay, without your details. If you are the only owner of a company, hand it over first.",
+    "confirmDelete": "I understand this can’t be undone",
+    "requestDelete": "Request deletion",
+    "requested": {
+      "export": "Request received. We’ll prepare your file within 30 days.",
+      "delete": "Request received. We’ll delete your account within 30 days."
+    },
+    "requests": "Your requests",
+    "kind": {
+      "export": "Copy of data",
+      "delete": "Deletion"
+    },
+    "status": {
+      "pending": "In progress",
+      "completed": "Done",
+      "rejected": "Not done"
+    },
+    "due": "Due {date}",
+    "download": "Download",
+    "notes": {
+      "sole_owner": "You’re the only owner of a company. Hand ownership to someone else first."
+    },
+    "sessions": "Signed-in devices",
+    "sessionsHint": "Lost a phone? Sign out on every device at once.",
+    "signOutEverywhere": "Sign out everywhere"
+  },
+  "console": {
+    "nav": {
+      "orgs": "Organisations",
+      "documents": "Document review",
+      "escrow": "Escrow holds",
+      "fees": "Fees",
+      "safety": "Safety defaults",
+      "jetties": "Jetties",
+      "audit": "Audit log",
+      "flags": "Feature flags",
+      "privacy": "Privacy requests",
+      "passengers": "Passenger data"
+    },
+    "orgs": {
+      "title": "Organisations",
+      "subtitle": "Verification queue: pending first.",
+      "status": {
+        "unverified": "Unverified",
+        "pending": "Pending",
+        "verified": "Verified"
+      },
+      "verify": "Verify",
+      "unverify": "Remove verification",
+      "empty": "No organisations."
+    },
+    "documents": {
+      "title": "Document review",
+      "subtitle": "Documents waiting for review where the reader was unsure (confidence under 80%), across all companies.",
+      "confidence": "{value}% sure",
+      "empty": "Nothing flagged."
+    },
+    "escrow": {
+      "title": "Escrow holds",
+      "subtitle": "All holds, newest first. Disputes are resolved under Escrow disputes.",
+      "held": "{amount} held · {released} released · {refunded} refunded",
+      "empty": "No holds.",
+      "status": {
+        "held": "Held",
+        "partially_released": "Partly released",
+        "released": "Released",
+        "refunded": "Refunded",
+        "disputed": "Disputed"
+      }
+    },
+    "fees": {
+      "title": "Fees",
+      "subtitle": "Each change adds a row from its start date, so history is kept. Values are basis points (100 = 1%).",
+      "key": "Fee",
+      "country": "Country (blank = default)",
+      "value": "Basis points",
+      "from": "Starts",
+      "add": "Add",
+      "keys": {
+        "ticket_fee_bps": "Ticket fee",
+        "charter_commission_bps": "Charter commission",
+        "charter_inapp_discount_bps": "In-app payment discount"
+      },
+      "default": "Default"
+    },
+    "jetties": {
+      "title": "Jetties",
+      "subtitle": "Jetties proposed by operators appear here for approval.",
+      "approve": "Approve",
+      "status": {
+        "proposed": "Proposed",
+        "active": "Active"
+      },
+      "empty": "No jetties."
+    },
+    "audit": {
+      "title": "Audit log",
+      "subtitle": "Latest 200 changes. Personal details are not shown here; changed fields are listed by name.",
+      "entity": "Entity",
+      "org": "Organisation id",
+      "filter": "Filter",
+      "changed": "Changed: {fields}",
+      "actor": "by {actor}",
+      "system": "system"
+    },
+    "flags": {
+      "title": "Feature flags",
+      "subtitle": "Switch features on or off for everyone. Every change is audited.",
+      "on": "On",
+      "save": "Save",
+      "envNote": "In production, escrow also needs ESCROW_ENABLED=on (legal sign-off)."
+    },
+    "privacy": {
+      "title": "Privacy requests",
+      "subtitle": "Export and deletion requests, due within 30 days. Overdue requests are reported every morning.",
+      "prepare": "Prepare export",
+      "erase": "Delete account",
+      "reject": "Reject",
+      "overdue": "Overdue",
+      "due": "Due {date}",
+      "kind": {
+        "export": "Export",
+        "delete": "Deletion"
+      },
+      "status": {
+        "pending": "Pending",
+        "completed": "Done",
+        "rejected": "Rejected"
+      },
+      "empty": "No requests."
+    },
+    "passengers": {
+      "title": "Passenger data",
+      "subtitle": "Opening a manifest needs a reason. Every read is recorded with your name and reason.",
+      "tripId": "Trip id",
+      "reason": "Reason",
+      "reasonHint": "At least 10 characters, e.g. “Police request ref 123 about missing passenger”.",
+      "open": "Open manifest",
+      "seats": "{count, plural, one {# seat} other {# seats}}",
+      "empty": "No passengers on this trip.",
+      "log": "Recent access",
+      "logRow": "{reason} · {rows} rows"
+    }
   }
 }
