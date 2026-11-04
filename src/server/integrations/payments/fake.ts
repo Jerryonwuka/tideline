@@ -7,6 +7,7 @@ import {
   type CheckoutSession,
   type PaymentEvent,
   type PaymentProvider,
+  type PaymentProviderId,
   type PaymentPurpose,
   type SubscriptionRequest,
   type TransferRequest,
@@ -27,12 +28,15 @@ interface FakeCharge {
  * unless `supported` narrows it, so routing tests can exercise fallbacks.
  */
 export class FakePaymentProvider implements PaymentProvider {
-  readonly id = "fake" as const;
   readonly charges = new Map<string, FakeCharge>();
   readonly transfers: TransferRequest[] = [];
   readonly refunds: { reference: string; amount?: Money }[] = [];
 
-  constructor(private readonly supported?: (country: string, currency: string, purpose: PaymentPurpose) => boolean) {}
+  /** `id` lets the fake stand in for a real provider, so routing works as configured (local dev). */
+  constructor(
+    private readonly supported?: (country: string, currency: string, purpose: PaymentPurpose) => boolean,
+    readonly id: PaymentProviderId = "fake",
+  ) {}
 
   supports(countryCode: string, currency: string, purpose: PaymentPurpose): boolean {
     return this.supported ? this.supported(countryCode, currency, purpose) : true;
@@ -43,7 +47,7 @@ export class FakePaymentProvider implements PaymentProvider {
     return {
       provider: this.id,
       reference: req.reference,
-      checkoutUrl: `${req.callbackUrl}?fake_checkout=${encodeURIComponent(req.reference)}`,
+      checkoutUrl: fakeCheckoutUrl(req.callbackUrl, req.reference),
     };
   }
 
@@ -83,10 +87,11 @@ export class FakePaymentProvider implements PaymentProvider {
   }
 
   async createSubscription(req: SubscriptionRequest) {
+    this.charges.set(req.reference, { amount: req.amount, status: "initiated" });
     return {
       provider: this.id,
       reference: req.reference,
-      checkoutUrl: `${req.callbackUrl}?fake_subscription=${encodeURIComponent(req.reference)}`,
+      checkoutUrl: fakeCheckoutUrl(req.callbackUrl, req.reference),
       subscriptionRef: `FAKE_SUBSCR_${req.reference}`,
     };
   }
@@ -127,4 +132,12 @@ export class FakePaymentProvider implements PaymentProvider {
 
 function sign(rawBody: string): string {
   return createHmac("sha512", FAKE_WEBHOOK_SECRET).update(rawBody).digest("hex");
+}
+
+/** The local test checkout page (/dev/pay), which returns to the callback afterwards. */
+function fakeCheckoutUrl(callbackUrl: string, reference: string): string {
+  const url = new URL("/dev/pay", callbackUrl);
+  url.searchParams.set("reference", reference);
+  url.searchParams.set("return", callbackUrl);
+  return url.toString();
 }

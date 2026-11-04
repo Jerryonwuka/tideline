@@ -239,7 +239,7 @@ export async function captainSnapshot(db: Db, me: Me, membership: MembershipSumm
   if (myTrips.length) {
     const { data, error } = await db
       .from("manifest_entries")
-      .select("id, client_id, trip_id, full_name, seats, is_amendment, created_at")
+      .select("id, client_id, trip_id, full_name, seats, is_amendment, created_at, boarded_at")
       .in(
         "trip_id",
         myTrips.map((t) => t.id),
@@ -253,6 +253,7 @@ export async function captainSnapshot(db: Db, me: Me, membership: MembershipSumm
       seats: m.seats,
       amendment: m.is_amendment,
       createdAt: m.created_at,
+      boarded: !!m.boarded_at,
     }));
   }
 

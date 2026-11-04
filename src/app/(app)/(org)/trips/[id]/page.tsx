@@ -9,6 +9,7 @@ import { orgBasics } from "@/server/org-context";
 import { ServiceError } from "@/server/services/errors";
 import { getTrip, listManifest, tripLabel } from "@/server/services/ferry";
 import { listChecks } from "@/server/services/safety";
+import { SaleForm } from "@/components/ferry/sale-form";
 import type { Reason } from "@/lib/safety/engine";
 
 export default async function TripPage({ params }: { params: Promise<{ id: string }> }) {
@@ -19,9 +20,10 @@ export default async function TripPage({ params }: { params: Promise<{ id: strin
     throw err;
   });
   const org = await orgBasics(db, membership.orgId);
-  const [t, tSafety, format, manifest, checks] = await Promise.all([
+  const [t, tSafety, tSales, format, manifest, checks] = await Promise.all([
     getTranslations("ferry.trip"),
     getTranslations("safety"),
+    getTranslations("sales"),
     getFormatter(),
     listManifest(db, id),
     listChecks(db, id),
@@ -87,6 +89,18 @@ export default async function TripPage({ params }: { params: Promise<{ id: strin
           <span className="label-mono-sm text-meta">{t("notes")}: </span>
           {trip.notes}
         </p>
+      )}
+      {(trip.status === "scheduled" || trip.status === "boarding") && trip.route_id && (
+        <section
+          aria-labelledby="sell"
+          className="flex flex-col gap-3 rounded-md border border-hairline-strong panel p-6"
+        >
+          <h2 id="sell" className="title-md text-foreground">
+            {tSales("title")}
+          </h2>
+          <p className="text-sm text-body">{tSales("hint")}</p>
+          <SaleForm tripId={trip.id} />
+        </section>
       )}
       {checks.length > 0 && (
         <section aria-labelledby="safety-history" className="flex flex-col gap-3">

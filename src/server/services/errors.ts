@@ -38,6 +38,13 @@ export const ERROR_CODES = [
   "not_overridable",
   "already_requested",
   "already_decided",
+  "ticket_not_found",
+  "ticket_wrong_trip",
+  "ticket_used",
+  "ticket_not_paid",
+  "currency_mismatch",
+  "payments_unavailable",
+  "billing_read_only",
   "unknown",
 ] as const;
 export type ErrorCode = (typeof ERROR_CODES)[number];
@@ -79,6 +86,13 @@ const STATUS: Partial<Record<ErrorCode, number>> = {
   not_overridable: 409,
   already_requested: 409,
   already_decided: 409,
+  ticket_not_found: 404,
+  ticket_wrong_trip: 409,
+  ticket_used: 409,
+  ticket_not_paid: 409,
+  currency_mismatch: 422,
+  payments_unavailable: 503,
+  billing_read_only: 402,
 };
 
 export class ServiceError extends Error {
@@ -95,11 +109,11 @@ export class ServiceError extends Error {
   }
 }
 
-const isCode = (v: string): v is ErrorCode => (ERROR_CODES as readonly string[]).includes(v);
+export const isErrorCode = (v: string): v is ErrorCode => (ERROR_CODES as readonly string[]).includes(v);
 
 /** Turns a Postgres/PostgREST error into a ServiceError (RPCs raise our codes as messages). */
 export function fromDbError(error: Pick<PostgrestError, "code" | "message">): ServiceError {
-  if (isCode(error.message)) return new ServiceError(error.message);
+  if (isErrorCode(error.message)) return new ServiceError(error.message);
   if (error.code === "42501") return new ServiceError("forbidden");
   if (error.code === "PGRST116") return new ServiceError("not_found");
   return new ServiceError("unknown");

@@ -511,7 +511,14 @@
     "thresholds_too_loose": "Limits can only be stricter than the country defaults.",
     "not_overridable": "This can’t be overridden. Fix it first (people on board, life jackets).",
     "already_requested": "An override was already requested for this check.",
-    "already_decided": "This request was already decided."
+    "already_decided": "This request was already decided.",
+    "ticket_not_found": "No ticket with that code.",
+    "ticket_wrong_trip": "That ticket is for a different trip.",
+    "ticket_used": "That ticket has already been used to board.",
+    "ticket_not_paid": "That ticket hasn’t been paid for.",
+    "currency_mismatch": "The amount is in the wrong currency.",
+    "payments_unavailable": "Online payment isn’t available here yet. Pay at the jetty.",
+    "billing_read_only": "Your subscription has lapsed, so this is read-only. Renew under Billing. Trips, manifests and safety checks still work."
   },
   "auth": {
     "title": "Log in to Tideline",
@@ -593,7 +600,9 @@
     "routes": "Routes",
     "reports": "Reports",
     "captain": "Captain mode",
-    "safety": "Safety"
+    "safety": "Safety",
+    "billing": "Billing",
+    "book": "Book a boat"
   },
   "dashboard": {
     "title": "Welcome, {name}",
@@ -1241,5 +1250,100 @@
       "placeholderNote": "Defaults are conservative placeholders, not official limits."
     },
     "history": "Safety checks"
+  },
+  "booking": {
+    "title": "Book a boat",
+    "subtitle": "Trips with seats in the next two days.",
+    "empty": "No trips open for booking right now.",
+    "seatsLeft": "{count, plural, one {# seat left} other {# seats left}}",
+    "by": "by {operator}",
+    "choose": "Choose",
+    "tripTitle": "{from} → {to}",
+    "departs": "Departs {time}",
+    "fare": "Fare per seat",
+    "seats": "Seats",
+    "name": "Name on the ticket",
+    "phone": "Phone (for your ticket)",
+    "fee": "Booking fee",
+    "total": "Total",
+    "feeIncluded": "Booking fee paid by the operator.",
+    "pay": "Pay {amount}",
+    "paying": "Opening payment…",
+    "findTicket": "Find my ticket"
+  },
+  "ticket": {
+    "title": "Your ticket",
+    "lookupTitle": "Find your ticket",
+    "lookupHint": "Enter the 8-character code from your ticket.",
+    "code": "Ticket code",
+    "find": "Show ticket",
+    "status": {
+      "reserved": "Waiting for payment",
+      "paid": "Paid",
+      "used": "Boarded",
+      "refunded": "Refunded",
+      "cancelled": "Cancelled"
+    },
+    "reservedHint": "We haven’t had confirmation of your payment yet. This page updates when it arrives.",
+    "refresh": "Check again",
+    "cancelledHint": "Payment didn’t go through and your seats were released.",
+    "refundedHint": "The trip had no seats left, so your payment is being refunded.",
+    "showAtJetty": "Show this code at the jetty.",
+    "seats": "{count, plural, one {# seat} other {# seats}}",
+    "paid": "Paid {amount}",
+    "notFound": "No ticket with that code."
+  },
+  "devPay": {
+    "title": "Test payment",
+    "note": "Local test checkout. No real money moves.",
+    "pay": "Pay with test card",
+    "decline": "Decline"
+  },
+  "sales": {
+    "title": "Sell a ticket",
+    "hint": "Cash or transfer taken at the jetty. The passenger goes on the manifest.",
+    "name": "Passenger name",
+    "phone": "Phone (optional)",
+    "seats": "Seats",
+    "method": "Paid by",
+    "cash": "Cash",
+    "transfer": "Bank transfer",
+    "sell": "Record sale",
+    "sold": "Sold. Ticket code {code}."
+  },
+  "board": {
+    "title": "Board by ticket",
+    "code": "Ticket code",
+    "board": "Board",
+    "scan": "Scan QR",
+    "stopScan": "Stop scanning",
+    "boarded": "{name} boarded ({seats, plural, one {# seat} other {# seats}}).",
+    "needsSignal": "Boarding by ticket needs a connection."
+  },
+  "billing": {
+    "title": "Billing",
+    "subtitle": "Plans are priced in your currency. Trips, manifests, safety checks and alerts never stop.",
+    "perOrg": "per month",
+    "perVessel": "per charter vessel per month",
+    "forVessels": "{count, plural, one {# charter vessel} other {# charter vessels}}: {amount} a month",
+    "subscribe": "Pay for a month",
+    "status": {
+      "trialing": "Trial",
+      "active": "Active until {date}",
+      "past_due": "Overdue since {date}",
+      "read_only": "Read-only since {date}",
+      "cancelled": "Cancelled"
+    },
+    "readOnlyBanner": "Your subscription has lapsed, so fleet, crew and route changes are read-only. Trips, manifests and safety checks still work.",
+    "renew": "Renew",
+    "confirmed": "Payment received. Thank you.",
+    "pending": "Waiting for payment confirmation.",
+    "assumption": "Prices are placeholders while pricing is confirmed."
+  },
+  "plans": {
+    "ferry_basic": "Ferry Basic",
+    "ferry_fleet": "Ferry Fleet",
+    "charter_standard": "Charter Standard",
+    "charter_fleet": "Charter Fleet"
   }
 }

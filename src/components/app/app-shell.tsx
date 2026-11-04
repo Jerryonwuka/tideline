@@ -48,6 +48,7 @@ export async function AppShell({
           { href: "/crew", label: t("crew") },
           { href: "/documents", label: t("documents") },
           { href: "/members", label: t("members") },
+          ...(membership.role === "owner" ? [{ href: "/billing", label: t("billing") }] : []),
         ]
       : []),
     { href: "/captain", label: t("captain") },

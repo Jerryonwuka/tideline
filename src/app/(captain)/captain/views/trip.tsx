@@ -11,6 +11,7 @@ import type { TripStep } from "@/lib/schemas/sync";
 import { cn } from "@/lib/utils";
 import { go } from "../nav";
 import { SyncBadge } from "../parts";
+import { BoardTicket } from "./board-ticket";
 import { SafetyPanel } from "./safety-panel";
 
 const big = "h-14 w-full rounded-sm label-mono disabled:opacity-40";
@@ -111,6 +112,7 @@ export function TripView({ tripKey }: { tripKey: string }) {
         </p>
       )}
 
+      {open && <BoardTicket />}
       {(open || sailing) && (
         <form key={formKey} onSubmit={add} className="flex flex-col gap-3">
           <span className="label-mono-sm text-meta">{t("addPassenger")}</span>
@@ -163,6 +165,11 @@ export function TripView({ tripKey }: { tripKey: string }) {
                 <span className="text-foreground">
                   {x.name ?? t("quickAddHint")} · {x.seats}
                   {x.amendment && <span className="ml-2 label-mono-sm text-warning">{t("amendment")}</span>}
+                  {x.boarded && (
+                    <span className="ml-2 text-success" aria-label="✓">
+                      ✓
+                    </span>
+                  )}
                 </span>
                 <SyncBadge synced={x.synced} />
               </span>

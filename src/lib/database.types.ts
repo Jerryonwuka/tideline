@@ -615,6 +615,39 @@ export type Database = {
           },
         ];
       };
+      fee_config: {
+        Row: {
+          country_code: string | null;
+          effective_from: string;
+          id: string;
+          key: string;
+          value: number;
+        };
+        ComputedFields: never;
+        Insert: {
+          country_code?: string | null;
+          effective_from?: string;
+          id?: string;
+          key: string;
+          value: number;
+        };
+        Update: {
+          country_code?: string | null;
+          effective_from?: string;
+          id?: string;
+          key?: string;
+          value?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "fee_config_country_code_countries_code_fk";
+            columns: ["country_code"];
+            isOneToOne: false;
+            referencedRelation: "countries";
+            referencedColumns: ["code"];
+          },
+        ];
+      };
       invitations: {
         Row: {
           accepted_at: string | null;
@@ -738,6 +771,68 @@ export type Database = {
           },
         ];
       };
+      ledger_entries: {
+        Row: {
+          account: Database["public"]["Enums"]["ledger_account"];
+          created_at: string;
+          credit_minor: number;
+          currency: string;
+          debit_minor: number;
+          id: string;
+          memo: string;
+          org_id: string | null;
+          payment_id: string | null;
+          payout_id: string | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          account: Database["public"]["Enums"]["ledger_account"];
+          created_at?: string;
+          credit_minor?: number;
+          currency: string;
+          debit_minor?: number;
+          id?: string;
+          memo: string;
+          org_id?: string | null;
+          payment_id?: string | null;
+          payout_id?: string | null;
+        };
+        Update: {
+          account?: Database["public"]["Enums"]["ledger_account"];
+          created_at?: string;
+          credit_minor?: number;
+          currency?: string;
+          debit_minor?: number;
+          id?: string;
+          memo?: string;
+          org_id?: string | null;
+          payment_id?: string | null;
+          payout_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "ledger_entries_currency_currencies_code_fk";
+            columns: ["currency"];
+            isOneToOne: false;
+            referencedRelation: "currencies";
+            referencedColumns: ["code"];
+          },
+          {
+            foreignKeyName: "ledger_entries_org_id_orgs_id_fk";
+            columns: ["org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "ledger_entries_payment_id_payments_id_fk";
+            columns: ["payment_id"];
+            isOneToOne: false;
+            referencedRelation: "payments";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       locales: {
         Row: {
           code: string;
@@ -813,6 +908,13 @@ export type Database = {
             columns: ["org_id"];
             isOneToOne: false;
             referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "manifest_entries_ticket_id_tickets_id_fk";
+            columns: ["ticket_id"];
+            isOneToOne: false;
+            referencedRelation: "tickets";
             referencedColumns: ["id"];
           },
           {
@@ -928,6 +1030,36 @@ export type Database = {
             columns: ["user_id"];
             isOneToOne: false;
             referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      org_settlement_accounts: {
+        Row: {
+          created_at: string;
+          org_id: string;
+          provider: string;
+          subaccount_code: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          org_id: string;
+          provider: string;
+          subaccount_code: string;
+        };
+        Update: {
+          created_at?: string;
+          org_id?: string;
+          provider?: string;
+          subaccount_code?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "org_settlement_accounts_org_id_orgs_id_fk";
+            columns: ["org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
             referencedColumns: ["id"];
           },
         ];
@@ -1061,6 +1193,157 @@ export type Database = {
           },
         ];
       };
+      payments: {
+        Row: {
+          amount_minor: number;
+          created_at: string;
+          currency: string;
+          id: string;
+          org_id: string;
+          paid_at: string | null;
+          payer_org_id: string | null;
+          payer_user_id: string | null;
+          platform_fee_minor: number;
+          provider: Database["public"]["Enums"]["payment_method"];
+          provider_fee_minor: number;
+          provider_ref: string;
+          purpose: Database["public"]["Enums"]["payment_purpose"];
+          raw: Json | null;
+          reference_id: string;
+          reference_type: string;
+          status: Database["public"]["Enums"]["payment_status"];
+        };
+        ComputedFields: never;
+        Insert: {
+          amount_minor: number;
+          created_at?: string;
+          currency: string;
+          id?: string;
+          org_id: string;
+          paid_at?: string | null;
+          payer_org_id?: string | null;
+          payer_user_id?: string | null;
+          platform_fee_minor?: number;
+          provider: Database["public"]["Enums"]["payment_method"];
+          provider_fee_minor?: number;
+          provider_ref: string;
+          purpose: Database["public"]["Enums"]["payment_purpose"];
+          raw?: Json | null;
+          reference_id: string;
+          reference_type: string;
+          status?: Database["public"]["Enums"]["payment_status"];
+        };
+        Update: {
+          amount_minor?: number;
+          created_at?: string;
+          currency?: string;
+          id?: string;
+          org_id?: string;
+          paid_at?: string | null;
+          payer_org_id?: string | null;
+          payer_user_id?: string | null;
+          platform_fee_minor?: number;
+          provider?: Database["public"]["Enums"]["payment_method"];
+          provider_fee_minor?: number;
+          provider_ref?: string;
+          purpose?: Database["public"]["Enums"]["payment_purpose"];
+          raw?: Json | null;
+          reference_id?: string;
+          reference_type?: string;
+          status?: Database["public"]["Enums"]["payment_status"];
+        };
+        Relationships: [
+          {
+            foreignKeyName: "payments_currency_currencies_code_fk";
+            columns: ["currency"];
+            isOneToOne: false;
+            referencedRelation: "currencies";
+            referencedColumns: ["code"];
+          },
+          {
+            foreignKeyName: "payments_org_id_orgs_id_fk";
+            columns: ["org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      plan_prices: {
+        Row: {
+          active_from: string;
+          country_code: string | null;
+          currency: string;
+          id: string;
+          plan_code: string;
+          price_minor: number;
+        };
+        ComputedFields: never;
+        Insert: {
+          active_from?: string;
+          country_code?: string | null;
+          currency: string;
+          id?: string;
+          plan_code: string;
+          price_minor: number;
+        };
+        Update: {
+          active_from?: string;
+          country_code?: string | null;
+          currency?: string;
+          id?: string;
+          plan_code?: string;
+          price_minor?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "plan_prices_country_code_countries_code_fk";
+            columns: ["country_code"];
+            isOneToOne: false;
+            referencedRelation: "countries";
+            referencedColumns: ["code"];
+          },
+          {
+            foreignKeyName: "plan_prices_currency_currencies_code_fk";
+            columns: ["currency"];
+            isOneToOne: false;
+            referencedRelation: "currencies";
+            referencedColumns: ["code"];
+          },
+          {
+            foreignKeyName: "plan_prices_plan_code_plans_code_fk";
+            columns: ["plan_code"];
+            isOneToOne: false;
+            referencedRelation: "plans";
+            referencedColumns: ["code"];
+          },
+        ];
+      };
+      plans: {
+        Row: {
+          code: string;
+          limits: NonNullable<Json>;
+          mode: string;
+          name_key: string;
+          unit: Database["public"]["Enums"]["plan_unit"];
+        };
+        ComputedFields: never;
+        Insert: {
+          code: string;
+          limits?: NonNullable<Json>;
+          mode: string;
+          name_key: string;
+          unit: Database["public"]["Enums"]["plan_unit"];
+        };
+        Update: {
+          code?: string;
+          limits?: NonNullable<Json>;
+          mode?: string;
+          name_key?: string;
+          unit?: Database["public"]["Enums"]["plan_unit"];
+        };
+        Relationships: [];
+      };
       platform_admins: {
         Row: {
           created_at: string;
@@ -1121,6 +1404,42 @@ export type Database = {
           whatsapp_opt_in?: boolean;
         };
         Relationships: [];
+      };
+      reconciliation_issues: {
+        Row: {
+          created_at: string;
+          detail: NonNullable<Json>;
+          id: string;
+          kind: string;
+          payment_id: string | null;
+          resolved_at: string | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          detail?: NonNullable<Json>;
+          id?: string;
+          kind: string;
+          payment_id?: string | null;
+          resolved_at?: string | null;
+        };
+        Update: {
+          created_at?: string;
+          detail?: NonNullable<Json>;
+          id?: string;
+          kind?: string;
+          payment_id?: string | null;
+          resolved_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reconciliation_issues_payment_id_payments_id_fk";
+            columns: ["payment_id"];
+            isOneToOne: false;
+            referencedRelation: "payments";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       regulators: {
         Row: {
@@ -1605,6 +1924,74 @@ export type Database = {
           },
         ];
       };
+      subscriptions: {
+        Row: {
+          amount_minor: number;
+          created_at: string;
+          currency: string;
+          id: string;
+          org_id: string;
+          period_end: string | null;
+          period_start: string | null;
+          plan_code: string;
+          provider_subscription_ref: string | null;
+          quantity: number;
+          status: Database["public"]["Enums"]["subscription_status"];
+          updated_at: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          amount_minor: number;
+          created_at?: string;
+          currency: string;
+          id?: string;
+          org_id: string;
+          period_end?: string | null;
+          period_start?: string | null;
+          plan_code: string;
+          provider_subscription_ref?: string | null;
+          quantity?: number;
+          status?: Database["public"]["Enums"]["subscription_status"];
+          updated_at?: string;
+        };
+        Update: {
+          amount_minor?: number;
+          created_at?: string;
+          currency?: string;
+          id?: string;
+          org_id?: string;
+          period_end?: string | null;
+          period_start?: string | null;
+          plan_code?: string;
+          provider_subscription_ref?: string | null;
+          quantity?: number;
+          status?: Database["public"]["Enums"]["subscription_status"];
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "subscriptions_currency_currencies_code_fk";
+            columns: ["currency"];
+            isOneToOne: false;
+            referencedRelation: "currencies";
+            referencedColumns: ["code"];
+          },
+          {
+            foreignKeyName: "subscriptions_org_id_orgs_id_fk";
+            columns: ["org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "subscriptions_plan_code_plans_code_fk";
+            columns: ["plan_code"];
+            isOneToOne: false;
+            referencedRelation: "plans";
+            referencedColumns: ["code"];
+          },
+        ];
+      };
       sync_ops: {
         Row: {
           client_id: string;
@@ -1679,6 +2066,109 @@ export type Database = {
             columns: ["rule_set_id"];
             isOneToOne: false;
             referencedRelation: "compliance_rule_sets";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      tickets: {
+        Row: {
+          buyer_name: string;
+          buyer_phone: string | null;
+          channel: Database["public"]["Enums"]["ticket_channel"];
+          code: string;
+          created_at: string;
+          currency: string;
+          fee_bearer: Database["public"]["Enums"]["fee_bearer"];
+          id: string;
+          org_id: string;
+          passenger_user_id: string | null;
+          payment_id: string | null;
+          platform_fee_minor: number;
+          qty: number;
+          reserved_until: string | null;
+          route_id: string | null;
+          status: Database["public"]["Enums"]["ticket_status"];
+          total_minor: number;
+          trip_id: string;
+          unit_price_minor: number;
+        };
+        ComputedFields: never;
+        Insert: {
+          buyer_name: string;
+          buyer_phone?: string | null;
+          channel: Database["public"]["Enums"]["ticket_channel"];
+          code: string;
+          created_at?: string;
+          currency: string;
+          fee_bearer: Database["public"]["Enums"]["fee_bearer"];
+          id?: string;
+          org_id: string;
+          passenger_user_id?: string | null;
+          payment_id?: string | null;
+          platform_fee_minor: number;
+          qty: number;
+          reserved_until?: string | null;
+          route_id?: string | null;
+          status?: Database["public"]["Enums"]["ticket_status"];
+          total_minor: number;
+          trip_id: string;
+          unit_price_minor: number;
+        };
+        Update: {
+          buyer_name?: string;
+          buyer_phone?: string | null;
+          channel?: Database["public"]["Enums"]["ticket_channel"];
+          code?: string;
+          created_at?: string;
+          currency?: string;
+          fee_bearer?: Database["public"]["Enums"]["fee_bearer"];
+          id?: string;
+          org_id?: string;
+          passenger_user_id?: string | null;
+          payment_id?: string | null;
+          platform_fee_minor?: number;
+          qty?: number;
+          reserved_until?: string | null;
+          route_id?: string | null;
+          status?: Database["public"]["Enums"]["ticket_status"];
+          total_minor?: number;
+          trip_id?: string;
+          unit_price_minor?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "tickets_currency_currencies_code_fk";
+            columns: ["currency"];
+            isOneToOne: false;
+            referencedRelation: "currencies";
+            referencedColumns: ["code"];
+          },
+          {
+            foreignKeyName: "tickets_org_id_orgs_id_fk";
+            columns: ["org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tickets_payment_id_payments_id_fk";
+            columns: ["payment_id"];
+            isOneToOne: false;
+            referencedRelation: "payments";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tickets_route_id_routes_id_fk";
+            columns: ["route_id"];
+            isOneToOne: false;
+            referencedRelation: "routes";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tickets_trip_id_trips_id_fk";
+            columns: ["trip_id"];
+            isOneToOne: false;
+            referencedRelation: "trips";
             referencedColumns: ["id"];
           },
         ];
@@ -1990,6 +2480,31 @@ export type Database = {
         };
         Relationships: [];
       };
+      webhook_events: {
+        Row: {
+          event_id: string;
+          payload: NonNullable<Json>;
+          processed_at: string | null;
+          provider: string;
+          received_at: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          event_id: string;
+          payload: NonNullable<Json>;
+          processed_at?: string | null;
+          provider: string;
+          received_at?: string;
+        };
+        Update: {
+          event_id?: string;
+          payload?: NonNullable<Json>;
+          processed_at?: string | null;
+          provider?: string;
+          received_at?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: {
       documents_live: {
@@ -2104,6 +2619,7 @@ export type Database = {
         };
         Returns: Database["public"]["Enums"]["document_status"];
       };
+      fee_bps: { Args: { p_country: string; p_key: string; p_on?: string }; Returns: number };
       has_role: {
         Args: { p_org: string; p_roles?: Database["public"]["Enums"]["membership_role"][] };
         Returns: boolean;
@@ -2120,6 +2636,50 @@ export type Database = {
       materialise_schedule_trips: { Args: { p_date: string; p_org: string }; Returns: number };
       new_rule_set_version: { Args: { p_id: string }; Returns: string };
       publish_rule_set: { Args: { p_id: string; p_note?: string }; Returns: undefined };
+      reserve_ticket: {
+        Args: {
+          p_buyer_name: string;
+          p_buyer_phone: string;
+          p_channel: Database["public"]["Enums"]["ticket_channel"];
+          p_code: string;
+          p_currency: string;
+          p_fee_bearer: Database["public"]["Enums"]["fee_bearer"];
+          p_hold_minutes: number;
+          p_passenger_user?: string;
+          p_platform_fee_minor: number;
+          p_qty: number;
+          p_total_minor: number;
+          p_trip: string;
+          p_unit_price_minor: number;
+        };
+        Returns: {
+          buyer_name: string;
+          buyer_phone: string | null;
+          channel: Database["public"]["Enums"]["ticket_channel"];
+          code: string;
+          created_at: string;
+          currency: string;
+          fee_bearer: Database["public"]["Enums"]["fee_bearer"];
+          id: string;
+          org_id: string;
+          passenger_user_id: string | null;
+          payment_id: string | null;
+          platform_fee_minor: number;
+          qty: number;
+          reserved_until: string | null;
+          route_id: string | null;
+          status: Database["public"]["Enums"]["ticket_status"];
+          total_minor: number;
+          trip_id: string;
+          unit_price_minor: number;
+        };
+        SetofOptions: {
+          from: "*";
+          to: "tickets";
+          isOneToOne: true;
+          isSetofReturn: false;
+        };
+      };
       safety_defaults_for: {
         Args: { p_country: string };
         Returns: {
@@ -2150,19 +2710,27 @@ export type Database = {
       crew_status: "active" | "inactive";
       data_region: "af" | "eu" | "us";
       document_status: "needs_review" | "valid" | "expiring" | "expired" | "rejected";
+      fee_bearer: "passenger" | "operator";
       jetty_status: "proposed" | "active";
       launch_status: "planned" | "validating" | "pilot" | "live";
+      ledger_account: "escrow" | "platform_revenue" | "payee_payable" | "provider_fees";
       membership_role: "owner" | "manager" | "captain" | "crew" | "charterer";
       membership_status: "active" | "suspended";
       org_type: "ferry_operator" | "vessel_owner" | "charterer" | "barge_operator";
       override_decision: "approved" | "declined";
+      payment_method: "paystack" | "flutterwave" | "stripe" | "fake" | "cash" | "transfer_manual";
       payment_provider: "paystack" | "flutterwave" | "stripe";
       payment_purpose: "ticket" | "subscription" | "invoice" | "charter_escrow" | "payout";
+      payment_status: "initiated" | "success" | "failed" | "refunded";
+      plan_unit: "per_org" | "per_vessel";
       regulator_scope: "national" | "state" | "port";
       rule_set_status: "draft" | "published" | "retired";
       rule_severity: "block" | "warn";
       safety_result: "pass" | "warn" | "block";
+      subscription_status: "trialing" | "active" | "past_due" | "read_only" | "cancelled";
       sync_op_status: "applied" | "conflict" | "rejected";
+      ticket_channel: "online" | "agent_cash" | "agent_transfer";
+      ticket_status: "reserved" | "paid" | "used" | "refunded" | "cancelled";
       trip_source: "app" | "whatsapp_voice" | "whatsapp_text" | "sms" | "admin";
       trip_status: "scheduled" | "boarding" | "departed" | "arrived" | "cancelled";
       verification_status: "unverified" | "pending" | "verified";
@@ -2292,19 +2860,27 @@ export const Constants = {
       crew_status: ["active", "inactive"],
       data_region: ["af", "eu", "us"],
       document_status: ["needs_review", "valid", "expiring", "expired", "rejected"],
+      fee_bearer: ["passenger", "operator"],
       jetty_status: ["proposed", "active"],
       launch_status: ["planned", "validating", "pilot", "live"],
+      ledger_account: ["escrow", "platform_revenue", "payee_payable", "provider_fees"],
       membership_role: ["owner", "manager", "captain", "crew", "charterer"],
       membership_status: ["active", "suspended"],
       org_type: ["ferry_operator", "vessel_owner", "charterer", "barge_operator"],
       override_decision: ["approved", "declined"],
+      payment_method: ["paystack", "flutterwave", "stripe", "fake", "cash", "transfer_manual"],
       payment_provider: ["paystack", "flutterwave", "stripe"],
       payment_purpose: ["ticket", "subscription", "invoice", "charter_escrow", "payout"],
+      payment_status: ["initiated", "success", "failed", "refunded"],
+      plan_unit: ["per_org", "per_vessel"],
       regulator_scope: ["national", "state", "port"],
       rule_set_status: ["draft", "published", "retired"],
       rule_severity: ["block", "warn"],
       safety_result: ["pass", "warn", "block"],
+      subscription_status: ["trialing", "active", "past_due", "read_only", "cancelled"],
       sync_op_status: ["applied", "conflict", "rejected"],
+      ticket_channel: ["online", "agent_cash", "agent_transfer"],
+      ticket_status: ["reserved", "paid", "used", "refunded", "cancelled"],
       trip_source: ["app", "whatsapp_voice", "whatsapp_text", "sms", "admin"],
       trip_status: ["scheduled", "boarding", "departed", "arrived", "cancelled"],
       verification_status: ["unverified", "pending", "verified"],

@@ -9,3 +9,4 @@ export * from "./identity";
 export * from "./localisation";
 export * from "./sync";
 export * from "./safety";
+export * from "./payments";

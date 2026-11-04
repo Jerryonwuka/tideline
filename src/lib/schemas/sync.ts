@@ -159,5 +159,7 @@ export interface CaptainSnapshot {
     seats: number;
     amendment: boolean;
     createdAt: string;
+    /** Boarded by ticket at the jetty. */
+    boarded?: boolean;
   }[];
 }

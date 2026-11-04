@@ -128,9 +128,12 @@ export interface PaymentProvider {
   parseWebhook(input: WebhookInput): Promise<PaymentEvent>;
 }
 
+/** Stable name to recognise the error by (class names are minified in production builds). */
+export const WEBHOOK_SIGNATURE_ERROR = "WebhookSignatureError";
+
 export class WebhookSignatureError extends Error {
   constructor(provider: PaymentProviderId) {
     super(`Invalid webhook signature from ${provider}`);
-    this.name = "WebhookSignatureError";
+    this.name = WEBHOOK_SIGNATURE_ERROR;
   }
 }

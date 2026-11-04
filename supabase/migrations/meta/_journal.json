@@ -50,6 +50,13 @@
       "when": 1793805958779,
       "tag": "20261104152558_m6_safety",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1793813663926,
+      "tag": "20261104173423_m7_payments",
+      "breakpoints": true
     }
   ]
 }

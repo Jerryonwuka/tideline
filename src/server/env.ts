@@ -14,6 +14,11 @@ const schema = z
     SEND_SMS_HOOK_SECRET: z.string().optional(),
     /** Weather needs no key, so it can be live while other integrations are fake. */
     WEATHER_PROVIDER: z.enum(["fake", "open-meteo"]).optional(),
+    /** Payments can be live (provider test or live keys) while other integrations are fake. */
+    PAYMENTS_MODE: z.enum(["fake", "live"]).default("fake"),
+    PAYSTACK_SECRET_KEY: z.string().optional(),
+    FLUTTERWAVE_SECRET_KEY: z.string().optional(),
+    FLUTTERWAVE_WEBHOOK_HASH: z.string().optional(),
   })
   .refine((env) => env.APP_ENV === "local" || env.INTEGRATIONS_MODE === "live", {
     message: "Fake integrations are only allowed when APP_ENV=local",
