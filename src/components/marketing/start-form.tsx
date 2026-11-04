@@ -10,7 +10,8 @@ export const START_PHONE_KEY = "tl_start_phone";
 
 /**
  * Phone number in, straight to sign-up. The number is handed to the login page through
- * sessionStorage, never the URL.
+ * sessionStorage, never the URL. Without JavaScript the form still lands on /login (the input has
+ * no name, so nothing is put in the query string).
  */
 export function StartForm({ id }: { id?: string }) {
   const t = useTranslations("home.start");
@@ -28,7 +29,7 @@ export function StartForm({ id }: { id?: string }) {
   }
 
   return (
-    <form id={id} onSubmit={onSubmit} className="group/brackets relative w-full max-w-md scroll-mt-32">
+    <form id={id} action="/login" onSubmit={onSubmit} className="group/brackets relative w-full max-w-md scroll-mt-32">
       <Brackets size={8} offset={6} className="text-foreground/40" />
       <div className="flex items-center gap-1.5 rounded-xs border border-hairline-strong bg-surface/70 p-1.5 backdrop-blur">
         <label htmlFor={`${id ?? "start"}-phone`} className="sr-only">
@@ -48,7 +49,7 @@ export function StartForm({ id }: { id?: string }) {
           {t("button")}
         </Button>
       </div>
-      <p className="mt-3 text-center label-mono-sm text-meta">{t("note")}</p>
+      <p className="mt-3 label-mono-sm text-meta">{t("note")}</p>
     </form>
   );
 }

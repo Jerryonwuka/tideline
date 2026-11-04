@@ -25,7 +25,7 @@ export function ModeTabs() {
       <div
         role="tablist"
         aria-label={t("tablist")}
-        className="mx-auto flex w-fit rounded-xs border border-hairline-strong"
+        className="flex w-fit max-w-full overflow-x-auto rounded-xs border border-hairline-strong"
       >
         {MODES.map((m) => (
           <button

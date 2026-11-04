@@ -27,7 +27,37 @@
       "title": "The operating system for your fleet",
       "bodyStart": "Manifests, safety checks, certificates and charters in one place — on any phone, ",
       "bodyHighlight": "even offline",
-      "bodyEnd": "."
+      "bodyEnd": ".",
+      "ship": {
+        "aria": "Interactive blueprint of a passenger vessel. Drag to rotate it; select a point to read about it.",
+        "title": "GA plan · MV Tideline",
+        "subtitle": "Passenger vessel · Drawing 01",
+        "heading": "HDG",
+        "scale": "0 — 10 m",
+        "hint": "Drag to rotate · tap a point",
+        "spots": {
+          "bridge": {
+            "label": "Bridge",
+            "title": "The captain’s app",
+            "body": "Today’s trips, the manifest and the safety lock on the captain’s phone, even offline."
+          },
+          "lifeboats": {
+            "label": "Lifeboats",
+            "title": "Life jackets and capacity",
+            "body": "Every departure confirms life jackets and counts passengers against seats. No override."
+          },
+          "hull": {
+            "label": "Hull",
+            "title": "Certificates on record",
+            "body": "Registration, class and insurance read from a photo, with alerts long before they expire."
+          },
+          "engine": {
+            "label": "Engine room",
+            "title": "Fuel and running costs",
+            "body": "Log fuel and expenses by voice note; they roll into each boat’s daily report."
+          }
+        }
+      }
     },
     "start": {
       "label": "Your phone number",
@@ -116,25 +146,24 @@
         "title": "A safety lock on every departure",
         "body": "Weather, daylight, capacity and documents are checked before a boat can leave the jetty.",
         "demo": {
-          "aria": "Four check layers stacked under a trip: weather, daylight, capacity and documents",
-          "top": "CLEARED TO DEPART",
-          "layers": ["WEATHER", "DAYLIGHT", "CAPACITY", "DOCUMENTS"]
+          "aria": "Blueprint of a lifeboat hanging from its davits, with the four departure checks.",
+          "top": "Cleared to depart",
+          "checks": ["Weather", "Daylight", "Capacity", "Documents"]
         }
       },
       "connect": {
         "title": "Connected where you work",
         "body": "WhatsApp, SMS, card and transfer payments, live weather and maps — already wired in.",
         "demo": {
-          "items": {
-            "whatsapp": "WhatsApp",
-            "payments": "Payments",
-            "weather": "Weather",
-            "documents": "Documents",
-            "sms": "SMS",
-            "maps": "Maps"
-          }
+          "aria": "Blueprint of a ship’s communications mast with radar, GPS, satellite and radio antennas.",
+          "radar": "Radar · Weather",
+          "gps": "GPS · Live map",
+          "satcom": "Satcom · Payments",
+          "vhf": "VHF · WhatsApp",
+          "cell": "4G · SMS"
         }
-      }
+      },
+      "eyebrow": "Platform"
     },
     "process": {
       "title": "How a voyage runs on Tideline",
@@ -220,7 +249,8 @@
           "title": "Close and report",
           "body": "Takings, passengers and fuel roll up into a daily report for the owner, by boat and by route."
         }
-      ]
+      ],
+      "eyebrow": "How it works"
     },
     "modes": {
       "title": "Ferry, charter and compliance on one platform",
@@ -342,7 +372,8 @@
           "footer": "Next alert: tomorrow, 07:00",
           "action": "Renew"
         }
-      }
+      },
+      "eyebrow": "Modes"
     },
     "field": {
       "title": "Built for the water, not the office",
@@ -359,7 +390,8 @@
           "title": "Any phone",
           "body": "Light enough for a low-cost Android on a slow network, readable in full sun."
         }
-      ]
+      ],
+      "eyebrow": "In the field"
     },
     "faq": {
       "title": "Questions, answered",
@@ -388,7 +420,8 @@
           "q": "Where is Tideline available?",
           "a": "We’re launching in Nigeria with Lagos ferry operators and offshore support vessels. Other countries follow as we validate each market."
         }
-      ]
+      ],
+      "eyebrow": "FAQ"
     },
     "cta": {
       "title": "Bring your fleet on board.",

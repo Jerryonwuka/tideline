@@ -146,6 +146,7 @@
   --info: var(--color-sky-600);
   --glow: rgb(36 87 214 / 0.1);
   --glow-strong: rgb(36 87 214 / 0.16);
+  --blueprint-line: #2457d6;
   --panel: linear-gradient(180deg, #ffffff, #f9fafc);
   --shadow-sm-value: 0 1px 2px rgb(10 13 20 / 0.06);
   --shadow-md-value: 0 8px 24px rgb(10 13 20 / 0.08);
@@ -174,6 +175,7 @@
   --info: var(--color-sky-300);
   --glow: rgb(79 127 232 / 0.16);
   --glow-strong: rgb(120 160 255 / 0.24);
+  --blueprint-line: #a9c7ff;
   --panel: linear-gradient(180deg, rgb(255 255 255 / 0.045), rgb(255 255 255 / 0.015));
   --shadow-sm-value: 0 1px 2px rgb(0 0 0 / 0.3);
   --shadow-md-value: 0 8px 24px rgb(0 0 0 / 0.4);
@@ -203,6 +205,7 @@
   --info: var(--color-sky-600);
   --glow: rgb(36 87 214 / 0.1);
   --glow-strong: rgb(36 87 214 / 0.16);
+  --blueprint-line: #2457d6;
   --panel: linear-gradient(180deg, #ffffff, #f9fafc);
   --shadow-sm-value: 0 1px 2px rgb(10 13 20 / 0.06);
   --shadow-md-value: 0 8px 24px rgb(10 13 20 / 0.08);
@@ -230,6 +233,7 @@
   --info: var(--color-sky-300);
   --glow: rgb(79 127 232 / 0.16);
   --glow-strong: rgb(120 160 255 / 0.24);
+  --blueprint-line: #a9c7ff;
   --panel: linear-gradient(180deg, rgb(255 255 255 / 0.045), rgb(255 255 255 / 0.015));
   --shadow-sm-value: 0 1px 2px rgb(0 0 0 / 0.3);
   --shadow-md-value: 0 8px 24px rgb(0 0 0 / 0.4);
@@ -413,5 +417,14 @@
   }
   50% {
     opacity: 0.45;
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
   }
 }
