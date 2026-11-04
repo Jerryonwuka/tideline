@@ -17,7 +17,9 @@ export const auditLogs = pgTable(
     after: jsonb("after"),
     reason: text("reason"),
     ip: text("ip"),
-    at: timestamp("at", { withTimezone: true }).notNull().default(sql`now()`),
+    at: timestamp("at", { withTimezone: true })
+      .notNull()
+      .default(sql`now()`),
   },
   (t) => [index("audit_logs_org_at_idx").on(t.orgId, t.at), index("audit_logs_entity_idx").on(t.entity, t.entityId)],
 );

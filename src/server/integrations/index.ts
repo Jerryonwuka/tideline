@@ -33,22 +33,24 @@ export function createFakeIntegrations(): Integrations {
   };
 }
 
-let instance: Integrations | undefined;
+// Kept on globalThis so route handlers, server actions and pages share one instance in dev
+// (Next can load a module more than once across bundles).
+const holder = globalThis as unknown as { __tidelineIntegrations?: Integrations };
 
 /** Process-wide integrations. Live vendor implementations are added milestone by milestone. */
 export function integrations(): Integrations {
-  if (instance) return instance;
+  if (holder.__tidelineIntegrations) return holder.__tidelineIntegrations;
   const mode = serverEnv().INTEGRATIONS_MODE;
   if (mode === "live") {
     throw new Error("INTEGRATIONS_MODE=live: no live integrations are implemented yet");
   }
-  instance = createFakeIntegrations();
-  return instance;
+  holder.__tidelineIntegrations = createFakeIntegrations();
+  return holder.__tidelineIntegrations;
 }
 
 /** Tests can swap in configured fakes. */
 export function setIntegrationsForTesting(value: Integrations | undefined): void {
-  instance = value;
+  holder.__tidelineIntegrations = value;
 }
 
 export type { LlmClient, MessagingClient, OcrClient, PaymentProvider, SttClient, WeatherClient };

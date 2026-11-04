@@ -19,7 +19,9 @@
     "db:migrate": "supabase migration up",
     "db:reset": "supabase db reset",
     "db:seed": "tsx scripts/seed.mts",
-    "db:check": "tsx scripts/db-check.mts"
+    "db:check": "tsx scripts/db-check.mts",
+    "db:types": "supabase gen types typescript --local --schema public > src/lib/database.types.ts && prettier --write src/lib/database.types.ts",
+    "test:rls": "vitest run --config vitest.rls.config.mts"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",

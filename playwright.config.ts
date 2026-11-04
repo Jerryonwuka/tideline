@@ -1,6 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 
-const port = Number(process.env.E2E_PORT ?? 3100);
+// Port 3000: the local Supabase send-SMS hook delivers login codes to this app on that port.
+const port = Number(process.env.E2E_PORT ?? 3000);
 const baseURL = `http://localhost:${port}`;
 
 export default defineConfig({

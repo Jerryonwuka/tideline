@@ -29,12 +29,14 @@ test("theme switch changes to light and persists", async ({ page, isMobile }) =>
   await expect(page.locator("html")).toHaveClass(/light/);
 });
 
-test("get started hands the phone number to the login page", async ({ page }) => {
+test("get started carries the phone number into the login form", async ({ page }) => {
   await openHome(page);
   await page.locator("#start").getByRole("textbox").fill("0803 000 0001");
   await page.locator("#start").getByRole("button", { name: "Get started" }).click();
   await expect(page).toHaveURL(/\/login$/);
-  expect(await page.evaluate(() => sessionStorage.getItem("tl_start_phone"))).toBe("0803 000 0001");
+  // The login page picks the number up from sessionStorage (never the URL) and pre-fills it.
+  await expect(page.getByLabel("Phone number")).toHaveValue("0803 000 0001");
+  expect(await page.evaluate(() => sessionStorage.getItem("tl_start_phone"))).toBeNull();
 });
 
 test("home page uses en-NG wording for Nigerian browsers", async ({ browser }) => {

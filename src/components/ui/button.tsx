@@ -1,5 +1,6 @@
 import { Button as ButtonPrimitive } from "@base-ui/react/button";
 import { cva, type VariantProps } from "class-variance-authority";
+import Link from "next/link";
 import { Brackets } from "@/components/marketing/brackets";
 import { cn } from "@/lib/utils";
 
@@ -48,4 +49,22 @@ function Button({ className, variant = "primary", size = "md", marks, children, 
   );
 }
 
-export { Button, buttonVariants };
+type ButtonLinkProps = React.ComponentProps<typeof Link> & VariantProps<typeof buttonVariants> & { marks?: boolean };
+
+/** A link that looks like a button. Navigation stays a link for assistive tech (no role="button"). */
+function ButtonLink({ className, variant = "primary", size = "md", marks, children, ...props }: ButtonLinkProps) {
+  const showMarks = marks ?? ((variant === "primary" || variant === "secondary") && !String(size).startsWith("icon"));
+  return (
+    <Link
+      data-slot="button"
+      data-variant={variant}
+      className={cn(buttonVariants({ variant, size, className }))}
+      {...props}
+    >
+      {showMarks && <Brackets size={6} offset={4} className="text-foreground/50" />}
+      {children}
+    </Link>
+  );
+}
+
+export { Button, ButtonLink, buttonVariants };

@@ -1,16 +1,5 @@
 import { sql } from "drizzle-orm";
-import {
-  boolean,
-  char,
-  index,
-  jsonb,
-  pgEnum,
-  pgTable,
-  text,
-  timestamp,
-  uniqueIndex,
-  uuid,
-} from "drizzle-orm/pg-core";
+import { boolean, char, index, jsonb, pgEnum, pgTable, text, timestamp, uniqueIndex, uuid } from "drizzle-orm/pg-core";
 import { authUsers } from "drizzle-orm/supabase";
 
 // §5.1 Identity and organisation. RLS policies, functions and triggers live in hand-written
@@ -50,11 +39,16 @@ export const orgs = pgTable("orgs", {
   registrationNumber: text("registration_number"),
   address: text("address"),
   region: text("region"),
-  modes: text("modes").array().notNull().default(sql`'{}'::text[]`),
+  modes: text("modes")
+    .array()
+    .notNull()
+    .default(sql`'{}'::text[]`),
   verificationStatus: verificationStatus("verification_status").notNull().default("unverified"),
   subscriptionStatus: text("subscription_status"),
   /** alert_offsets, fee_bearer, permitted_hours, manager_can_override, require_passenger_names. */
-  settings: jsonb("settings").notNull().default(sql`'{}'::jsonb`),
+  settings: jsonb("settings")
+    .notNull()
+    .default(sql`'{}'::jsonb`),
   ...timestamps,
 });
 

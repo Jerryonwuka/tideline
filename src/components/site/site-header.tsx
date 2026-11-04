@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { Logo } from "@/components/brand/logo";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
-import { Button } from "@/components/ui/button";
+import { Button, ButtonLink } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const LINKS = [
@@ -63,9 +63,9 @@ export function SiteHeader() {
             >
               {t("login")}
             </Link>
-            <Button size="sm" marks={false} nativeButton={false} render={<a href="#start" />}>
+            <ButtonLink size="sm" marks={false} href="#start">
               {t("demo")}
-            </Button>
+            </ButtonLink>
           </div>
           <Button
             variant="ghost"
@@ -99,14 +99,9 @@ export function SiteHeader() {
                 <Link href="/login" className="text-sm text-body">
                   {t("login")}
                 </Link>
-                <Button
-                  size="sm"
-                  marks={false}
-                  nativeButton={false}
-                  render={<a href="#start" onClick={() => setOpen(false)} />}
-                >
+                <ButtonLink size="sm" marks={false} href="#start" onClick={() => setOpen(false)}>
                   {t("demo")}
-                </Button>
+                </ButtonLink>
               </div>
             </div>
           </div>

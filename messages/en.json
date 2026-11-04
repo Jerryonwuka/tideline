@@ -444,5 +444,186 @@
       "made": "Made for the water",
       "rights": "© {year} Tideline"
     }
+  },
+  "roles": {
+    "owner": "Owner",
+    "manager": "Manager",
+    "captain": "Captain",
+    "crew": "Crew",
+    "charterer": "Charterer"
+  },
+  "orgTypes": {
+    "ferry_operator": "Ferry operator",
+    "vessel_owner": "Vessel owner",
+    "charterer": "Charterer",
+    "barge_operator": "Barge operator"
+  },
+  "orgTypeHints": {
+    "ferry_operator": "Passenger boats on scheduled or ad-hoc routes",
+    "vessel_owner": "Crew boats, OSVs and tugs for charter",
+    "charterer": "You hire vessels for your operations",
+    "barge_operator": "Cargo barges on river corridors"
+  },
+  "modeNames": {
+    "ferry": "Ferry",
+    "charter": "Charter",
+    "barge": "Barge"
+  },
+  "modeHints": {
+    "ferry": "Manifests, tickets, safety lock and tracking",
+    "charter": "Certificates, tender packs, contracts and invoices",
+    "barge": "Cargo loads on river corridors"
+  },
+  "errors": {
+    "not_authenticated": "Please log in to continue.",
+    "forbidden": "You don’t have permission to do that.",
+    "not_found": "We couldn’t find that.",
+    "validation": "Some details need fixing.",
+    "invalid_phone": "Enter a valid phone number, for example 0803 123 4567.",
+    "invalid_code": "That code isn’t right or has expired. Check it and try again.",
+    "rate_limited": "Too many attempts. Wait a minute and try again.",
+    "invalid_name": "Enter a name between 2 and 120 characters.",
+    "invalid_country": "Tideline isn’t available in that country yet.",
+    "invalid_modes": "Choose at least one mode.",
+    "already_member": "This person is already in your team.",
+    "invitation_not_found": "This invitation link isn’t valid.",
+    "invitation_used": "This invitation has already been used.",
+    "invitation_expired": "This invitation has expired. Ask for a new one.",
+    "phone_mismatch": "This invitation was sent to a different phone number. Log in with that number to accept it.",
+    "last_owner": "Every company needs at least one owner. Make someone else an owner first.",
+    "admin_only_field": "Only Tideline staff can change that.",
+    "immutable_membership": "That can’t be changed.",
+    "delivery_failed": "We couldn’t send the message. Try again in a moment.",
+    "unknown": "Something went wrong. Try again."
+  },
+  "auth": {
+    "title": "Log in to Tideline",
+    "subtitle": "We’ll send a 6-digit code to your phone. New here? The same code creates your account.",
+    "phoneLabel": "Phone number",
+    "phonePlaceholder": "0803 123 4567",
+    "phoneHint": "Local numbers are read as {country}; add +country code for others.",
+    "sendCode": "Send code",
+    "sending": "Sending…",
+    "codeTitle": "Enter your code",
+    "codeSubtitle": "We sent a 6-digit code to {phone}.",
+    "codeLabel": "6-digit code",
+    "verify": "Log in",
+    "verifying": "Checking…",
+    "changeNumber": "Use a different number",
+    "resend": "Send a new code",
+    "devHint": "Local development: the code is printed in the dev server console.",
+    "terms": "By continuing you agree to Tideline’s terms and privacy notice.",
+    "back": "Back to home"
+  },
+  "onboarding": {
+    "step": "Step {current} of {total}",
+    "profile": {
+      "title": "What should we call you?",
+      "subtitle": "Your name appears on trip logs and when you invite your team.",
+      "nameLabel": "Full name",
+      "namePlaceholder": "Tunde Adeyemi",
+      "submit": "Continue"
+    },
+    "org": {
+      "title": "Set up your company",
+      "subtitle": "Tell us about your business. You can change these details later.",
+      "nameLabel": "Company name",
+      "namePlaceholder": "Lagoon Ferries Ltd",
+      "typeLabel": "What best describes you?",
+      "countryLabel": "Country",
+      "modesLabel": "Turn on modes",
+      "registrationLabel": "Company registration number",
+      "registrationHint": "Optional for now. Needed before your company is verified.",
+      "regionLabel": "State or region",
+      "regionPlaceholder": "Lagos",
+      "submit": "Create company",
+      "creating": "Creating…"
+    }
+  },
+  "shell": {
+    "dashboard": "Dashboard",
+    "members": "Team",
+    "switchOrg": "Switch company",
+    "signOut": "Log out",
+    "account": "Account",
+    "menu": "Menu"
+  },
+  "dashboard": {
+    "title": "Welcome, {name}",
+    "subtitle": "You’re signed in to {org} as {role}.",
+    "nextTitle": "Next steps",
+    "soon": "Coming soon",
+    "steps": {
+      "team": {
+        "title": "Invite your team",
+        "body": "Add captains and crew so they can run trips from their phones.",
+        "action": "Invite people"
+      },
+      "vessels": {
+        "title": "Add your first vessel",
+        "body": "Vessel details, capacity and home jetty."
+      },
+      "documents": {
+        "title": "Upload certificates",
+        "body": "Photograph a certificate; we read the dates for you."
+      }
+    },
+    "verification": {
+      "unverified": "Not yet verified",
+      "pending": "Verification pending",
+      "verified": "Verified"
+    }
+  },
+  "members": {
+    "title": "Team",
+    "subtitle": "People who can sign in to {org}.",
+    "count": "{count, plural, one {# person} other {# people}}",
+    "inviteTitle": "Invite someone",
+    "inviteBody": "They’ll get a link by WhatsApp (or SMS) to join.",
+    "phoneLabel": "Phone number",
+    "roleLabel": "Role",
+    "invite": "Send invite",
+    "inviting": "Sending…",
+    "invited": "Invite sent to {phone}.",
+    "notDelivered": "We couldn’t deliver the message. Share this link with them yourself:",
+    "copyLink": "Copy link",
+    "copied": "Copied",
+    "columns": {
+      "name": "Name",
+      "phone": "Phone",
+      "role": "Role",
+      "status": "Status",
+      "joined": "Joined"
+    },
+    "you": "You",
+    "unnamed": "No name yet",
+    "statuses": {
+      "active": "Active",
+      "suspended": "Suspended"
+    },
+    "remove": "Remove",
+    "removeConfirm": "Remove {name} from the team?",
+    "pendingTitle": "Pending invitations",
+    "expires": "Expires {date}",
+    "revoke": "Revoke",
+    "noPending": "No pending invitations.",
+    "readOnly": "Only owners and managers can manage the team.",
+    "saved": "Saved.",
+    "inviteMessage": {
+      "sms": "{inviter} invited you to join {org} on Tideline as {role}. Accept here: {link}"
+    },
+    "roleFor": "Role for {name}"
+  },
+  "invite": {
+    "title": "You’re invited",
+    "body": "Join {org} on Tideline as {role}.",
+    "login": "Log in to accept",
+    "loginHint": "Use the phone number this invitation was sent to.",
+    "accept": "Accept invitation",
+    "accepting": "Joining…",
+    "invalid": "This invitation link isn’t valid.",
+    "used": "This invitation has already been used.",
+    "expired": "This invitation has expired. Ask whoever invited you for a new link.",
+    "home": "Go to Tideline"
   }
 }

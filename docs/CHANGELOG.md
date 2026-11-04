@@ -27,3 +27,15 @@
 - 3D code is lazy-loaded in the browser only, renders only while on screen, caps pixel density at 1.5 and draws on demand when the visitor prefers reduced motion.
 - E2E tests wait for hydration and run with reduced motion.
 - Follow-up: hero floor grid removed (the ship has its own drafting grid); the safety-lock drawing now fills its tall cell with the checks overlaid at the top; the closing section's grid is replaced by flowing water lines.
+
+## M1 — Auth, organisations, roles and RLS (2026-11-04)
+
+- §5.1 tables (profiles, orgs, memberships, platform_admins, invitations) and §5.6 audit_logs via Drizzle; security in a hand-written migration.
+- `has_role(org_id, roles[])` and `is_platform_admin()`; RLS on every table. Owners manage the org and team; managers invite captains and crew; captains and crew see only their own membership; signed-out visitors read nothing. Users can edit only their own name/locale/time zone, never their phone. Verification status is admin-only. Every org keeps at least one owner.
+- RPCs: `create_org` (org + first owner in one transaction), `create_invitation` (runs as the caller, so policies decide), `accept_invitation` (checks token, expiry, single use and that the phone matches), `invitation_preview` (org name and role only).
+- Append-only `audit_logs` written by triggers for org, membership and invitation changes (created, role changed, accepted, …) with actor and client IP; UPDATE/DELETE/TRUNCATE are rejected even for the database owner.
+- Phone OTP: Supabase Auth generates the code and calls our signed send-SMS hook (`/api/auth/hooks/send-sms`), which delivers it through MessagingClient (Termii in production, the fake locally, which prints the code). Invitations go by WhatsApp template with SMS fallback.
+- REST: `POST /api/v1/auth/otp/send|verify`, `GET|PATCH /me`, `POST /orgs`, `GET|PATCH /orgs/:id`, `GET /orgs/:id/members`, `POST /orgs/:id/invitations`, `POST /invitations/:token/accept`, `PATCH|DELETE /memberships/:id`. Zod on every input; errors as `{error: {code, message, fields?}}`; Bearer tokens accepted for API clients.
+- Screens: login (phone → code), onboarding (name, then company and modes), dashboard, team (invite, change role, remove, revoke), invite link page.
+- Tests: 11 RLS tests against real Postgres (`pnpm test:rls`), unit tests for phone parsing, webhook signatures, redirects and error mapping, and a Playwright flow: owner signs up by OTP, creates an org, invites a captain who accepts and logs in. CI now starts Supabase for RLS and e2e.
+- `pnpm db:seed` creates two orgs, owners, a captain and a platform admin (test phone numbers in `scripts/seed.mts`). Email login and the org settings screen are not in this milestone.
