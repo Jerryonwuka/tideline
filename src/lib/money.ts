@@ -140,7 +140,7 @@ export function compare(a: Money, b: Money): -1 | 0 | 1 {
   return a.amountMinor < b.amountMinor ? -1 : a.amountMinor > b.amountMinor ? 1 : 0;
 }
 
-/** Locale-aware display, e.g. formatMoney(money(2700000n, "NGN"), "en-NG") → "₦27,000.00". */
+/** Locale-aware display, e.g. formatMoney(money(10050n, "USD"), "en-US") → "$100.50". */
 export function formatMoney(m: Money, locale: string, options: { hideZeroFraction?: boolean } = {}): string {
   const digits = minorUnitDigits(m.currency);
   const showFraction = !(options.hideZeroFraction && m.amountMinor % 10n ** BigInt(digits) === 0n);

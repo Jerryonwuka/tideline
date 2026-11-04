@@ -46,6 +46,312 @@ export type Database = {
         };
         Relationships: [];
       };
+      charter_eligibility_rules: {
+        Row: {
+          check: NonNullable<Json>;
+          code: string;
+          description_key: string;
+          id: string;
+          rule_set_id: string;
+          severity: Database["public"]["Enums"]["rule_severity"];
+        };
+        ComputedFields: never;
+        Insert: {
+          check: NonNullable<Json>;
+          code: string;
+          description_key: string;
+          id?: string;
+          rule_set_id: string;
+          severity: Database["public"]["Enums"]["rule_severity"];
+        };
+        Update: {
+          check?: NonNullable<Json>;
+          code?: string;
+          description_key?: string;
+          id?: string;
+          rule_set_id?: string;
+          severity?: Database["public"]["Enums"]["rule_severity"];
+        };
+        Relationships: [
+          {
+            foreignKeyName: "charter_eligibility_rules_rule_set_id_compliance_rule_sets_id_f";
+            columns: ["rule_set_id"];
+            isOneToOne: false;
+            referencedRelation: "compliance_rule_sets";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      compliance_rule_sets: {
+        Row: {
+          country_code: string | null;
+          created_at: string;
+          id: string;
+          legal_review_note: string | null;
+          name: string;
+          published_at: string | null;
+          reviewed_by: string | null;
+          status: Database["public"]["Enums"]["rule_set_status"];
+          version: number;
+        };
+        ComputedFields: never;
+        Insert: {
+          country_code?: string | null;
+          created_at?: string;
+          id?: string;
+          legal_review_note?: string | null;
+          name: string;
+          published_at?: string | null;
+          reviewed_by?: string | null;
+          status?: Database["public"]["Enums"]["rule_set_status"];
+          version: number;
+        };
+        Update: {
+          country_code?: string | null;
+          created_at?: string;
+          id?: string;
+          legal_review_note?: string | null;
+          name?: string;
+          published_at?: string | null;
+          reviewed_by?: string | null;
+          status?: Database["public"]["Enums"]["rule_set_status"];
+          version?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "compliance_rule_sets_country_code_countries_code_fk";
+            columns: ["country_code"];
+            isOneToOne: false;
+            referencedRelation: "countries";
+            referencedColumns: ["code"];
+          },
+          {
+            foreignKeyName: "compliance_rule_sets_reviewed_by_profiles_id_fk";
+            columns: ["reviewed_by"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      countries: {
+        Row: {
+          code: string;
+          data_region: Database["public"]["Enums"]["data_region"];
+          date_order: string;
+          default_currency: string;
+          default_locale: string;
+          default_time_zone: string;
+          enabled: boolean;
+          launch_status: Database["public"]["Enums"]["launch_status"];
+          name: string;
+          phone_prefix: string;
+          updated_at: string | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          code: string;
+          data_region: Database["public"]["Enums"]["data_region"];
+          date_order?: string;
+          default_currency: string;
+          default_locale: string;
+          default_time_zone: string;
+          enabled?: boolean;
+          launch_status?: Database["public"]["Enums"]["launch_status"];
+          name: string;
+          phone_prefix: string;
+          updated_at?: string | null;
+        };
+        Update: {
+          code?: string;
+          data_region?: Database["public"]["Enums"]["data_region"];
+          date_order?: string;
+          default_currency?: string;
+          default_locale?: string;
+          default_time_zone?: string;
+          enabled?: boolean;
+          launch_status?: Database["public"]["Enums"]["launch_status"];
+          name?: string;
+          phone_prefix?: string;
+          updated_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "countries_default_currency_currencies_code_fk";
+            columns: ["default_currency"];
+            isOneToOne: false;
+            referencedRelation: "currencies";
+            referencedColumns: ["code"];
+          },
+          {
+            foreignKeyName: "countries_default_locale_locales_code_fk";
+            columns: ["default_locale"];
+            isOneToOne: false;
+            referencedRelation: "locales";
+            referencedColumns: ["code"];
+          },
+        ];
+      };
+      currencies: {
+        Row: {
+          code: string;
+          enabled: boolean;
+          minor_unit_digits: number;
+          symbol: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          code: string;
+          enabled?: boolean;
+          minor_unit_digits: number;
+          symbol: string;
+        };
+        Update: {
+          code?: string;
+          enabled?: boolean;
+          minor_unit_digits?: number;
+          symbol?: string;
+        };
+        Relationships: [];
+      };
+      document_requirements: {
+        Row: {
+          alert_offsets: number[] | null;
+          applies_to: Database["public"]["Enums"]["applies_to"];
+          document_type_code: string;
+          id: string;
+          mandatory: boolean;
+          modes: string[];
+          regulator_id: string | null;
+          rule_set_id: string;
+          vessel_types: string[];
+        };
+        ComputedFields: never;
+        Insert: {
+          alert_offsets?: number[] | null;
+          applies_to: Database["public"]["Enums"]["applies_to"];
+          document_type_code: string;
+          id?: string;
+          mandatory?: boolean;
+          modes?: string[];
+          regulator_id?: string | null;
+          rule_set_id: string;
+          vessel_types?: string[];
+        };
+        Update: {
+          alert_offsets?: number[] | null;
+          applies_to?: Database["public"]["Enums"]["applies_to"];
+          document_type_code?: string;
+          id?: string;
+          mandatory?: boolean;
+          modes?: string[];
+          regulator_id?: string | null;
+          rule_set_id?: string;
+          vessel_types?: string[];
+        };
+        Relationships: [
+          {
+            foreignKeyName: "document_requirements_document_type_code_document_types_code_fk";
+            columns: ["document_type_code"];
+            isOneToOne: false;
+            referencedRelation: "document_types";
+            referencedColumns: ["code"];
+          },
+          {
+            foreignKeyName: "document_requirements_regulator_id_regulators_id_fk";
+            columns: ["regulator_id"];
+            isOneToOne: false;
+            referencedRelation: "regulators";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "document_requirements_rule_set_id_compliance_rule_sets_id_fk";
+            columns: ["rule_set_id"];
+            isOneToOne: false;
+            referencedRelation: "compliance_rule_sets";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      document_types: {
+        Row: {
+          applies_to: Database["public"]["Enums"]["applies_to"];
+          code: string;
+          default_validity_months: number | null;
+          issuer_name: string | null;
+          name_key: string;
+          rule_set_id: string | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          applies_to: Database["public"]["Enums"]["applies_to"];
+          code: string;
+          default_validity_months?: number | null;
+          issuer_name?: string | null;
+          name_key: string;
+          rule_set_id?: string | null;
+        };
+        Update: {
+          applies_to?: Database["public"]["Enums"]["applies_to"];
+          code?: string;
+          default_validity_months?: number | null;
+          issuer_name?: string | null;
+          name_key?: string;
+          rule_set_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "document_types_rule_set_id_compliance_rule_sets_id_fk";
+            columns: ["rule_set_id"];
+            isOneToOne: false;
+            referencedRelation: "compliance_rule_sets";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      exchange_rates: {
+        Row: {
+          as_of: string;
+          base: string;
+          id: string;
+          quote: string;
+          rate: number;
+          source: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          as_of: string;
+          base: string;
+          id?: string;
+          quote: string;
+          rate: number;
+          source: string;
+        };
+        Update: {
+          as_of?: string;
+          base?: string;
+          id?: string;
+          quote?: string;
+          rate?: number;
+          source?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "exchange_rates_base_currencies_code_fk";
+            columns: ["base"];
+            isOneToOne: false;
+            referencedRelation: "currencies";
+            referencedColumns: ["code"];
+          },
+          {
+            foreignKeyName: "exchange_rates_quote_currencies_code_fk";
+            columns: ["quote"];
+            isOneToOne: false;
+            referencedRelation: "currencies";
+            referencedColumns: ["code"];
+          },
+        ];
+      };
       invitations: {
         Row: {
           accepted_at: string | null;
@@ -111,6 +417,25 @@ export type Database = {
           },
         ];
       };
+      locales: {
+        Row: {
+          code: string;
+          enabled: boolean;
+          name: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          code: string;
+          enabled?: boolean;
+          name: string;
+        };
+        Update: {
+          code?: string;
+          enabled?: boolean;
+          name?: string;
+        };
+        Relationships: [];
+      };
       memberships: {
         Row: {
           created_at: string;
@@ -172,6 +497,9 @@ export type Database = {
           address: string | null;
           country_code: string;
           created_at: string;
+          currency: string;
+          data_region: Database["public"]["Enums"]["data_region"];
+          default_locale: string;
           id: string;
           modes: string[];
           name: string;
@@ -179,6 +507,7 @@ export type Database = {
           registration_number: string | null;
           settings: NonNullable<Json>;
           subscription_status: string | null;
+          time_zone: string;
           type: Database["public"]["Enums"]["org_type"];
           updated_at: string | null;
           verification_status: Database["public"]["Enums"]["verification_status"];
@@ -188,6 +517,9 @@ export type Database = {
           address?: string | null;
           country_code: string;
           created_at?: string;
+          currency: string;
+          data_region: Database["public"]["Enums"]["data_region"];
+          default_locale: string;
           id?: string;
           modes?: string[];
           name: string;
@@ -195,6 +527,7 @@ export type Database = {
           registration_number?: string | null;
           settings?: NonNullable<Json>;
           subscription_status?: string | null;
+          time_zone: string;
           type: Database["public"]["Enums"]["org_type"];
           updated_at?: string | null;
           verification_status?: Database["public"]["Enums"]["verification_status"];
@@ -203,6 +536,9 @@ export type Database = {
           address?: string | null;
           country_code?: string;
           created_at?: string;
+          currency?: string;
+          data_region?: Database["public"]["Enums"]["data_region"];
+          default_locale?: string;
           id?: string;
           modes?: string[];
           name?: string;
@@ -210,11 +546,80 @@ export type Database = {
           registration_number?: string | null;
           settings?: NonNullable<Json>;
           subscription_status?: string | null;
+          time_zone?: string;
           type?: Database["public"]["Enums"]["org_type"];
           updated_at?: string | null;
           verification_status?: Database["public"]["Enums"]["verification_status"];
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "orgs_country_code_countries_code_fk";
+            columns: ["country_code"];
+            isOneToOne: false;
+            referencedRelation: "countries";
+            referencedColumns: ["code"];
+          },
+          {
+            foreignKeyName: "orgs_currency_currencies_code_fk";
+            columns: ["currency"];
+            isOneToOne: false;
+            referencedRelation: "currencies";
+            referencedColumns: ["code"];
+          },
+          {
+            foreignKeyName: "orgs_default_locale_locales_code_fk";
+            columns: ["default_locale"];
+            isOneToOne: false;
+            referencedRelation: "locales";
+            referencedColumns: ["code"];
+          },
+        ];
+      };
+      payment_provider_routes: {
+        Row: {
+          country_code: string;
+          currency: string;
+          enabled: boolean;
+          id: string;
+          priority: number;
+          provider: Database["public"]["Enums"]["payment_provider"];
+          purpose: Database["public"]["Enums"]["payment_purpose"];
+        };
+        ComputedFields: never;
+        Insert: {
+          country_code: string;
+          currency: string;
+          enabled?: boolean;
+          id?: string;
+          priority?: number;
+          provider: Database["public"]["Enums"]["payment_provider"];
+          purpose: Database["public"]["Enums"]["payment_purpose"];
+        };
+        Update: {
+          country_code?: string;
+          currency?: string;
+          enabled?: boolean;
+          id?: string;
+          priority?: number;
+          provider?: Database["public"]["Enums"]["payment_provider"];
+          purpose?: Database["public"]["Enums"]["payment_purpose"];
+        };
+        Relationships: [
+          {
+            foreignKeyName: "payment_provider_routes_country_code_countries_code_fk";
+            columns: ["country_code"];
+            isOneToOne: false;
+            referencedRelation: "countries";
+            referencedColumns: ["code"];
+          },
+          {
+            foreignKeyName: "payment_provider_routes_currency_currencies_code_fk";
+            columns: ["currency"];
+            isOneToOne: false;
+            referencedRelation: "currencies";
+            referencedColumns: ["code"];
+          },
+        ];
       };
       platform_admins: {
         Row: {
@@ -277,12 +682,142 @@ export type Database = {
         };
         Relationships: [];
       };
+      regulators: {
+        Row: {
+          id: string;
+          name: string;
+          rule_set_id: string;
+          scope: Database["public"]["Enums"]["regulator_scope"];
+          short_name: string;
+          website: string | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          id?: string;
+          name: string;
+          rule_set_id: string;
+          scope: Database["public"]["Enums"]["regulator_scope"];
+          short_name: string;
+          website?: string | null;
+        };
+        Update: {
+          id?: string;
+          name?: string;
+          rule_set_id?: string;
+          scope?: Database["public"]["Enums"]["regulator_scope"];
+          short_name?: string;
+          website?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "regulators_rule_set_id_compliance_rule_sets_id_fk";
+            columns: ["rule_set_id"];
+            isOneToOne: false;
+            referencedRelation: "compliance_rule_sets";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      safety_rule_defaults: {
+        Row: {
+          max_gust_kmh: number;
+          max_wave_m: number;
+          max_wind_kmh: number;
+          night_block: boolean;
+          permitted_end: string | null;
+          permitted_start: string | null;
+          rule_set_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          max_gust_kmh: number;
+          max_wave_m: number;
+          max_wind_kmh: number;
+          night_block?: boolean;
+          permitted_end?: string | null;
+          permitted_start?: string | null;
+          rule_set_id: string;
+        };
+        Update: {
+          max_gust_kmh?: number;
+          max_wave_m?: number;
+          max_wind_kmh?: number;
+          night_block?: boolean;
+          permitted_end?: string | null;
+          permitted_start?: string | null;
+          rule_set_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "safety_rule_defaults_rule_set_id_compliance_rule_sets_id_fk";
+            columns: ["rule_set_id"];
+            isOneToOne: true;
+            referencedRelation: "compliance_rule_sets";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      tax_rules: {
+        Row: {
+          applies_to: string;
+          code: string;
+          id: string;
+          label_key: string;
+          rate_bps: number;
+          rule_set_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          applies_to: string;
+          code: string;
+          id?: string;
+          label_key: string;
+          rate_bps: number;
+          rule_set_id: string;
+        };
+        Update: {
+          applies_to?: string;
+          code?: string;
+          id?: string;
+          label_key?: string;
+          rate_bps?: number;
+          rule_set_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "tax_rules_rule_set_id_compliance_rule_sets_id_fk";
+            columns: ["rule_set_id"];
+            isOneToOne: false;
+            referencedRelation: "compliance_rule_sets";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     Views: {
       [_ in never]: never;
     };
     Functions: {
       accept_invitation: { Args: { p_token: string }; Returns: string };
+      compliance_requirements: {
+        Args: {
+          p_applies_to?: Database["public"]["Enums"]["applies_to"];
+          p_country: string;
+          p_modes?: string[];
+          p_vessel_type?: string;
+        };
+        Returns: {
+          alert_offsets: number[];
+          applies_to: Database["public"]["Enums"]["applies_to"];
+          document_type_code: string;
+          mandatory: boolean;
+          name_key: string;
+          regulator: string;
+          rule_set_country: string;
+          rule_set_id: string;
+          rule_set_version: number;
+        }[];
+      };
       create_invitation: {
         Args: {
           p_expires_at: string;
@@ -318,11 +853,21 @@ export type Database = {
         }[];
       };
       is_platform_admin: { Args: Record<PropertyKey, never>; Returns: boolean };
+      new_rule_set_version: { Args: { p_id: string }; Returns: string };
+      publish_rule_set: { Args: { p_id: string; p_note?: string }; Returns: undefined };
     };
     Enums: {
+      applies_to: "vessel" | "crew" | "org";
+      data_region: "af" | "eu" | "us";
+      launch_status: "planned" | "validating" | "pilot" | "live";
       membership_role: "owner" | "manager" | "captain" | "crew" | "charterer";
       membership_status: "active" | "suspended";
       org_type: "ferry_operator" | "vessel_owner" | "charterer" | "barge_operator";
+      payment_provider: "paystack" | "flutterwave" | "stripe";
+      payment_purpose: "ticket" | "subscription" | "invoice" | "charter_escrow" | "payout";
+      regulator_scope: "national" | "state" | "port";
+      rule_set_status: "draft" | "published" | "retired";
+      rule_severity: "block" | "warn";
       verification_status: "unverified" | "pending" | "verified";
     };
     CompositeTypes: {
@@ -431,9 +976,17 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      applies_to: ["vessel", "crew", "org"],
+      data_region: ["af", "eu", "us"],
+      launch_status: ["planned", "validating", "pilot", "live"],
       membership_role: ["owner", "manager", "captain", "crew", "charterer"],
       membership_status: ["active", "suspended"],
       org_type: ["ferry_operator", "vessel_owner", "charterer", "barge_operator"],
+      payment_provider: ["paystack", "flutterwave", "stripe"],
+      payment_purpose: ["ticket", "subscription", "invoice", "charter_escrow", "payout"],
+      regulator_scope: ["national", "state", "port"],
+      rule_set_status: ["draft", "published", "retired"],
+      rule_severity: ["block", "warn"],
       verification_status: ["unverified", "pending", "verified"],
     },
   },

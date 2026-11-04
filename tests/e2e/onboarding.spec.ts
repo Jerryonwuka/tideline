@@ -1,32 +1,8 @@
-import { expect, test, type APIRequestContext, type Page } from "@playwright/test";
+import { expect, test } from "@playwright/test";
+import { logIn, outbox, randomPhone } from "./helpers";
 
 // M1 acceptance: a new user signs up by OTP, creates an org and invites a captain by phone; the
 // captain accepts and logs in. Needs local Supabase (pnpm db:start) and the fake integrations.
-
-const randomPhone = () => `0803${Math.floor(1_000_000 + Math.random() * 8_999_999)}`;
-const e164 = (local: string) => `+234${local.slice(1)}`;
-
-async function outbox(request: APIRequestContext, phone: string) {
-  const res = await request.get(`/api/dev/outbox?phone=${encodeURIComponent(e164(phone))}`);
-  expect(res.ok(), "dev outbox must be enabled (APP_ENV=local, INTEGRATIONS_MODE=fake)").toBe(true);
-  return (await res.json()) as { otps: string[]; messages: { channel: string; text?: string; params?: string[] }[] };
-}
-
-async function logIn(page: Page, phone: string) {
-  const before = (await outbox(page.request, phone)).otps.length;
-  await page.getByLabel("Phone number").fill(phone);
-  await page.getByRole("button", { name: "Send code" }).click();
-  let code = "";
-  await expect
-    .poll(async () => {
-      const { otps } = await outbox(page.request, phone);
-      code = otps[otps.length - 1] ?? "";
-      return otps.length;
-    })
-    .toBeGreaterThan(before);
-  await page.getByLabel("6-digit code").fill(code);
-  await page.getByRole("button", { name: "Log in" }).click();
-}
 
 test("owner signs up, creates an org and invites a captain who joins", async ({ page, browser }) => {
   test.slow();
@@ -41,9 +17,11 @@ test("owner signs up, creates an org and invites a captain who joins", async ({ 
   await page.getByRole("button", { name: "Continue" }).click();
   await expect(page).toHaveURL(/\/onboarding$/);
   await page.getByLabel("Company name").fill("Lagoon Test Ferries");
+  await expect(page.getByText(/Prices in NGN · times in Africa\/Lagos/)).toBeVisible();
   await page.getByRole("button", { name: "Create company" }).click();
   await expect(page).toHaveURL(/\/dashboard$/);
   await expect(page.getByRole("heading", { name: "Welcome, Ada Okafor" })).toBeVisible();
+  // The company form showed the country's defaults before submitting.
 
   // Invite a captain.
   await page.getByRole("link", { name: "Team" }).click();

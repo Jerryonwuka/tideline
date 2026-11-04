@@ -28,6 +28,7 @@ export async function AppShell({
   const links = [
     { href: "/dashboard", label: t("dashboard") },
     ...(MANAGES_TEAM.includes(membership.role) ? [{ href: "/members", label: t("members") }] : []),
+    ...(me.isPlatformAdmin ? [{ href: "/admin/countries", label: t("admin") }] : []),
   ];
 
   return (

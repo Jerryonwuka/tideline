@@ -1,5 +1,4 @@
 import "server-only";
-import { platformConfig } from "@/config/platform";
 import type { TablesUpdate } from "@/lib/database.types";
 import type { CreateOrgInput, UpdateOrgInput } from "@/lib/schemas/orgs";
 import type { Db } from "@/server/supabase/server";
@@ -7,7 +6,6 @@ import { fromDbError, ServiceError } from "./errors";
 
 /** Creates the org and makes the caller its owner (one transaction, in the database). */
 export async function createOrg(db: Db, input: CreateOrgInput): Promise<string> {
-  if (!platformConfig.signupCountries.includes(input.countryCode)) throw new ServiceError("invalid_country");
   const { data, error } = await db.rpc("create_org", {
     p_name: input.name,
     p_type: input.type,

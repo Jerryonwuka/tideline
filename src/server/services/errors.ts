@@ -21,6 +21,9 @@ export const ERROR_CODES = [
   "admin_only_field",
   "immutable_membership",
   "delivery_failed",
+  "country_not_ready",
+  "not_draft",
+  "invalid_time_zone",
   "unknown",
 ] as const;
 export type ErrorCode = (typeof ERROR_CODES)[number];
@@ -45,6 +48,9 @@ const STATUS: Partial<Record<ErrorCode, number>> = {
   admin_only_field: 403,
   immutable_membership: 409,
   delivery_failed: 502,
+  country_not_ready: 409,
+  not_draft: 409,
+  invalid_time_zone: 422,
 };
 
 export class ServiceError extends Error {

@@ -494,7 +494,10 @@
     "admin_only_field": "Only Tideline staff can change that.",
     "immutable_membership": "That can’t be changed.",
     "delivery_failed": "We couldn’t send the message. Try again in a moment.",
-    "unknown": "Something went wrong. Try again."
+    "unknown": "Something went wrong. Try again.",
+    "country_not_ready": "This country can’t be switched on yet: it needs a published rule set, an enabled currency and language, and a payment route.",
+    "not_draft": "Only draft rule sets can be published.",
+    "invalid_time_zone": "That time zone isn’t recognised."
   },
   "auth": {
     "title": "Log in to Tideline",
@@ -537,7 +540,8 @@
       "regionLabel": "State or region",
       "regionPlaceholder": "Lagos",
       "submit": "Create company",
-      "creating": "Creating…"
+      "creating": "Creating…",
+      "countryDefaults": "Prices in {currency} · times in {timeZone}. You can change these later."
     }
   },
   "shell": {
@@ -546,7 +550,8 @@
     "switchOrg": "Switch company",
     "signOut": "Log out",
     "account": "Account",
-    "menu": "Menu"
+    "menu": "Menu",
+    "admin": "Admin"
   },
   "dashboard": {
     "title": "Welcome, {name}",
@@ -625,5 +630,98 @@
     "used": "This invitation has already been used.",
     "expired": "This invitation has expired. Ask whoever invited you for a new link.",
     "home": "Go to Tideline"
+  },
+  "documentTypes": {
+    "class_certificate": "Class certificate",
+    "insurance": "Insurance",
+    "load_line": "Load line certificate",
+    "radio_licence": "Radio licence",
+    "stcw": "STCW certificate",
+    "medical": "Medical certificate",
+    "id_document": "ID document",
+    "other": "Other document",
+    "vessel_registration": "Vessel registration",
+    "laswa_licence": "LASWA licence",
+    "nimasa_certificate": "NIMASA certificate",
+    "cabotage_registration": "Cabotage registration",
+    "safety_equipment": "Safety equipment certificate",
+    "crew_competency": "Crew competency certificate"
+  },
+  "tax": {
+    "vat": "VAT"
+  },
+  "compliance": {
+    "eligibility": {
+      "cabotage": "Cabotage registration must be valid for vessels chartered in this country."
+    }
+  },
+  "admin": {
+    "badge": "Admin",
+    "backToApp": "Back to app",
+    "countries": {
+      "title": "Countries",
+      "subtitle": "Countries switch on only when their rule set, currency, language and payment route are ready.",
+      "columns": {
+        "country": "Country",
+        "defaults": "Defaults",
+        "rules": "Rule set",
+        "status": "Availability"
+      },
+      "enabled": "Open for sign-up",
+      "launchStatusFor": "Launch status for {country}",
+      "statuses": {
+        "planned": "Planned",
+        "validating": "Validating",
+        "pilot": "Pilot",
+        "live": "Live"
+      },
+      "ruleSetVersion": "v{version} published",
+      "noRuleSet": "No published rules",
+      "enableHint": "Turning a country on fails until it has a published rule set, an enabled currency and language, and a payment route."
+    },
+    "ruleSets": {
+      "title": "Rule sets",
+      "subtitle": "Each country’s documents, regulators, safety defaults and tax, versioned. Only the published version is used.",
+      "global": "Global",
+      "requirementCount": "{count, plural, one {# requirement} other {# requirements}}",
+      "publishedOn": "published {date}",
+      "statuses": {
+        "draft": "Draft",
+        "published": "Published",
+        "retired": "Retired"
+      },
+      "publish": "Publish",
+      "publishConfirm": "Publish {name}? The current published version for this country will be retired.",
+      "noteLabel": "Legal review note",
+      "notePlaceholder": "Reviewed by … on …",
+      "newVersion": "New version",
+      "sections": {
+        "requirements": "Document requirements",
+        "regulators": "Regulators",
+        "safety": "Safety defaults",
+        "tax": "Tax"
+      },
+      "columns": {
+        "document": "Document",
+        "appliesTo": "Applies to",
+        "modes": "Modes",
+        "regulator": "Regulator",
+        "mandatory": "Mandatory"
+      },
+      "appliesTo": {
+        "vessel": "Vessel",
+        "crew": "Crew",
+        "org": "Company"
+      },
+      "allModes": "All",
+      "yes": "Yes",
+      "no": "No",
+      "safety": {
+        "wind": "Max wind",
+        "gust": "Max gusts",
+        "wave": "Max wave",
+        "hours": "Permitted hours"
+      }
+    }
   }
 }

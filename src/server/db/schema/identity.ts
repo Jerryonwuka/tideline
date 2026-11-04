@@ -1,6 +1,7 @@
 import { sql } from "drizzle-orm";
 import { boolean, char, index, jsonb, pgEnum, pgTable, text, timestamp, uniqueIndex, uuid } from "drizzle-orm/pg-core";
 import { authUsers } from "drizzle-orm/supabase";
+import { countries, currencies, dataRegion, locales } from "./localisation";
 
 // §5.1 Identity and organisation. RLS policies, functions and triggers live in hand-written
 // SQL migrations next to the generated ones (supabase/migrations).
@@ -32,8 +33,19 @@ export const profiles = pgTable("profiles", {
 
 export const orgs = pgTable("orgs", {
   id: uuid("id").primaryKey().defaultRandom(),
-  /** ISO 3166-1 alpha-2. Foreign key to countries and the currency/zone/locale defaults arrive in M1b. */
-  countryCode: char("country_code", { length: 2 }).notNull(),
+  /** ISO 3166-1 alpha-2. Currency, zone, locale and data region default from the country (M1b). */
+  countryCode: char("country_code", { length: 2 })
+    .notNull()
+    .references(() => countries.code),
+  /** Billing currency. */
+  currency: char("currency", { length: 3 })
+    .notNull()
+    .references(() => currencies.code),
+  timeZone: text("time_zone").notNull(),
+  defaultLocale: text("default_locale")
+    .notNull()
+    .references(() => locales.code),
+  dataRegion: dataRegion("data_region").notNull(),
   name: text("name").notNull(),
   type: orgType("type").notNull(),
   registrationNumber: text("registration_number"),

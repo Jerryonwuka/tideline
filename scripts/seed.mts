@@ -40,9 +40,13 @@ async function ensureUser(phone: string, name: string): Promise<string> {
 async function ensureOrg(name: string, type: string, modes: string[], ownerId: string): Promise<string> {
   const [existing] = await sql`select id from public.orgs where name = ${name}`;
   if (existing) return existing.id as string;
+  // Currency, zone, locale and data region come from the country, as in create_org().
   const [org] = await sql`
-    insert into public.orgs (name, type, country_code, modes, region)
-    values (${name}, ${type}::public.org_type, 'NG', ${modes}, 'Lagos') returning id`;
+    insert into public.orgs (name, type, country_code, currency, time_zone, default_locale, data_region, modes, region)
+    select ${name}, ${type}::public.org_type, c.code, c.default_currency, c.default_time_zone, c.default_locale,
+           c.data_region, ${modes}, 'Lagos'
+    from public.countries c where c.code = 'NG'
+    returning id`;
   await sql`insert into public.memberships (user_id, org_id, role) values (${ownerId}, ${org!.id}, 'owner')`;
   return org!.id as string;
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { FormError } from "@/components/auth/auth-shell";
 import { Button } from "@/components/ui/button";
 import { Input, Label } from "@/components/ui/input";
@@ -12,7 +12,11 @@ import { createOrgAction, type FormState } from "./actions";
 const TYPES = ["ferry_operator", "vessel_owner", "charterer", "barge_operator"] as const;
 const MODES = ["ferry", "charter"] as const;
 
-export function OrgForm({ countries }: { countries: { code: string; name: string }[] }) {
+export function OrgForm({
+  countries,
+}: {
+  countries: { code: string; name: string; currency: string; timeZone: string }[];
+}) {
   const t = useTranslations("onboarding");
   const te = useTranslations("errors");
   const tTypes = useTranslations("orgTypes");
@@ -20,6 +24,8 @@ export function OrgForm({ countries }: { countries: { code: string; name: string
   const tModes = useTranslations("modeNames");
   const tModeHints = useTranslations("modeHints");
   const [state, action, pending] = useActionState<FormState, FormData>(createOrgAction, {});
+  const [countryCode, setCountryCode] = useState(countries[0]?.code ?? "");
+  const country = countries.find((c) => c.code === countryCode);
 
   return (
     <form action={action} className="flex flex-col gap-6">
@@ -90,13 +96,23 @@ export function OrgForm({ countries }: { countries: { code: string; name: string
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="flex flex-col gap-2">
           <Label htmlFor="countryCode">{t("org.countryLabel")}</Label>
-          <NativeSelect id="countryCode" name="countryCode" defaultValue={countries[0]?.code}>
+          <NativeSelect
+            id="countryCode"
+            name="countryCode"
+            value={countryCode}
+            onChange={(e) => setCountryCode(e.target.value)}
+          >
             {countries.map((c) => (
               <option key={c.code} value={c.code}>
                 {c.name}
               </option>
             ))}
           </NativeSelect>
+          {country && (
+            <p className="text-xs text-meta">
+              {t("org.countryDefaults", { currency: country.currency, timeZone: country.timeZone })}
+            </p>
+          )}
         </div>
         <div className="flex flex-col gap-2">
           <Label htmlFor="region">{t("org.regionLabel")}</Label>
