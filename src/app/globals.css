@@ -401,15 +401,6 @@
   }
 }
 
-@keyframes grid-flow {
-  from {
-    background-position: 0 0;
-  }
-  to {
-    background-position: 0 64px;
-  }
-}
-
 @keyframes tile-glow {
   0%,
   100% {
@@ -426,5 +417,15 @@
   }
   to {
     transform: translateX(-50%);
+  }
+}
+
+/* Water lines: each path spans two periods of the viewBox, so shifting by one viewBox width loops seamlessly. */
+@keyframes water-flow {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-1600px);
   }
 }

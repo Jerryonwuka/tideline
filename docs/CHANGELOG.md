@@ -26,3 +26,4 @@
 - Layout pass so the page has its own structure: left-aligned numbered section heads, a scrolling vessel-type strip, a bento platform grid, a timeline for the process steps, row-style field notes and a split closing section.
 - 3D code is lazy-loaded in the browser only, renders only while on screen, caps pixel density at 1.5 and draws on demand when the visitor prefers reduced motion.
 - E2E tests wait for hydration and run with reduced motion.
+- Follow-up: hero floor grid removed (the ship has its own drafting grid); the safety-lock drawing now fills its tall cell with the checks overlaid at the top; the closing section's grid is replaced by flowing water lines.

@@ -70,6 +70,7 @@ export default async function HomePage() {
           <Reveal className="grid gap-px border-y border-hairline bg-hairline lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)]">
             <Feature
               className="lg:row-span-2"
+              stretch
               icon={<ShieldCheck />}
               title={t("platform.safety.title")}
               body={t("platform.safety.body")}
@@ -166,7 +167,7 @@ export default async function HomePage() {
 
         {/* Final call to action */}
         <Frame className="isolate border-t border-hairline">
-          <Horizon className="-z-10" />
+          <Horizon className="-z-10" water />
           <Reveal className="grid items-end gap-10 px-6 py-28 sm:px-12 lg:grid-cols-2 lg:py-36">
             <div>
               <h2 className="max-w-[14ch] display-lg text-balance text-foreground">{t("cta.title")}</h2>
@@ -230,12 +231,15 @@ function Feature({
   title,
   body,
   className,
+  stretch = false,
   children,
 }: {
   icon: ReactNode;
   title: string;
   body: string;
   className?: string;
+  /** Let the illustration fill the remaining height of a tall cell. */
+  stretch?: boolean;
   children: ReactNode;
 }) {
   return (
@@ -247,7 +251,9 @@ function Feature({
       <BracketIcon>{icon}</BracketIcon>
       <h3 className="mt-8 title-lg text-foreground">{title}</h3>
       <p className="mt-3 max-w-[40ch] body-md text-body">{body}</p>
-      <div className="relative mt-10 flex flex-1 items-center justify-center">{children}</div>
+      <div className={cn("relative mt-10 flex flex-1 justify-center", stretch ? "items-stretch" : "items-center")}>
+        {children}
+      </div>
     </div>
   );
 }

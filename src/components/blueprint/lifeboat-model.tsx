@@ -107,8 +107,8 @@ export function LifeboatModel() {
       <Lines geometry={hull.lines} />
       <Part geometry={canopy} threshold={20} />
       <Lines geometry={rig} />
-      <Part geometry={davit} threshold={30} position={[-1.35, 0, 0]} />
-      <Part geometry={davit} threshold={30} position={[1.35, 0, 0]} />
+      <Part geometry={davit} threshold={30} position={[-1.35, 0, 0]} accent />
+      <Part geometry={davit} threshold={30} position={[1.35, 0, 0]} accent />
     </group>
   );
 }

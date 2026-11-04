@@ -23,10 +23,11 @@ export function SafetyScene() {
 
   const cleared = passed >= checks.length;
   return (
-    <div className="relative h-[22rem] w-full sm:h-[26rem]">
+    <div className="relative h-full min-h-[22rem] w-full sm:min-h-[26rem]">
       <BlueprintStage
         label={t("aria")}
-        camera={[6.4, 3.6, 7.6]}
+        fitAspect={1.15}
+        camera={[5.6, 3.1, 6.6]}
         target={[0, 0.1, -0.6]}
         fov={34}
         className="absolute inset-0"
