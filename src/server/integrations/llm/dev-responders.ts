@@ -1,3 +1,4 @@
+import { heuristicDraft, type BotContext } from "@/server/bot/parse";
 import type { FakeLlmClient } from "./fake";
 
 /**
@@ -5,6 +6,11 @@ import type { FakeLlmClient } from "./fake";
  * and says so in `notes`; it is always reviewed by a person like real AI output.
  */
 export function registerDevResponders(llm: FakeLlmClient): FakeLlmClient {
+  // Voice/text logs: the rule-based reader, using the context the prompt carries.
+  llm.respond("voice_log", ({ system, lastUserMessage }: { system: string; lastUserMessage: string }) => {
+    const json = system.slice(system.indexOf("CONTEXT_JSON ") + "CONTEXT_JSON ".length);
+    return heuristicDraft(lastUserMessage, JSON.parse(json) as BotContext);
+  });
   return llm.respond("ocr_extract", ({ lastUserMessage }: { lastUserMessage: string }) => {
     const type = /selected document type: ([a-z_]+)/.exec(lastUserMessage)?.[1] ?? null;
     const today = new Date();

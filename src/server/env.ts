@@ -19,6 +19,11 @@ const schema = z
     PAYSTACK_SECRET_KEY: z.string().optional(),
     FLUTTERWAVE_SECRET_KEY: z.string().optional(),
     FLUTTERWAVE_WEBHOOK_HASH: z.string().optional(),
+    /** WhatsApp Cloud API webhook: app secret (signature) and the verify token for the handshake. */
+    WHATSAPP_APP_SECRET: z.string().optional(),
+    WHATSAPP_VERIFY_TOKEN: z.string().optional(),
+    /** Shared token in the SMS gateway's inbound URL (?token=). */
+    SMS_WEBHOOK_TOKEN: z.string().optional(),
   })
   .refine((env) => env.APP_ENV === "local" || env.INTEGRATIONS_MODE === "live", {
     message: "Fake integrations are only allowed when APP_ENV=local",
@@ -38,4 +43,23 @@ export function serverEnv(): ServerEnv {
 export function devToolsEnabled(): boolean {
   const env = serverEnv();
   return env.APP_ENV === "local" && env.INTEGRATIONS_MODE === "fake";
+}
+
+/**
+ * With local fakes nothing talks to Meta or the SMS gateway, so fixed secrets are used and tests
+ * can sign inbound messages. Real secrets apply whenever integrations are live.
+ */
+export const FAKE_WHATSAPP_SECRET = "fake-whatsapp-secret";
+export const FAKE_SMS_TOKEN = "fake-sms-token";
+
+export function inboundSecrets() {
+  const env = serverEnv();
+  if (devToolsEnabled()) {
+    return { whatsAppSecret: FAKE_WHATSAPP_SECRET, whatsAppVerifyToken: "fake-verify-token", smsToken: FAKE_SMS_TOKEN };
+  }
+  return {
+    whatsAppSecret: env.WHATSAPP_APP_SECRET ?? "",
+    whatsAppVerifyToken: env.WHATSAPP_VERIFY_TOKEN ?? "",
+    smsToken: env.SMS_WEBHOOK_TOKEN ?? "",
+  };
 }

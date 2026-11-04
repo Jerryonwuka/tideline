@@ -106,6 +106,52 @@ export type Database = {
         };
         Relationships: [];
       };
+      bot_sessions: {
+        Row: {
+          asking: string | null;
+          channel: Database["public"]["Enums"]["message_channel"];
+          draft: NonNullable<Json>;
+          message_id: string;
+          org_id: string;
+          updated_at: string;
+          user_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          asking?: string | null;
+          channel: Database["public"]["Enums"]["message_channel"];
+          draft: NonNullable<Json>;
+          message_id: string;
+          org_id: string;
+          updated_at?: string;
+          user_id: string;
+        };
+        Update: {
+          asking?: string | null;
+          channel?: Database["public"]["Enums"]["message_channel"];
+          draft?: NonNullable<Json>;
+          message_id?: string;
+          org_id?: string;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "bot_sessions_message_id_wa_messages_id_fk";
+            columns: ["message_id"];
+            isOneToOne: false;
+            referencedRelation: "wa_messages";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "bot_sessions_org_id_orgs_id_fk";
+            columns: ["org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       charter_eligibility_rules: {
         Row: {
           check: NonNullable<Json>;
@@ -615,6 +661,81 @@ export type Database = {
           },
         ];
       };
+      expenses: {
+        Row: {
+          amount_minor: number;
+          category: string;
+          created_at: string;
+          currency: string;
+          id: string;
+          note: string | null;
+          org_id: string;
+          payment_method: string | null;
+          recorded_by: string | null;
+          source: Database["public"]["Enums"]["record_source"];
+          trip_id: string | null;
+          vessel_id: string | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          amount_minor: number;
+          category: string;
+          created_at?: string;
+          currency: string;
+          id?: string;
+          note?: string | null;
+          org_id: string;
+          payment_method?: string | null;
+          recorded_by?: string | null;
+          source: Database["public"]["Enums"]["record_source"];
+          trip_id?: string | null;
+          vessel_id?: string | null;
+        };
+        Update: {
+          amount_minor?: number;
+          category?: string;
+          created_at?: string;
+          currency?: string;
+          id?: string;
+          note?: string | null;
+          org_id?: string;
+          payment_method?: string | null;
+          recorded_by?: string | null;
+          source?: Database["public"]["Enums"]["record_source"];
+          trip_id?: string | null;
+          vessel_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "expenses_currency_currencies_code_fk";
+            columns: ["currency"];
+            isOneToOne: false;
+            referencedRelation: "currencies";
+            referencedColumns: ["code"];
+          },
+          {
+            foreignKeyName: "expenses_org_id_orgs_id_fk";
+            columns: ["org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "expenses_trip_id_trips_id_fk";
+            columns: ["trip_id"];
+            isOneToOne: false;
+            referencedRelation: "trips";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "expenses_vessel_id_vessels_id_fk";
+            columns: ["vessel_id"];
+            isOneToOne: false;
+            referencedRelation: "vessels";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       fee_config: {
         Row: {
           country_code: string | null;
@@ -645,6 +766,71 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "countries";
             referencedColumns: ["code"];
+          },
+        ];
+      };
+      incidents: {
+        Row: {
+          created_at: string;
+          description: string;
+          escalated_at: string | null;
+          id: string;
+          org_id: string;
+          reported_by: string | null;
+          source: Database["public"]["Enums"]["record_source"];
+          status: Database["public"]["Enums"]["incident_status"];
+          trip_id: string | null;
+          urgent: boolean;
+          vessel_id: string | null;
+        };
+        ComputedFields: never;
+        Insert: {
+          created_at?: string;
+          description: string;
+          escalated_at?: string | null;
+          id?: string;
+          org_id: string;
+          reported_by?: string | null;
+          source: Database["public"]["Enums"]["record_source"];
+          status?: Database["public"]["Enums"]["incident_status"];
+          trip_id?: string | null;
+          urgent?: boolean;
+          vessel_id?: string | null;
+        };
+        Update: {
+          created_at?: string;
+          description?: string;
+          escalated_at?: string | null;
+          id?: string;
+          org_id?: string;
+          reported_by?: string | null;
+          source?: Database["public"]["Enums"]["record_source"];
+          status?: Database["public"]["Enums"]["incident_status"];
+          trip_id?: string | null;
+          urgent?: boolean;
+          vessel_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "incidents_org_id_orgs_id_fk";
+            columns: ["org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "incidents_trip_id_trips_id_fk";
+            columns: ["trip_id"];
+            isOneToOne: false;
+            referencedRelation: "trips";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "incidents_vessel_id_vessels_id_fk";
+            columns: ["vessel_id"];
+            isOneToOne: false;
+            referencedRelation: "vessels";
+            referencedColumns: ["id"];
           },
         ];
       };
@@ -2501,6 +2687,69 @@ export type Database = {
           },
         ];
       };
+      wa_messages: {
+        Row: {
+          channel: Database["public"]["Enums"]["message_channel"];
+          created_at: string;
+          direction: Database["public"]["Enums"]["message_direction"];
+          id: string;
+          linked_entity_id: string | null;
+          linked_entity_type: string | null;
+          media_path: string | null;
+          org_id: string | null;
+          parsed: Json | null;
+          phone_hash: string;
+          state: Database["public"]["Enums"]["message_state"];
+          transcript: string | null;
+          type: string;
+          user_id: string | null;
+          wa_message_id: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          channel?: Database["public"]["Enums"]["message_channel"];
+          created_at?: string;
+          direction: Database["public"]["Enums"]["message_direction"];
+          id?: string;
+          linked_entity_id?: string | null;
+          linked_entity_type?: string | null;
+          media_path?: string | null;
+          org_id?: string | null;
+          parsed?: Json | null;
+          phone_hash: string;
+          state?: Database["public"]["Enums"]["message_state"];
+          transcript?: string | null;
+          type: string;
+          user_id?: string | null;
+          wa_message_id: string;
+        };
+        Update: {
+          channel?: Database["public"]["Enums"]["message_channel"];
+          created_at?: string;
+          direction?: Database["public"]["Enums"]["message_direction"];
+          id?: string;
+          linked_entity_id?: string | null;
+          linked_entity_type?: string | null;
+          media_path?: string | null;
+          org_id?: string | null;
+          parsed?: Json | null;
+          phone_hash?: string;
+          state?: Database["public"]["Enums"]["message_state"];
+          transcript?: string | null;
+          type?: string;
+          user_id?: string | null;
+          wa_message_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "wa_messages_org_id_orgs_id_fk";
+            columns: ["org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       weather_cache: {
         Row: {
           data: NonNullable<Json>;
@@ -2766,11 +3015,15 @@ export type Database = {
       data_region: "af" | "eu" | "us";
       document_status: "needs_review" | "valid" | "expiring" | "expired" | "rejected";
       fee_bearer: "passenger" | "operator";
+      incident_status: "open" | "acknowledged" | "closed";
       jetty_status: "proposed" | "active";
       launch_status: "planned" | "validating" | "pilot" | "live";
       ledger_account: "escrow" | "platform_revenue" | "payee_payable" | "provider_fees";
       membership_role: "owner" | "manager" | "captain" | "crew" | "charterer";
       membership_status: "active" | "suspended";
+      message_channel: "whatsapp" | "sms";
+      message_direction: "in" | "out";
+      message_state: "received" | "awaiting_confirm" | "confirmed" | "cancelled" | "failed";
       org_type: "ferry_operator" | "vessel_owner" | "charterer" | "barge_operator";
       override_decision: "approved" | "declined";
       payment_method: "paystack" | "flutterwave" | "stripe" | "fake" | "cash" | "transfer_manual";
@@ -2778,6 +3031,7 @@ export type Database = {
       payment_purpose: "ticket" | "subscription" | "invoice" | "charter_escrow" | "payout";
       payment_status: "initiated" | "success" | "failed" | "refunded";
       plan_unit: "per_org" | "per_vessel";
+      record_source: "app" | "whatsapp_voice" | "whatsapp_text" | "sms";
       regulator_scope: "national" | "state" | "port";
       rule_set_status: "draft" | "published" | "retired";
       rule_severity: "block" | "warn";
@@ -2916,11 +3170,15 @@ export const Constants = {
       data_region: ["af", "eu", "us"],
       document_status: ["needs_review", "valid", "expiring", "expired", "rejected"],
       fee_bearer: ["passenger", "operator"],
+      incident_status: ["open", "acknowledged", "closed"],
       jetty_status: ["proposed", "active"],
       launch_status: ["planned", "validating", "pilot", "live"],
       ledger_account: ["escrow", "platform_revenue", "payee_payable", "provider_fees"],
       membership_role: ["owner", "manager", "captain", "crew", "charterer"],
       membership_status: ["active", "suspended"],
+      message_channel: ["whatsapp", "sms"],
+      message_direction: ["in", "out"],
+      message_state: ["received", "awaiting_confirm", "confirmed", "cancelled", "failed"],
       org_type: ["ferry_operator", "vessel_owner", "charterer", "barge_operator"],
       override_decision: ["approved", "declined"],
       payment_method: ["paystack", "flutterwave", "stripe", "fake", "cash", "transfer_manual"],
@@ -2928,6 +3186,7 @@ export const Constants = {
       payment_purpose: ["ticket", "subscription", "invoice", "charter_escrow", "payout"],
       payment_status: ["initiated", "success", "failed", "refunded"],
       plan_unit: ["per_org", "per_vessel"],
+      record_source: ["app", "whatsapp_voice", "whatsapp_text", "sms"],
       regulator_scope: ["national", "state", "port"],
       rule_set_status: ["draft", "published", "retired"],
       rule_severity: ["block", "warn"],

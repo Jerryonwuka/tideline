@@ -24,7 +24,9 @@ export function GET(request: Request) {
       .map((m) =>
         "text" in m
           ? { channel: m.channel, text: m.text }
-          : { channel: m.channel, params: "params" in m ? m.params : [] },
+          : "body" in m
+            ? { channel: m.channel, text: m.body, buttons: m.buttons }
+            : { channel: m.channel, params: "params" in m ? m.params : [] },
       ),
   });
 }

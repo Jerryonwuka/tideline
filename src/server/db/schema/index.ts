@@ -10,3 +10,4 @@ export * from "./localisation";
 export * from "./sync";
 export * from "./safety";
 export * from "./payments";
+export * from "./messaging";

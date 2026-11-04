@@ -6,7 +6,10 @@ export const e164 = (local: string) => `+234${local.slice(1)}`;
 export async function outbox(request: APIRequestContext, phone: string) {
   const res = await request.get(`/api/dev/outbox?phone=${encodeURIComponent(e164(phone))}`);
   expect(res.ok(), "dev outbox must be enabled (APP_ENV=local, INTEGRATIONS_MODE=fake)").toBe(true);
-  return (await res.json()) as { otps: string[]; messages: { channel: string; text?: string; params?: string[] }[] };
+  return (await res.json()) as {
+    otps: string[];
+    messages: { channel: string; text?: string; params?: string[]; buttons?: { id: string; title: string }[] }[];
+  };
 }
 
 /** Signs in on /login with the code delivered to the fake messaging outbox. */

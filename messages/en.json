@@ -1005,7 +1005,8 @@
     "empty": "No notifications yet.",
     "templates": {
       "document_expiry": "{document} for {subject} expires {days, plural, =0 {today} one {tomorrow} other {in # days}} ({date}).",
-      "override_request": "A captain asked to depart despite the safety check: {why}"
+      "override_request": "A captain asked to depart despite the safety check: {why}",
+      "incident": "URGENT: incident reported: {text}"
     },
     "markRead": "Mark all as read"
   },
@@ -1377,5 +1378,48 @@
     "cancelled": "This trip was cancelled.",
     "lastSeen": "Last update from the boat {time}",
     "refresh": "This page refreshes every minute."
+  },
+  "bot": {
+    "signUp": "Hello! This number isn’t linked to a Tideline account yet. Sign up or log in here: {link}",
+    "help": "I can log trips, fuel and expenses, and pass on emergencies. Send a voice note or a message like: Trip 4 CMS to Ikorodu, 18 passengers, 27k cash.",
+    "notUnderstood": "Sorry, I couldn’t read that. Try again, or send it as text.",
+    "ask": {
+      "vessel_id": "Which boat? {options}",
+      "route": "Which route? {options}",
+      "passenger_count": "How many passengers?",
+      "amount": "How much was it?"
+    },
+    "summary": {
+      "trip_log": "Trip {route} on {vessel}: {passengers} passengers{amount}.",
+      "fuel": "Fuel for {vessel}: {amount}.",
+      "expense": "{category} for {vessel}: {amount}.",
+      "amount": ", {amount} {method}"
+    },
+    "confirmQuestion": "Save this?",
+    "confirmSms": "Reply YES to save or NO to cancel.",
+    "buttons": {
+      "confirm": "Confirm",
+      "edit": "Edit",
+      "cancel": "Cancel"
+    },
+    "saved": "Saved. Thank you.",
+    "cancelled": "Cancelled. Nothing was saved.",
+    "edit": "Okay. Send the message again with the changes.",
+    "nothingPending": "There’s nothing waiting to be saved.",
+    "incident": "I have alerted your manager now. If anyone is in danger, call emergency services straight away. This bot does not replace them.",
+    "incidentAlert": "URGENT incident reported by {who}: {text}",
+    "photoQueued": "Got it. The document is in the review queue; someone will check the dates.",
+    "photoFailed": "I couldn’t read that file. Please upload it in the app.",
+    "notAllowed": "You can’t log that for this boat.",
+    "override": {
+      "reason": "Decided by WhatsApp",
+      "approved": "Override approved. The captain can depart.",
+      "declined": "Override declined. The trip stays blocked.",
+      "notAllowed": "Only the owner can decide overrides.",
+      "already": "This request was already decided."
+    },
+    "unknownVessel": "another boat",
+    "cash": "cash",
+    "transfer": "by transfer"
   }
 }
