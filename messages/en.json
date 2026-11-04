@@ -520,7 +520,11 @@
     "payments_unavailable": "Online payment isn’t available here yet. Pay at the jetty.",
     "billing_read_only": "Your subscription has lapsed, so this is read-only. Renew under Billing. Trips, manifests and safety checks still work.",
     "quote_expired": "This quote has expired. Ask the owner for a new one.",
-    "contract_locked": "The contract can’t change after it has been accepted."
+    "contract_locked": "The contract can’t change after it has been accepted.",
+    "escrow_disabled": "Escrow payments aren’t available yet.",
+    "escrow_disputed": "This payment is under dispute. Tideline will resolve it.",
+    "nothing_to_release": "There’s nothing left to release.",
+    "already_released": "That payment has already been released."
   },
   "auth": {
     "title": "Log in to Tideline",
@@ -609,7 +613,8 @@
     "assistant": "Assistant",
     "charters": "Charters",
     "board": "Charter board",
-    "invoices": "Invoices"
+    "invoices": "Invoices",
+    "payouts": "Payouts"
   },
   "dashboard": {
     "title": "Welcome, {name}",
@@ -814,7 +819,8 @@
         "wave": "Max wave",
         "hours": "Permitted hours"
       }
-    }
+    },
+    "nav": {}
   },
   "vesselTypes": {
     "ferry": "Ferry",
@@ -1759,5 +1765,70 @@
     "accept": "Accept contract",
     "pdf": "Download PDF",
     "bothAccepted": "Both parties have accepted. Next: payment."
+  },
+  "escrow": {
+    "title": "Payment (escrow)",
+    "disabled": "Escrow payments aren’t available yet. Pay by invoice instead.",
+    "pay": "Pay {amount} into escrow",
+    "payHint": "Tideline holds the money and releases it to the owner as the charter goes ahead: mobilisation at on-hire, the rest at off-hire.",
+    "waitingPayment": "Waiting for the charterer to pay into escrow.",
+    "held": "Held {held} of {total}",
+    "status": {
+      "held": "Held",
+      "partially_released": "Partly released",
+      "released": "Released",
+      "refunded": "Refunded",
+      "disputed": "Under dispute"
+    },
+    "released": "Released to the owner: {amount}",
+    "commission": "Commission {amount}",
+    "onHire": "Confirm on-hire",
+    "offHire": "Confirm off-hire",
+    "onHireDone": "On-hire confirmed by both {date}",
+    "offHireDone": "Off-hire confirmed by both {date}",
+    "waitingOther": "You’ve confirmed. Waiting for the other side.",
+    "release": "Release the rest now",
+    "dispute": "Raise a dispute",
+    "disputeReason": "What’s wrong?",
+    "disputeSent": "Dispute raised. Payments are frozen until Tideline resolves it.",
+    "disputed": "Under dispute: {reason}",
+    "payoutStatus": {
+      "pending": "Payout pending",
+      "success": "Paid out",
+      "failed": "Payout failed",
+      "reversed": "Payout reversed"
+    },
+    "noAccount": "Add a bank account under Payouts to receive this money."
+  },
+  "payouts": {
+    "title": "Payouts",
+    "subtitle": "Bank accounts for charter payouts, and money paid out.",
+    "accounts": "Bank accounts",
+    "noAccounts": "No bank account yet.",
+    "add": "Add bank account",
+    "fields": {
+      "bankCode": "Bank code",
+      "accountNumber": "Account number",
+      "accountName": "Account name",
+      "save": "Add account"
+    },
+    "account": "{name} · ****{last4}",
+    "verified": "Verified",
+    "list": "Payouts",
+    "empty": "No payouts yet.",
+    "row": "{amount} (commission {commission})"
+  },
+  "adminDisputes": {
+    "title": "Escrow disputes",
+    "subtitle": "Frozen charter payments. Release to the owner, refund the charterer, or split.",
+    "empty": "No disputes.",
+    "between": "{owner} ← {charterer}",
+    "remaining": "Still held {amount}",
+    "reason": "Reason: {reason}",
+    "release": "Release to owner",
+    "refund": "Refund charterer",
+    "split": "Split",
+    "ownerShare": "Owner’s share ({currency})",
+    "resolved": "Resolved."
   }
 }

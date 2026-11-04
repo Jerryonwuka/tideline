@@ -12,6 +12,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   const { me } = await requireMe("/admin/countries");
   if (!me.isPlatformAdmin) notFound();
   const t = await getTranslations("admin");
+  const tDisputes = await getTranslations("adminDisputes");
   return (
     <div className="flex min-h-dvh flex-col">
       <header className="sticky top-0 z-40 border-b border-hairline bg-background/80 backdrop-blur-xl">
@@ -25,6 +26,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
             links={[
               { href: "/admin/countries", label: t("countries.title") },
               { href: "/admin/rule-sets", label: t("ruleSets.title") },
+              { href: "/admin/disputes", label: tDisputes("title") },
             ]}
           />
           <div className="ml-auto flex items-center gap-3">

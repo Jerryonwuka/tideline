@@ -106,6 +106,74 @@ export type Database = {
         };
         Relationships: [];
       };
+      bank_accounts: {
+        Row: {
+          account_name: string;
+          account_number_last4: string;
+          bank_code: string;
+          country_code: string;
+          created_at: string;
+          currency: string;
+          id: string;
+          org_id: string;
+          provider: string;
+          provider_recipient_code: string;
+          updated_at: string;
+          verified: boolean;
+        };
+        ComputedFields: never;
+        Insert: {
+          account_name: string;
+          account_number_last4: string;
+          bank_code: string;
+          country_code: string;
+          created_at?: string;
+          currency: string;
+          id?: string;
+          org_id: string;
+          provider: string;
+          provider_recipient_code: string;
+          updated_at?: string;
+          verified?: boolean;
+        };
+        Update: {
+          account_name?: string;
+          account_number_last4?: string;
+          bank_code?: string;
+          country_code?: string;
+          created_at?: string;
+          currency?: string;
+          id?: string;
+          org_id?: string;
+          provider?: string;
+          provider_recipient_code?: string;
+          updated_at?: string;
+          verified?: boolean;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "bank_accounts_country_code_countries_code_fk";
+            columns: ["country_code"];
+            isOneToOne: false;
+            referencedRelation: "countries";
+            referencedColumns: ["code"];
+          },
+          {
+            foreignKeyName: "bank_accounts_currency_currencies_code_fk";
+            columns: ["currency"];
+            isOneToOne: false;
+            referencedRelation: "currencies";
+            referencedColumns: ["code"];
+          },
+          {
+            foreignKeyName: "bank_accounts_org_id_orgs_id_fk";
+            columns: ["org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       bot_sessions: {
         Row: {
           asking: string | null;
@@ -463,7 +531,11 @@ export type Database = {
           id: string;
           mobilisation_minor: number;
           off_hire_at: string | null;
+          off_hire_charterer_at: string | null;
+          off_hire_owner_at: string | null;
           on_hire_at: string | null;
+          on_hire_charterer_at: string | null;
+          on_hire_owner_at: string | null;
           owner_org_id: string;
           quote_id: string | null;
           start_date: string;
@@ -486,7 +558,11 @@ export type Database = {
           id?: string;
           mobilisation_minor?: number;
           off_hire_at?: string | null;
+          off_hire_charterer_at?: string | null;
+          off_hire_owner_at?: string | null;
           on_hire_at?: string | null;
+          on_hire_charterer_at?: string | null;
+          on_hire_owner_at?: string | null;
           owner_org_id: string;
           quote_id?: string | null;
           start_date: string;
@@ -508,7 +584,11 @@ export type Database = {
           id?: string;
           mobilisation_minor?: number;
           off_hire_at?: string | null;
+          off_hire_charterer_at?: string | null;
+          off_hire_owner_at?: string | null;
           on_hire_at?: string | null;
+          on_hire_charterer_at?: string | null;
+          on_hire_owner_at?: string | null;
           owner_org_id?: string;
           quote_id?: string | null;
           start_date?: string;
@@ -1124,6 +1204,138 @@ export type Database = {
             columns: ["reviewed_by"];
             isOneToOne: false;
             referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      escrow_holds: {
+        Row: {
+          amount_minor: number;
+          charter_id: string;
+          created_at: string;
+          currency: string;
+          dispute_reason: string | null;
+          disputed_by: string | null;
+          events: NonNullable<Json>;
+          id: string;
+          payee_org_id: string;
+          payer_org_id: string;
+          payment_id: string;
+          refunded_minor: number;
+          release_rule: NonNullable<Json>;
+          released_minor: number;
+          status: Database["public"]["Enums"]["escrow_status"];
+          updated_at: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          amount_minor: number;
+          charter_id: string;
+          created_at?: string;
+          currency: string;
+          dispute_reason?: string | null;
+          disputed_by?: string | null;
+          events?: NonNullable<Json>;
+          id?: string;
+          payee_org_id: string;
+          payer_org_id: string;
+          payment_id: string;
+          refunded_minor?: number;
+          release_rule?: NonNullable<Json>;
+          released_minor?: number;
+          status?: Database["public"]["Enums"]["escrow_status"];
+          updated_at?: string;
+        };
+        Update: {
+          amount_minor?: number;
+          charter_id?: string;
+          created_at?: string;
+          currency?: string;
+          dispute_reason?: string | null;
+          disputed_by?: string | null;
+          events?: NonNullable<Json>;
+          id?: string;
+          payee_org_id?: string;
+          payer_org_id?: string;
+          payment_id?: string;
+          refunded_minor?: number;
+          release_rule?: NonNullable<Json>;
+          released_minor?: number;
+          status?: Database["public"]["Enums"]["escrow_status"];
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "escrow_holds_charter_id_charters_id_fk";
+            columns: ["charter_id"];
+            isOneToOne: false;
+            referencedRelation: "charters";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "escrow_holds_currency_currencies_code_fk";
+            columns: ["currency"];
+            isOneToOne: false;
+            referencedRelation: "currencies";
+            referencedColumns: ["code"];
+          },
+          {
+            foreignKeyName: "escrow_holds_payee_org_id_orgs_id_fk";
+            columns: ["payee_org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "escrow_holds_payer_org_id_orgs_id_fk";
+            columns: ["payer_org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      escrow_releases: {
+        Row: {
+          commission_minor: number;
+          created_at: string;
+          gross_minor: number;
+          hold_id: string;
+          id: string;
+          payout_minor: number;
+          refund_minor: number;
+          released_by: string | null;
+          tranche: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          commission_minor: number;
+          created_at?: string;
+          gross_minor: number;
+          hold_id: string;
+          id?: string;
+          payout_minor: number;
+          refund_minor?: number;
+          released_by?: string | null;
+          tranche: string;
+        };
+        Update: {
+          commission_minor?: number;
+          created_at?: string;
+          gross_minor?: number;
+          hold_id?: string;
+          id?: string;
+          payout_minor?: number;
+          refund_minor?: number;
+          released_by?: string | null;
+          tranche?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "escrow_releases_hold_id_escrow_holds_id_fk";
+            columns: ["hold_id"];
+            isOneToOne: false;
+            referencedRelation: "escrow_holds";
             referencedColumns: ["id"];
           },
         ];
@@ -2101,6 +2313,94 @@ export type Database = {
             columns: ["org_id"];
             isOneToOne: false;
             referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      payouts: {
+        Row: {
+          amount_minor: number;
+          bank_account_id: string | null;
+          commission_minor: number;
+          created_at: string;
+          currency: string;
+          escrow_hold_id: string | null;
+          failure_reason: string | null;
+          id: string;
+          initiated_by: string | null;
+          org_id: string;
+          provider_transfer_ref: string;
+          release_id: string | null;
+          status: Database["public"]["Enums"]["payout_status"];
+          updated_at: string;
+        };
+        ComputedFields: never;
+        Insert: {
+          amount_minor: number;
+          bank_account_id?: string | null;
+          commission_minor?: number;
+          created_at?: string;
+          currency: string;
+          escrow_hold_id?: string | null;
+          failure_reason?: string | null;
+          id?: string;
+          initiated_by?: string | null;
+          org_id: string;
+          provider_transfer_ref: string;
+          release_id?: string | null;
+          status?: Database["public"]["Enums"]["payout_status"];
+          updated_at?: string;
+        };
+        Update: {
+          amount_minor?: number;
+          bank_account_id?: string | null;
+          commission_minor?: number;
+          created_at?: string;
+          currency?: string;
+          escrow_hold_id?: string | null;
+          failure_reason?: string | null;
+          id?: string;
+          initiated_by?: string | null;
+          org_id?: string;
+          provider_transfer_ref?: string;
+          release_id?: string | null;
+          status?: Database["public"]["Enums"]["payout_status"];
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "payouts_bank_account_id_bank_accounts_id_fk";
+            columns: ["bank_account_id"];
+            isOneToOne: false;
+            referencedRelation: "bank_accounts";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "payouts_currency_currencies_code_fk";
+            columns: ["currency"];
+            isOneToOne: false;
+            referencedRelation: "currencies";
+            referencedColumns: ["code"];
+          },
+          {
+            foreignKeyName: "payouts_escrow_hold_id_escrow_holds_id_fk";
+            columns: ["escrow_hold_id"];
+            isOneToOne: false;
+            referencedRelation: "escrow_holds";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "payouts_org_id_orgs_id_fk";
+            columns: ["org_id"];
+            isOneToOne: false;
+            referencedRelation: "orgs";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "payouts_release_id_escrow_releases_id_fk";
+            columns: ["release_id"];
+            isOneToOne: true;
+            referencedRelation: "escrow_releases";
             referencedColumns: ["id"];
           },
         ];
@@ -3549,6 +3849,7 @@ export type Database = {
           rule_set_version: number;
         }[];
       };
+      confirm_hire: { Args: { p_charter: string; p_stage: string }; Returns: string };
       create_invitation: {
         Args: {
           p_expires_at: string;
@@ -3572,6 +3873,7 @@ export type Database = {
         Returns: string;
       };
       decline_charter_quote: { Args: { p_quote: string }; Returns: undefined };
+      dispute_escrow: { Args: { p_hold: string; p_reason: string }; Returns: undefined };
       document_types_for: {
         Args: { p_applies_to: Database["public"]["Enums"]["applies_to"]; p_country: string };
         Returns: {
@@ -3592,6 +3894,7 @@ export type Database = {
         Returns: Database["public"]["Enums"]["document_status"];
       };
       fee_bps: { Args: { p_country: string; p_key: string; p_on?: string }; Returns: number };
+      fund_escrow: { Args: { p_payment: string }; Returns: string };
       has_role: {
         Args: { p_org: string; p_roles?: Database["public"]["Enums"]["membership_role"][] };
         Returns: boolean;
@@ -3609,6 +3912,8 @@ export type Database = {
       new_rule_set_version: { Args: { p_id: string }; Returns: string };
       next_invoice_number: { Args: { p_org: string }; Returns: string };
       publish_rule_set: { Args: { p_id: string; p_note?: string }; Returns: undefined };
+      refund_escrow: { Args: { p_amount: number; p_by: string; p_hold: string; p_tranche: string }; Returns: number };
+      release_escrow: { Args: { p_by: string; p_gross: number; p_hold: string; p_tranche: string }; Returns: string };
       reserve_ticket: {
         Args: {
           p_buyer_name: string;
@@ -3687,6 +3992,7 @@ export type Database = {
       crew_status: "active" | "inactive";
       data_region: "af" | "eu" | "us";
       document_status: "needs_review" | "valid" | "expiring" | "expired" | "rejected";
+      escrow_status: "held" | "partially_released" | "released" | "refunded" | "disputed";
       fee_bearer: "passenger" | "operator";
       incident_status: "open" | "acknowledged" | "closed";
       invoice_status: "draft" | "sent" | "part_paid" | "paid" | "overdue" | "void";
@@ -3705,6 +4011,7 @@ export type Database = {
       payment_provider: "paystack" | "flutterwave" | "stripe";
       payment_purpose: "ticket" | "subscription" | "invoice" | "charter_escrow" | "payout";
       payment_status: "initiated" | "success" | "failed" | "refunded";
+      payout_status: "pending" | "success" | "failed" | "reversed";
       plan_unit: "per_org" | "per_vessel";
       record_source: "app" | "whatsapp_voice" | "whatsapp_text" | "sms";
       regulator_scope: "national" | "state" | "port";
@@ -3847,6 +4154,7 @@ export const Constants = {
       crew_status: ["active", "inactive"],
       data_region: ["af", "eu", "us"],
       document_status: ["needs_review", "valid", "expiring", "expired", "rejected"],
+      escrow_status: ["held", "partially_released", "released", "refunded", "disputed"],
       fee_bearer: ["passenger", "operator"],
       incident_status: ["open", "acknowledged", "closed"],
       invoice_status: ["draft", "sent", "part_paid", "paid", "overdue", "void"],
@@ -3865,6 +4173,7 @@ export const Constants = {
       payment_provider: ["paystack", "flutterwave", "stripe"],
       payment_purpose: ["ticket", "subscription", "invoice", "charter_escrow", "payout"],
       payment_status: ["initiated", "success", "failed", "refunded"],
+      payout_status: ["pending", "success", "failed", "reversed"],
       plan_unit: ["per_org", "per_vessel"],
       record_source: ["app", "whatsapp_voice", "whatsapp_text", "sms"],
       regulator_scope: ["national", "state", "port"],

@@ -11,6 +11,7 @@ import type { Me } from "@/server/services/profile";
 import { supabaseAdmin, type AdminDb } from "@/server/supabase/admin";
 import type { Db } from "@/server/supabase/server";
 import { fromDbError, ServiceError } from "./errors";
+import { applyTransferEvent, fundEscrow } from "./escrow";
 import { applyInvoicePayment } from "./invoices";
 
 // §11 tickets and subscriptions. The server (service role) writes payments, tickets, the ledger and
@@ -413,6 +414,8 @@ export async function applyChargeSuccess(
   else if (payment.reference_type === "subscription") await fulfilSubscription(db, payment.reference_id);
   else if (payment.reference_type === "invoice")
     await applyInvoicePayment(db, payment.reference_id, BigInt(payment.amount_minor));
+  else if (payment.reference_type === "charter" && payment.purpose === "charter_escrow")
+    await fundEscrow(db, payment.id);
   return "applied";
 }
 
@@ -457,6 +460,12 @@ export async function handlePaymentWebhook(providerId: string, input: WebhookInp
   } else if (event.kind === "charge.failed") {
     await applyChargeFailed(db, event.reference);
     outcome = "failed";
+  } else if (
+    event.kind === "transfer.success" ||
+    event.kind === "transfer.failed" ||
+    event.kind === "transfer.reversed"
+  ) {
+    outcome = await applyTransferEvent(db, event);
   } else if (event.kind === "refund.processed") {
     await db.from("payments").update({ status: "refunded" }).eq("provider_ref", event.reference);
     outcome = "refunded";

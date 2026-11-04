@@ -47,6 +47,10 @@ export const ERROR_CODES = [
   "billing_read_only",
   "quote_expired",
   "contract_locked",
+  "escrow_disabled",
+  "escrow_disputed",
+  "nothing_to_release",
+  "already_released",
   "unknown",
 ] as const;
 export type ErrorCode = (typeof ERROR_CODES)[number];
@@ -97,6 +101,10 @@ const STATUS: Partial<Record<ErrorCode, number>> = {
   billing_read_only: 402,
   quote_expired: 409,
   contract_locked: 409,
+  escrow_disabled: 403,
+  escrow_disputed: 409,
+  nothing_to_release: 409,
+  already_released: 409,
 };
 
 export class ServiceError extends Error {

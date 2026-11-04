@@ -129,5 +129,51 @@ test("charterer requests a listed vessel, the owner quotes, the charterer accept
   const pdf = await charterer.getByTestId("contract-pdf").getAttribute("href");
   const file = await charterer.request.get(pdf!);
   expect(file.headers()["content-type"]).toContain("application/pdf");
+
+  // M13 (F6): the charterer pays into escrow; ₦1,400,000 × 5 days + ₦500,000 mobilisation.
+  await charterer.getByRole("button", { name: /Pay .*7,500,000\.00 into escrow/ }).click();
+  await charterer.getByRole("button", { name: "Pay with test card" }).click();
+  await expect(charterer).toHaveURL(/\/charters\/[0-9a-f-]{36}$/);
+  await expect(charterer.getByTestId("escrow-held")).toContainText("Held");
+
+  // The owner adds a payout account (only the last 4 digits are kept).
+  await page.goto("/payouts");
+  await page.getByLabel("Bank code").fill("058");
+  await page.getByLabel("Account number").fill("0123456789");
+  await page.getByLabel("Account name").fill("Delta Marine Services Ltd");
+  await page.getByRole("button", { name: "Add account" }).click();
+  await expect(page.getByTestId("bank-accounts")).toContainText("****6789");
+  await expect(page.getByTestId("bank-accounts")).not.toContainText("0123456789");
+
+  // Both confirm on-hire: the mobilisation is released, minus 4% commission (5% − 1% in-app).
+  await page.goto(charterUrl);
+  await page.getByRole("button", { name: "Confirm on-hire" }).click();
+  await expect(page.getByText("You’ve confirmed. Waiting for the other side.")).toBeVisible();
+  await charterer.reload();
+  await charterer.getByRole("button", { name: "Confirm on-hire" }).click();
+  await expect(charterer.getByTestId("escrow-release").first()).toContainText("480,000.00");
+  await expect(charterer.getByTestId("escrow-release").first()).toContainText("Commission");
+
+  // The provider confirms the transfer; the payout shows as paid out.
+  await page.goto("/payouts");
+  await expect(page.getByTestId("payouts")).toContainText("Payout pending");
+  const payouts = (await (await page.request.get(`/api/v1/payouts?org_id=${ownerOrg}`)).json()) as {
+    provider_transfer_ref: string;
+  }[];
+  expect(payouts).toHaveLength(1);
+  const done = await page.request.post("/api/dev/payments/transfer", {
+    data: { ref: payouts[0]!.provider_transfer_ref },
+  });
+  expect(done.ok()).toBe(true);
+  await page.reload();
+  await expect(page.getByTestId("payouts")).toContainText("Paid out");
+
+  // Both confirm off-hire: the rest is released and the charter completes.
+  await page.goto(charterUrl);
+  await page.getByRole("button", { name: "Confirm off-hire" }).click();
+  await charterer.reload();
+  await charterer.getByRole("button", { name: "Confirm off-hire" }).click();
+  await expect(charterer.getByTestId("escrow-panel")).toContainText("Released");
+  await expect(charterer.getByTestId("escrow-release")).toHaveCount(2);
   await ctx.close();
 });

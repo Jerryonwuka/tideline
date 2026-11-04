@@ -24,6 +24,8 @@ const schema = z
     WHATSAPP_VERIFY_TOKEN: z.string().optional(),
     /** Shared token in the SMS gateway's inbound URL (?token=). */
     SMS_WEBHOOK_TOKEN: z.string().optional(),
+    /** Escrow is off in production unless this is "on" (legal structure first, §11). */
+    ESCROW_ENABLED: z.enum(["on", "off"]).optional(),
   })
   .refine((env) => env.APP_ENV === "local" || env.INTEGRATIONS_MODE === "live", {
     message: "Fake integrations are only allowed when APP_ENV=local",

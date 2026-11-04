@@ -164,6 +164,11 @@ export const charters = pgTable(
     /** Off-platform charters: who the client is (no charterer org on Tideline). */
     clientName: text("client_name"),
     status: charterStatus("status").notNull().default("pending_contract"),
+    /** Two-sided hire confirmations (§4.3, M13). */
+    onHireOwnerAt: timestamp("on_hire_owner_at", { withTimezone: true }),
+    onHireChartererAt: timestamp("on_hire_charterer_at", { withTimezone: true }),
+    offHireOwnerAt: timestamp("off_hire_owner_at", { withTimezone: true }),
+    offHireChartererAt: timestamp("off_hire_charterer_at", { withTimezone: true }),
     ...ts,
   },
   (t) => [index("charters_owner_idx").on(t.ownerOrgId), index("charters_charterer_idx").on(t.chartererOrgId)],
@@ -264,4 +269,113 @@ export const invoiceSeries = pgTable("invoice_series", {
   prefix: text("prefix").notNull().default("INV"),
   year: integer("year").notNull(),
   nextNumber: integer("next_number").notNull().default(1),
+});
+
+// ----- M13: escrow, payouts ---------------------------------------------------------------------
+
+export const escrowStatus = pgEnum("escrow_status", ["held", "partially_released", "released", "refunded", "disputed"]);
+export const payoutStatus = pgEnum("payout_status", ["pending", "success", "failed", "reversed"]);
+
+/** Payee bank accounts: only the last 4 digits and the provider's recipient code are kept. */
+export const bankAccounts = pgTable("bank_accounts", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  orgId: uuid("org_id")
+    .notNull()
+    .references(() => orgs.id, { onDelete: "cascade" }),
+  countryCode: char("country_code", { length: 2 })
+    .notNull()
+    .references(() => countries.code),
+  currency: char("currency", { length: 3 })
+    .notNull()
+    .references(() => currencies.code),
+  provider: text("provider").notNull(),
+  bankCode: text("bank_code").notNull(),
+  accountNumberLast4: char("account_number_last4", { length: 4 }).notNull(),
+  accountName: text("account_name").notNull(),
+  providerRecipientCode: text("provider_recipient_code").notNull(),
+  verified: boolean("verified").notNull().default(false),
+  ...ts,
+});
+
+/** Money the charterer paid into the platform, released to the owner by rule. */
+export const escrowHolds = pgTable(
+  "escrow_holds",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    payeeOrgId: uuid("payee_org_id")
+      .notNull()
+      .references(() => orgs.id, { onDelete: "cascade" }),
+    payerOrgId: uuid("payer_org_id")
+      .notNull()
+      .references(() => orgs.id, { onDelete: "cascade" }),
+    paymentId: uuid("payment_id").notNull().unique(),
+    charterId: uuid("charter_id")
+      .notNull()
+      .references(() => charters.id, { onDelete: "cascade" }),
+    currency: char("currency", { length: 3 })
+      .notNull()
+      .references(() => currencies.code),
+    amountMinor: bigint("amount_minor", { mode: "bigint" }).notNull(),
+    releasedMinor: bigint("released_minor", { mode: "bigint" })
+      .notNull()
+      .default(sql`0`),
+    refundedMinor: bigint("refunded_minor", { mode: "bigint" })
+      .notNull()
+      .default(sql`0`),
+    status: escrowStatus("status").notNull().default("held"),
+    /** {mobilisation: "on_hire", hire: "off_hire"} */
+    releaseRule: jsonb("release_rule").notNull().default({ mobilisation: "on_hire", hire: "off_hire" }),
+    /** Short history for screens (the full trail is audit_logs and ledger_entries). */
+    events: jsonb("events").notNull().default([]),
+    disputeReason: text("dispute_reason"),
+    disputedBy: uuid("disputed_by"),
+    ...ts,
+  },
+  (t) => [index("escrow_holds_charter_idx").on(t.charterId)],
+);
+
+/** Each release happens once per (hold, tranche): mobilisation, hire, or an admin resolution. */
+export const escrowReleases = pgTable(
+  "escrow_releases",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    holdId: uuid("hold_id")
+      .notNull()
+      .references(() => escrowHolds.id, { onDelete: "cascade" }),
+    tranche: text("tranche").notNull(),
+    grossMinor: bigint("gross_minor", { mode: "bigint" }).notNull(),
+    commissionMinor: bigint("commission_minor", { mode: "bigint" }).notNull(),
+    payoutMinor: bigint("payout_minor", { mode: "bigint" }).notNull(),
+    refundMinor: bigint("refund_minor", { mode: "bigint" })
+      .notNull()
+      .default(sql`0`),
+    releasedBy: uuid("released_by"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [uniqueIndex("escrow_releases_tranche_key").on(t.holdId, t.tranche)],
+);
+
+export const payouts = pgTable("payouts", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  orgId: uuid("org_id")
+    .notNull()
+    .references(() => orgs.id, { onDelete: "cascade" }),
+  bankAccountId: uuid("bank_account_id").references(() => bankAccounts.id),
+  escrowHoldId: uuid("escrow_hold_id").references(() => escrowHolds.id),
+  releaseId: uuid("release_id")
+    .unique()
+    .references(() => escrowReleases.id),
+  currency: char("currency", { length: 3 })
+    .notNull()
+    .references(() => currencies.code),
+  amountMinor: bigint("amount_minor", { mode: "bigint" }).notNull(),
+  commissionMinor: bigint("commission_minor", { mode: "bigint" })
+    .notNull()
+    .default(sql`0`),
+  /** Our transfer reference (sent to the provider, so a retry can't pay twice). */
+  providerTransferRef: text("provider_transfer_ref").notNull().unique(),
+  status: payoutStatus("status").notNull().default("pending"),
+  initiatedBy: uuid("initiated_by"),
+  failureReason: text("failure_reason"),
+  ...ts,
 });

@@ -116,6 +116,16 @@ export class FakePaymentProvider implements PaymentProvider {
       amount_minor: string;
       currency: string;
     };
+    if (body.event === "transfer.success" || body.event === "transfer.failed" || body.event === "transfer.reversed") {
+      return {
+        kind: body.event,
+        provider: this.id,
+        eventId: body.id,
+        transferRef: body.reference,
+        amount: money(BigInt(body.amount_minor), body.currency),
+        occurredAt: new Date(),
+      };
+    }
     if (body.event !== "charge.success" && body.event !== "charge.failed") {
       return { kind: "ignored", provider: this.id, eventId: body.id };
     }

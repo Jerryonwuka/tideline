@@ -77,3 +77,19 @@ describe("ticket fees (integer minor units, one currency)", () => {
     expect(subscriptionAmount(money(10000, "USD"), "per_vessel", 0).amountMinor).toBe(10000n);
   });
 });
+
+describe("escrow release split", () => {
+  it("pays the owner gross minus commission (commission minus the in-app discount), half to even", async () => {
+    const { releaseSplit, effectiveCommissionBps } = await import("@/lib/escrow");
+    const { money } = await import("@/lib/money");
+    expect(effectiveCommissionBps(500, 100)).toBe(400);
+    expect(effectiveCommissionBps(100, 500)).toBe(0);
+    const s = releaseSplit(money(50000000, "NGN"), 500, 100);
+    expect([s.commission.amountMinor, s.payout.amountMinor]).toEqual([2000000n, 48000000n]);
+    // 4% of $12.50 = 50¢ exactly (USD)
+    const u = releaseSplit(money(1250, "USD"), 500, 100);
+    expect([u.commission.amountMinor, u.payout.amountMinor]).toEqual([50n, 1200n]);
+    const odd = releaseSplit(money(1262, "USD"), 500, 100); // 4% = 50.48¢ → 50¢; nothing is lost
+    expect(odd.commission.amountMinor + odd.payout.amountMinor).toBe(1262n);
+  });
+});

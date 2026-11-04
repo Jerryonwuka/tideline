@@ -11,6 +11,8 @@ import { getContractForCharter, listCharters, listTemplates, signedPdfUrl } from
 import { vatRate } from "@/server/services/invoices";
 import { orgBasics } from "@/server/org-context";
 import { invoiceCharterAction } from "../../contract-actions";
+import { EscrowPanel } from "@/components/charter/escrow-panel";
+import { escrowForCharter } from "@/server/services/escrow";
 
 /** A charter: terms, the contract (create, accept, PDF) and invoicing. */
 export default async function CharterPage({ params }: { params: Promise<{ id: string }> }) {
@@ -19,10 +21,11 @@ export default async function CharterPage({ params }: { params: Promise<{ id: st
   const { db, membership } = await requireOrgContext(`/charters/${parsed.data}`);
   const charter = (await listCharters(db, membership.orgId)).find((c) => c.id === parsed.data);
   if (!charter) notFound();
-  const [t, tk, ti, format, locale, contract, templates, org] = await Promise.all([
+  const [t, tk, ti, tEscrow, format, locale, contract, templates, org] = await Promise.all([
     getTranslations("charter.charters"),
     getTranslations("contracts"),
     getTranslations("invoices"),
+    getTranslations("escrow"),
     getFormatter(),
     getLocale(),
     getContractForCharter(db, charter.id),
@@ -30,6 +33,7 @@ export default async function CharterPage({ params }: { params: Promise<{ id: st
     orgBasics(db, membership.orgId),
   ]);
   const pdfUrl = contract ? await signedPdfUrl(contract.pdf_path) : null;
+  const escrow = charter.booked_on_platform ? await escrowForCharter(db, charter.id) : null;
   const isOwner = charter.side === "owner" && (membership.role === "owner" || membership.role === "manager");
   const meta = (contract?.acceptance_meta ?? {}) as Record<string, { name?: string }>;
   const mySide = charter.side;
@@ -120,6 +124,15 @@ export default async function CharterPage({ params }: { params: Promise<{ id: st
               )}
             </>
           )}
+        </section>
+      )}
+
+      {charter.booked_on_platform && contract?.owner_accepted_at && contract?.charterer_accepted_at && (
+        <section className="flex flex-col gap-3" aria-labelledby="escrow">
+          <h2 id="escrow" className="title-md text-foreground">
+            {tEscrow("title")}
+          </h2>
+          <EscrowPanel charter={charter} escrow={escrow} />
         </section>
       )}
 

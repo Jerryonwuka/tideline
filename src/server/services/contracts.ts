@@ -162,7 +162,7 @@ export async function listCharters(db: Db, orgId: string) {
   const { data, error } = await db
     .from("charters")
     .select(
-      "id, owner_org_id, charterer_org_id, client_name, vessel_id, start_date, end_date, currency, total_value_minor, status, booked_on_platform, commission_bps",
+      "id, owner_org_id, charterer_org_id, client_name, vessel_id, start_date, end_date, currency, total_value_minor, status, booked_on_platform, commission_bps, on_hire_at, off_hire_at, on_hire_owner_at, on_hire_charterer_at, off_hire_owner_at, off_hire_charterer_at",
     )
     .or(`owner_org_id.eq.${orgId},charterer_org_id.eq.${orgId}`)
     .order("start_date", { ascending: false });

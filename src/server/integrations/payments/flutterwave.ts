@@ -38,8 +38,8 @@ export class FlutterwaveProvider implements PaymentProvider {
     private readonly fetchImpl: typeof fetch = fetch,
   ) {}
 
-  supports(countryCode: string, currency: string, purpose: PaymentPurpose): boolean {
-    return COUNTRIES.has(countryCode) && CURRENCIES.has(currency) && purpose !== "charter_escrow";
+  supports(countryCode: string, currency: string, _purpose: PaymentPurpose): boolean {
+    return COUNTRIES.has(countryCode) && CURRENCIES.has(currency);
   }
 
   private async call<T>(method: string, path: string, body?: unknown): Promise<T> {

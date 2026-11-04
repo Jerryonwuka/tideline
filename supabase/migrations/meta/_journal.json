@@ -92,6 +92,13 @@
       "when": 1793823041019,
       "tag": "20261104201041_m12_contracts_invoices",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1793824307705,
+      "tag": "20261104203147_m13_escrow",
+      "breakpoints": true
     }
   ]
 }
