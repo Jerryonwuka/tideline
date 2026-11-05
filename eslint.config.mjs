@@ -55,6 +55,7 @@ const eslintConfig = [
       "sentry.*.config.ts",
       "src/instrumentation*.ts",
       "tests/unit/payment-providers.test.ts",
+      "tests/unit/live-integrations.test.ts",
     ],
     rules: { "no-restricted-imports": "off" },
   },

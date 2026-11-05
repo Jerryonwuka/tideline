@@ -47,6 +47,7 @@ export async function* runAssistant(
     for (let round = 0; round <= MAX_TOOL_ROUNDS; round++) {
       const calls: Extract<ChatEvent, { type: "tool_call" }>[] = [];
       let text = "";
+      let raw: unknown;
       for await (const event of llm.chat({
         promptId: ASSISTANT_PROMPT_ID,
         promptVersion: ASSISTANT_PROMPT_VERSION,
@@ -58,15 +59,18 @@ export async function* runAssistant(
           text += event.text;
           yield event;
         } else if (event.type === "tool_call") calls.push(event);
-        else
+        else {
+          raw = event.raw;
           usage = {
             model: event.usage.model,
             tokensIn: usage.tokensIn + event.usage.tokensIn,
             tokensOut: usage.tokensOut + event.usage.tokensOut,
           };
+        }
       }
       if (!calls.length) break;
-      if (text) messages.push({ role: "assistant", content: text });
+      // The live client needs its own blocks back (tool calls, thinking) before the tool results.
+      if (text || raw !== undefined) messages.push({ role: "assistant", content: text, raw });
       for (const call of calls) {
         const t = TOOLS.find((x) => x.name === call.name);
         yield { type: "tool", name: call.name };

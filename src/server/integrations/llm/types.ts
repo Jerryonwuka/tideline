@@ -10,6 +10,11 @@ export interface LlmMessage {
   role: "user" | "assistant";
   content: string;
   images?: LlmImage[];
+  /**
+   * The provider's own content for an assistant turn (thinking and tool-call blocks), passed back
+   * unchanged in tool loops. Opaque to callers; fakes leave it unset.
+   */
+  raw?: unknown;
 }
 
 export interface LlmUsage {
@@ -46,7 +51,7 @@ export interface LlmTool {
 export type ChatEvent =
   | { type: "text"; text: string }
   | { type: "tool_call"; id: string; name: string; input: unknown }
-  | { type: "done"; usage: LlmUsage };
+  | { type: "done"; usage: LlmUsage; raw?: unknown };
 
 export interface ChatRequest {
   promptId: string;
