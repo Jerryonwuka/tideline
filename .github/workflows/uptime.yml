@@ -1,0 +1,29 @@
+name: Uptime
+
+# Every 10 minutes: deep health check of each deployed environment. A failing run notifies the
+# repository's watchers (GitHub's failed-workflow emails). Set HEALTH_URLS as a repository variable,
+# space-separated, e.g. "https://staging.example.com https://app.example.com".
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    if: ${{ vars.HEALTH_URLS != '' }}
+    timeout-minutes: 5
+    steps:
+      - name: Check /api/health?deep=1
+        env:
+          HEALTH_URLS: ${{ vars.HEALTH_URLS }}
+        run: |
+          failed=0
+          for base in $HEALTH_URLS; do
+            code=$(curl -s -o /tmp/body -w '%{http_code}' --max-time 20 "$base/api/health?deep=1" || echo 000)
+            echo "$base -> $code $(cat /tmp/body 2>/dev/null)"
+            [ "$code" = "200" ] || failed=1
+          done
+          exit $failed

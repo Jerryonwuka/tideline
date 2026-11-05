@@ -6,3 +6,5 @@ supabase/migrations/meta
 playwright-report
 test-results
 BUILD_SPEC.md
+.next-build
+public/sw.js

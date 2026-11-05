@@ -1,4 +1,7 @@
 import { serverEnv } from "@/server/env";
+import { FakeEmailClient } from "./email/fake";
+import type { EmailClient } from "./email/types";
+import { registerDevResponders } from "./llm/dev-responders";
 import { FakeLlmClient } from "./llm/fake";
 import type { LlmClient } from "./llm/types";
 import { FakeMessagingClient } from "./messaging/fake";
@@ -6,10 +9,13 @@ import type { MessagingClient } from "./messaging/types";
 import { FakeOcrClient } from "./ocr/fake";
 import type { OcrClient } from "./ocr/types";
 import { FakePaymentProvider } from "./payments/fake";
+import { FlutterwaveProvider } from "./payments/flutterwave";
+import { PaystackProvider } from "./payments/paystack";
 import type { PaymentProvider } from "./payments/types";
 import { FakeSttClient } from "./stt/fake";
 import type { SttClient } from "./stt/types";
 import { FakeWeatherClient } from "./weather/fake";
+import { OpenMeteoWeatherClient } from "./weather/open-meteo";
 import type { WeatherClient } from "./weather/types";
 
 export interface Integrations {
@@ -20,35 +26,57 @@ export interface Integrations {
   stt: SttClient;
   ocr: OcrClient;
   weather: WeatherClient;
+  email: EmailClient;
+}
+
+/**
+ * Live adapters when PAYMENTS_MODE=live and a provider's keys are set. Otherwise fakes stand in
+ * under the real ids, so payment_provider_routes decides exactly as it would in production.
+ */
+function paymentProviders(): PaymentProvider[] {
+  const env = serverEnv();
+  if (env.PAYMENTS_MODE === "live") {
+    return [
+      ...(env.PAYSTACK_SECRET_KEY ? [new PaystackProvider(env.PAYSTACK_SECRET_KEY)] : []),
+      ...(env.FLUTTERWAVE_SECRET_KEY
+        ? [new FlutterwaveProvider(env.FLUTTERWAVE_SECRET_KEY, env.FLUTTERWAVE_WEBHOOK_HASH ?? "")]
+        : []),
+    ];
+  }
+  return [new FakePaymentProvider(undefined, "paystack"), new FakePaymentProvider(undefined, "flutterwave")];
 }
 
 export function createFakeIntegrations(): Integrations {
   return {
-    paymentProviders: [new FakePaymentProvider()],
+    paymentProviders: paymentProviders(),
     messaging: new FakeMessagingClient({ printOtp: serverEnv().NODE_ENV !== "test" }),
-    llm: new FakeLlmClient(),
+    // Tests register their own responses; local dev gets plausible stand-ins.
+    llm: serverEnv().NODE_ENV === "test" ? new FakeLlmClient() : registerDevResponders(new FakeLlmClient()),
     stt: new FakeSttClient(),
     ocr: new FakeOcrClient(),
-    weather: new FakeWeatherClient(),
+    email: new FakeEmailClient(),
+    weather: serverEnv().WEATHER_PROVIDER === "open-meteo" ? new OpenMeteoWeatherClient() : new FakeWeatherClient(),
   };
 }
 
-let instance: Integrations | undefined;
+// Kept on globalThis so route handlers, server actions and pages share one instance in dev
+// (Next can load a module more than once across bundles).
+const holder = globalThis as unknown as { __tidelineIntegrations?: Integrations };
 
 /** Process-wide integrations. Live vendor implementations are added milestone by milestone. */
 export function integrations(): Integrations {
-  if (instance) return instance;
+  if (holder.__tidelineIntegrations) return holder.__tidelineIntegrations;
   const mode = serverEnv().INTEGRATIONS_MODE;
   if (mode === "live") {
     throw new Error("INTEGRATIONS_MODE=live: no live integrations are implemented yet");
   }
-  instance = createFakeIntegrations();
-  return instance;
+  holder.__tidelineIntegrations = createFakeIntegrations();
+  return holder.__tidelineIntegrations;
 }
 
 /** Tests can swap in configured fakes. */
 export function setIntegrationsForTesting(value: Integrations | undefined): void {
-  instance = value;
+  holder.__tidelineIntegrations = value;
 }
 
 export type { LlmClient, MessagingClient, OcrClient, PaymentProvider, SttClient, WeatherClient };

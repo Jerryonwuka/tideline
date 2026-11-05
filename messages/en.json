@@ -1,15 +1,2229 @@
 {
   "app": {
     "name": "Tideline",
-    "tagline": "Run your boats safely, keep your papers current, and get paid."
+    "tagline": "The operating platform for ferry, crew-boat and offshore vessel operators."
+  },
+  "theme": {
+    "label": "Colour theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "Match device"
+  },
+  "nav": {
+    "label": "Main",
+    "platform": "Platform",
+    "fleet": "Fleet",
+    "process": "How it works",
+    "modes": "Modes",
+    "faq": "FAQ",
+    "login": "Log in",
+    "demo": "Get started",
+    "menu": "Menu",
+    "close": "Close"
   },
   "home": {
-    "title": "Vessel operations, on any phone",
-    "ferryTitle": "Ferry operators",
-    "ferryBody": "Manifests, tickets, live tracking and a safety check before every departure.",
-    "charterTitle": "Crew boats and offshore vessels",
-    "charterBody": "Certificate expiry alerts, tender packs, charter contracts and invoices.",
-    "getStarted": "Get started",
-    "status": "Early access"
+    "hero": {
+      "tag": "For ferry, crew-boat & offshore operators",
+      "title": "The operating system for your fleet",
+      "bodyStart": "Manifests, safety checks, certificates and charters in one place — on any phone, ",
+      "bodyHighlight": "even offline",
+      "bodyEnd": ".",
+      "ship": {
+        "aria": "Interactive blueprint of a passenger vessel. Drag to rotate it; select a point to read about it.",
+        "title": "GA plan · MV Tideline",
+        "subtitle": "Passenger vessel · Drawing 01",
+        "heading": "HDG",
+        "scale": "0 — 10 m",
+        "hint": "Drag to rotate · tap a point",
+        "spots": {
+          "bridge": {
+            "label": "Bridge",
+            "title": "The captain’s app",
+            "body": "Today’s trips, the manifest and the safety lock on the captain’s phone, even offline."
+          },
+          "lifeboats": {
+            "label": "Lifeboats",
+            "title": "Life jackets and capacity",
+            "body": "Every departure confirms life jackets and counts passengers against seats. No override."
+          },
+          "hull": {
+            "label": "Hull",
+            "title": "Certificates on record",
+            "body": "Registration, class and insurance read from a photo, with alerts long before they expire."
+          },
+          "engine": {
+            "label": "Engine room",
+            "title": "Fuel and running costs",
+            "body": "Log fuel and expenses by voice note; they roll into each boat’s daily report."
+          }
+        }
+      }
+    },
+    "start": {
+      "label": "Your phone number",
+      "placeholder": "Your phone number",
+      "button": "Get started",
+      "note": "Free during the pilot · No card needed"
+    },
+    "fleet": {
+      "eyebrow": "Built for",
+      "count": "{count} vessel types",
+      "types": {
+        "ferry": {
+          "name": "Passenger ferry",
+          "use": "Scheduled routes"
+        },
+        "water_taxi": {
+          "name": "Water taxi",
+          "use": "On-demand hops"
+        },
+        "speedboat": {
+          "name": "Speedboat",
+          "use": "Fast transfers"
+        },
+        "crew_boat": {
+          "name": "Crew boat",
+          "use": "Crew change"
+        },
+        "osv": {
+          "name": "Supply vessel",
+          "use": "Platform supply"
+        },
+        "fsv": {
+          "name": "Fast support",
+          "use": "Crew + cargo"
+        },
+        "tug": {
+          "name": "Tug",
+          "use": "Harbour towage"
+        },
+        "barge": {
+          "name": "Barge",
+          "use": "Bulk cargo"
+        },
+        "landing_craft": {
+          "name": "Landing craft",
+          "use": "Site access"
+        },
+        "pilot_boat": {
+          "name": "Pilot boat",
+          "use": "Port pilotage"
+        }
+      }
+    },
+    "platform": {
+      "title": "Your whole operation, in one calm place",
+      "body": "One record for every boat, crew member, trip and certificate — shared by the owner, the office and the captain at the jetty.",
+      "crew": {
+        "title": "Captains in the loop",
+        "body": "Captains log trips from their phone or a WhatsApp voice note, and you see it as it happens.",
+        "demo": {
+          "initials": "TA",
+          "name": "Capt. Tunde Adeyemi",
+          "role": "MV Lagoon Star · On duty",
+          "live": "Live",
+          "rows": [
+            {
+              "event": "Safety check passed",
+              "source": "06:31"
+            },
+            {
+              "event": "Manifest locked · 42 pax",
+              "source": "App"
+            },
+            {
+              "event": "Trip 4 logged",
+              "source": "Voice note"
+            },
+            {
+              "event": "Fuel 40,000 recorded",
+              "source": "WhatsApp"
+            }
+          ]
+        }
+      },
+      "safety": {
+        "title": "A safety lock on every departure",
+        "body": "Weather, daylight, capacity and documents are checked before a boat can leave the jetty.",
+        "demo": {
+          "aria": "Blueprint of a lifeboat hanging from its davits, with the four departure checks.",
+          "top": "Cleared to depart",
+          "checks": ["Weather", "Daylight", "Capacity", "Documents"]
+        }
+      },
+      "connect": {
+        "title": "Connected where you work",
+        "body": "WhatsApp, SMS, card and transfer payments, live weather and maps — already wired in.",
+        "demo": {
+          "aria": "Blueprint of a ship’s communications mast with radar, GPS, satellite and radio antennas.",
+          "radar": "Radar · Weather",
+          "gps": "GPS · Live map",
+          "satcom": "Satcom · Payments",
+          "vhf": "VHF · WhatsApp",
+          "cell": "4G · SMS"
+        }
+      },
+      "eyebrow": "Platform"
+    },
+    "process": {
+      "title": "How a voyage runs on Tideline",
+      "body": "Every trip follows the same loop: plan it, check it, sail it, close it. The record builds itself as you go.",
+      "demo": {
+        "loopTop": "Check before departure",
+        "loopBottom": "Log every voyage",
+        "columns": {
+          "vessel": "Vessel",
+          "pax": "Pax",
+          "load": "Load"
+        },
+        "trips": [
+          {
+            "vessel": "Lagoon Star",
+            "pax": "42/50",
+            "load": 3
+          },
+          {
+            "vessel": "Blessing 2",
+            "pax": "31/40",
+            "load": 3
+          },
+          {
+            "vessel": "Marina Express",
+            "pax": "18/36",
+            "load": 2
+          },
+          {
+            "vessel": "Ocean Pride",
+            "pax": "9/30",
+            "load": 1
+          }
+        ],
+        "sources": "Sources",
+        "events": [
+          {
+            "vessel": "Blessing 2",
+            "text": "Check passed · 06:58"
+          },
+          {
+            "vessel": "Lagoon Star",
+            "text": "Departed · 07:15"
+          },
+          {
+            "vessel": "Marina Express",
+            "text": "Arrived · 08:02"
+          }
+        ],
+        "takingsTitle": "Takings",
+        "today": "Today",
+        "takings": [
+          {
+            "label": "Cash",
+            "amount": "₦412,000"
+          },
+          {
+            "label": "Transfer",
+            "amount": "₦298,500"
+          },
+          {
+            "label": "Online tickets",
+            "amount": "₦176,000"
+          }
+        ],
+        "next": "Next",
+        "suggestion": "Add a 17:30 sailing"
+      },
+      "steps": [
+        {
+          "title": "Plan the day",
+          "body": "Routes, schedules and crew are set once. Captains open today’s trips on their phone."
+        },
+        {
+          "title": "Check before departure",
+          "body": "The safety lock runs weather, daylight, capacity and document checks, in plain words."
+        },
+        {
+          "title": "Track the voyage",
+          "body": "The captain’s phone shares position. Passengers see a public status page, no personal data."
+        },
+        {
+          "title": "Close and report",
+          "body": "Takings, passengers and fuel roll up into a daily report for the owner, by boat and by route."
+        }
+      ],
+      "eyebrow": "How it works"
+    },
+    "modes": {
+      "title": "Ferry, charter and compliance on one platform",
+      "body": "Turn on the modes your business runs. Vessels, crew, documents and payments are shared underneath.",
+      "tablist": "Modes",
+      "ferry": {
+        "tab": "Ferry",
+        "eyebrow": "For passenger operators",
+        "title": "Fill every seat, safely.",
+        "body": "Manifests, tickets and takings for scheduled and ad-hoc trips, built for a busy jetty.",
+        "bullets": [
+          "Manifests that can’t exceed capacity",
+          "Online, cash and transfer tickets",
+          "Scan a QR code to board",
+          "Daily takings per boat"
+        ],
+        "panel": {
+          "title": "Blessing 2 · CMS → Ikorodu",
+          "meta": "07:15",
+          "capacityLabel": "Seats",
+          "capacity": "42 / 50",
+          "items": [
+            {
+              "label": "Life jackets confirmed",
+              "value": "Done",
+              "tone": "success"
+            },
+            {
+              "label": "Online tickets scanned",
+              "value": "28 of 30",
+              "tone": "info"
+            },
+            {
+              "label": "Walk-ups added",
+              "value": "14",
+              "tone": "neutral"
+            },
+            {
+              "label": "Weather at Ikorodu",
+              "value": "Gusts 32 km/h",
+              "tone": "warning"
+            }
+          ],
+          "footer": "Manifest locks at departure",
+          "action": "Depart"
+        }
+      },
+      "charter": {
+        "tab": "Charter",
+        "eyebrow": "For crew-boat & OSV owners",
+        "title": "Win the tender. Get paid on time.",
+        "body": "Tender packs from your own documents, quotes and contracts, invoices, and escrow so both sides know the money is there.",
+        "bullets": ["Tender packs in minutes", "Spot-charter board", "Contracts accepted in-app", "Escrow and payouts"],
+        "panel": {
+          "title": "Tender pack · Offshore crew transfer",
+          "meta": "Due in 6 days",
+          "items": [
+            {
+              "label": "Cabotage registration",
+              "value": "Valid",
+              "tone": "success"
+            },
+            {
+              "label": "Class certificate",
+              "value": "Expires before deadline",
+              "tone": "warning"
+            },
+            {
+              "label": "HSE statement",
+              "value": "Drafted",
+              "tone": "info"
+            },
+            {
+              "label": "P&I insurance",
+              "value": "Missing",
+              "tone": "danger"
+            }
+          ],
+          "footer": "Export blocked until reviewed",
+          "action": "Review"
+        }
+      },
+      "compliance": {
+        "tab": "Compliance",
+        "eyebrow": "For every operator",
+        "title": "Never sail on an expired certificate.",
+        "body": "Photograph a certificate and Tideline reads the dates for you to confirm. Alerts go out long before anything lapses.",
+        "bullets": [
+          "Reads dates from a photo",
+          "Alerts at 90, 30, 7 and 1 days",
+          "Compliance score per vessel",
+          "Country rules built in"
+        ],
+        "panel": {
+          "title": "Certificates · Lagoon Star",
+          "meta": "Score 86%",
+          "items": [
+            {
+              "label": "Vessel licence",
+              "value": "212 days",
+              "tone": "success"
+            },
+            {
+              "label": "Safety equipment",
+              "value": "41 days",
+              "tone": "success"
+            },
+            {
+              "label": "Insurance",
+              "value": "12 days",
+              "tone": "warning"
+            },
+            {
+              "label": "Captain competency",
+              "value": "Expired",
+              "tone": "danger"
+            }
+          ],
+          "footer": "Next alert: tomorrow, 07:00",
+          "action": "Renew"
+        }
+      },
+      "eyebrow": "Modes"
+    },
+    "field": {
+      "title": "Built for the water, not the office",
+      "items": [
+        {
+          "title": "Works offline",
+          "body": "Trips, manifests and safety checks save on the phone and sync when the signal returns."
+        },
+        {
+          "title": "Voice notes count",
+          "body": "“Trip four, CMS to Ikorodu, eighteen passengers” becomes a logged trip after one tap."
+        },
+        {
+          "title": "Any phone",
+          "body": "Light enough for a low-cost Android on a slow network, readable in full sun."
+        }
+      ],
+      "eyebrow": "In the field"
+    },
+    "faq": {
+      "title": "Questions, answered",
+      "items": [
+        {
+          "q": "Do my captains need smartphones?",
+          "a": "It helps, but it isn’t required. Captains can log trips by WhatsApp voice note or by a short SMS, and the office can enter trips for them."
+        },
+        {
+          "q": "What happens when there’s no signal on the water?",
+          "a": "Captain screens work offline. Trips, manifests and safety checks are saved on the phone and sync automatically when the connection returns."
+        },
+        {
+          "q": "Can a captain override the safety lock?",
+          "a": "No. A blocked trip can only depart with the owner’s recorded approval, and an overloaded boat can’t depart at all."
+        },
+        {
+          "q": "How do passengers pay?",
+          "a": "Online by card, transfer or USSD, or in cash at the jetty. Every ticket gets a code the crew scans at boarding."
+        },
+        {
+          "q": "Is passenger and crew data safe?",
+          "a": "Data is encrypted, each company only sees its own records, and we follow the data-protection law of every country we operate in."
+        },
+        {
+          "q": "Where is Tideline available?",
+          "a": "We’re launching in Nigeria with Lagos ferry operators and offshore support vessels. Other countries follow as we validate each market."
+        }
+      ],
+      "eyebrow": "FAQ"
+    },
+    "cta": {
+      "title": "Bring your fleet on board.",
+      "body": "We’re onboarding our first ferry and crew-boat operators now. Start with one boat; add the rest when you’re ready."
+    },
+    "footer": {
+      "line": "The operating platform for vessel operators.",
+      "columns": {
+        "product": "Product",
+        "company": "Company",
+        "legal": "Legal"
+      },
+      "links": {
+        "platform": "Platform",
+        "fleet": "Vessel types",
+        "process": "How it works",
+        "modes": "Modes",
+        "faq": "FAQ",
+        "login": "Log in",
+        "privacy": "Privacy",
+        "processors": "Processors",
+        "terms": "Terms"
+      },
+      "made": "Made for the water",
+      "rights": "© {year} Tideline"
+    }
+  },
+  "roles": {
+    "owner": "Owner",
+    "manager": "Manager",
+    "captain": "Captain",
+    "crew": "Crew",
+    "charterer": "Charterer"
+  },
+  "orgTypes": {
+    "ferry_operator": "Ferry operator",
+    "vessel_owner": "Vessel owner",
+    "charterer": "Charterer",
+    "barge_operator": "Barge operator"
+  },
+  "orgTypeHints": {
+    "ferry_operator": "Passenger boats on scheduled or ad-hoc routes",
+    "vessel_owner": "Crew boats, OSVs and tugs for charter",
+    "charterer": "You hire vessels for your operations",
+    "barge_operator": "Cargo barges on river corridors"
+  },
+  "modeNames": {
+    "ferry": "Ferry",
+    "charter": "Charter",
+    "barge": "Barge"
+  },
+  "modeHints": {
+    "ferry": "Manifests, tickets, safety lock and tracking",
+    "charter": "Certificates, tender packs, contracts and invoices",
+    "barge": "Cargo loads on river corridors"
+  },
+  "errors": {
+    "not_authenticated": "Please log in to continue.",
+    "forbidden": "You don’t have permission to do that.",
+    "not_found": "We couldn’t find that.",
+    "validation": "Some details need fixing.",
+    "invalid_phone": "Enter a valid phone number, for example 0803 123 4567.",
+    "invalid_code": "That code isn’t right or has expired. Check it and try again.",
+    "rate_limited": "Too many attempts. Wait a minute and try again.",
+    "invalid_name": "Enter a name between 2 and 120 characters.",
+    "invalid_country": "Tideline isn’t available in that country yet.",
+    "invalid_modes": "Choose at least one mode.",
+    "already_member": "This person is already in your team.",
+    "invitation_not_found": "This invitation link isn’t valid.",
+    "invitation_used": "This invitation has already been used.",
+    "invitation_expired": "This invitation has expired. Ask for a new one.",
+    "phone_mismatch": "This invitation was sent to a different phone number. Log in with that number to accept it.",
+    "last_owner": "Every company needs at least one owner. Make someone else an owner first.",
+    "admin_only_field": "Only Tideline staff can change that.",
+    "immutable_membership": "That can’t be changed.",
+    "delivery_failed": "We couldn’t send the message. Try again in a moment.",
+    "unknown": "Something went wrong. Try again.",
+    "country_not_ready": "This country can’t be switched on yet: it needs a published rule set, an enabled currency and language, and a payment route.",
+    "not_draft": "Only draft rule sets can be published.",
+    "invalid_time_zone": "That time zone isn’t recognised.",
+    "invalid_subject": "That vessel or crew member isn’t in this company.",
+    "capacity_exceeded": "That would put more people on board than the vessel is licensed for.",
+    "manifest_locked": "The manifest locked when the trip departed. You can still add late passengers as amendments.",
+    "trip_closed": "This trip is closed.",
+    "invalid_transition": "That step isn’t possible from the trip’s current status.",
+    "lifejackets_unconfirmed": "Confirm life jackets before departing.",
+    "immutable_trip": "That can’t be changed once the trip has started.",
+    "safety_check_required": "Run the safety check before departing.",
+    "safety_unacknowledged": "Read and accept the safety warnings before departing.",
+    "safety_blocked": "The safety check blocked this departure. Ask the owner for an override.",
+    "thresholds_too_loose": "Limits can only be stricter than the country defaults.",
+    "not_overridable": "This can’t be overridden. Fix it first (people on board, life jackets).",
+    "already_requested": "An override was already requested for this check.",
+    "already_decided": "This request was already decided.",
+    "ticket_not_found": "No ticket with that code.",
+    "ticket_wrong_trip": "That ticket is for a different trip.",
+    "ticket_used": "That ticket has already been used to board.",
+    "ticket_not_paid": "That ticket hasn’t been paid for.",
+    "currency_mismatch": "The amount is in the wrong currency.",
+    "payments_unavailable": "Online payment isn’t available here yet. Pay at the jetty.",
+    "billing_read_only": "Your subscription has lapsed, so this is read-only. Renew under Billing. Trips, manifests and safety checks still work.",
+    "quote_expired": "This quote has expired. Ask the owner for a new one.",
+    "contract_locked": "The contract can’t change after it has been accepted.",
+    "escrow_disabled": "Escrow payments aren’t available yet.",
+    "escrow_disputed": "This payment is under dispute. Tideline will resolve it.",
+    "nothing_to_release": "There’s nothing left to release.",
+    "already_released": "That payment has already been released.",
+    "tender_not_reviewed": "Mark the pack as reviewed before exporting.",
+    "tender_blocked": "Fill the [MISSING] items and attach the red mandatory documents, or tick “Submit anyway”.",
+    "tender_no_text": "Paste the tender text or upload a readable file.",
+    "rate_below_minimum": "That rate is below your minimum rate for this vessel.",
+    "request_already_open": "You already have a request of this kind in progress.",
+    "request_closed": "This request has already been handled.",
+    "sole_owner": "This person is the only owner of a company. Ownership must be handed over before the account can be deleted.",
+    "reason_required": "Give a reason of at least 10 characters. It is recorded."
+  },
+  "auth": {
+    "title": "Log in to Tideline",
+    "subtitle": "We’ll send a 6-digit code to your phone. New here? The same code creates your account.",
+    "phoneLabel": "Phone number",
+    "phonePlaceholder": "0803 123 4567",
+    "phoneHint": "Local numbers are read as {country}; add +country code for others.",
+    "sendCode": "Send code",
+    "sending": "Sending…",
+    "codeTitle": "Enter your code",
+    "codeSubtitle": "We sent a 6-digit code to {phone}.",
+    "codeLabel": "6-digit code",
+    "verify": "Log in",
+    "verifying": "Checking…",
+    "changeNumber": "Use a different number",
+    "resend": "Send a new code",
+    "devHint": "Local development: the code is printed in the dev server console.",
+    "terms": "By continuing you agree to Tideline’s terms and privacy notice.",
+    "back": "Back to home"
+  },
+  "onboarding": {
+    "step": "Step {current} of {total}",
+    "profile": {
+      "title": "What should we call you?",
+      "subtitle": "Your name appears on trip logs and when you invite your team.",
+      "nameLabel": "Full name",
+      "namePlaceholder": "Tunde Adeyemi",
+      "submit": "Continue",
+      "privacy": "By continuing you confirm you’ve read the <link>privacy notice</link>."
+    },
+    "org": {
+      "title": "Set up your company",
+      "subtitle": "Tell us about your business. You can change these details later.",
+      "nameLabel": "Company name",
+      "namePlaceholder": "Lagoon Ferries Ltd",
+      "typeLabel": "What best describes you?",
+      "countryLabel": "Country",
+      "modesLabel": "Turn on modes",
+      "registrationLabel": "Company registration number",
+      "registrationHint": "Optional for now. Needed before your company is verified.",
+      "regionLabel": "State or region",
+      "regionPlaceholder": "Lagos",
+      "submit": "Create company",
+      "creating": "Creating…",
+      "countryDefaults": "Prices in {currency} · times in {timeZone}. You can change these later."
+    },
+    "vessel": {
+      "title": "Add your first vessel",
+      "subtitle": "You can add the rest of your fleet later.",
+      "skip": "Skip for now"
+    },
+    "documents": {
+      "title": "Upload a certificate",
+      "subtitle": "Start with one your vessel needs. We’ll remind you before it expires.",
+      "skip": "Skip for now",
+      "required": "Required for {vessel}:"
+    },
+    "invite": {
+      "title": "Invite your captain",
+      "subtitle": "They’ll get a link to join and run trips from their phone.",
+      "name": "Captain’s name",
+      "phone": "Captain’s phone",
+      "send": "Send invite",
+      "skip": "Skip for now"
+    }
+  },
+  "shell": {
+    "dashboard": "Dashboard",
+    "members": "Team",
+    "switchOrg": "Switch company",
+    "signOut": "Log out",
+    "account": "Account",
+    "menu": "Menu",
+    "admin": "Admin",
+    "vessels": "Vessels",
+    "crew": "Crew",
+    "documents": "Documents",
+    "notifications": "Notifications",
+    "trips": "Trips",
+    "routes": "Routes",
+    "reports": "Reports",
+    "captain": "Captain mode",
+    "safety": "Safety",
+    "billing": "Billing",
+    "book": "Book a boat",
+    "map": "Live map",
+    "assistant": "Assistant",
+    "charters": "Charters",
+    "board": "Charter board",
+    "invoices": "Invoices",
+    "payouts": "Payouts",
+    "tenders": "Tenders",
+    "privacy": "Privacy"
+  },
+  "dashboard": {
+    "title": "Welcome, {name}",
+    "subtitle": "You’re signed in to {org} as {role}.",
+    "nextTitle": "Next steps",
+    "soon": "Coming soon",
+    "steps": {
+      "team": {
+        "title": "Invite your team",
+        "body": "Add captains and crew so they can run trips from their phones.",
+        "action": "Invite people"
+      },
+      "vessels": {
+        "title": "Add your first vessel",
+        "body": "Vessel details, capacity and home jetty.",
+        "action": "Add vessel"
+      },
+      "documents": {
+        "title": "Upload certificates",
+        "body": "Photograph a certificate; we read the dates for you.",
+        "action": "Add document"
+      }
+    },
+    "verification": {
+      "unverified": "Not yet verified",
+      "pending": "Verification pending",
+      "verified": "Verified"
+    },
+    "fleetTitle": "Fleet compliance",
+    "viewAll": "View all",
+    "needsAttention": "Needs attention",
+    "counts": {
+      "expiring": "{count, plural, one {# document expiring} other {# documents expiring}}",
+      "expired": "{count, plural, one {# document expired} other {# documents expired}}",
+      "needs_review": "{count, plural, one {# document to review} other {# documents to review}}"
+    },
+    "allClear": "All documents are in date.",
+    "noVessels": "Add a vessel to see its compliance here.",
+    "todayTitle": "Today",
+    "figures": {
+      "trips": "Trips",
+      "passengers": "Passengers",
+      "cash": "Cash",
+      "digital": "Digital"
+    },
+    "tripBreakdown": "{departed} sailing · {arrived} arrived · {waiting} waiting",
+    "alertsTitle": "Alerts",
+    "alerts": {
+      "pendingOverrides": "{count, plural, one {# safety override waiting} other {# safety overrides waiting}}",
+      "openIncidents": "{count, plural, one {# open incident} other {# open incidents}}",
+      "expiredDocuments": "{count, plural, one {# document expired} other {# documents expired}}",
+      "expiringDocuments": "{count, plural, one {# document expiring soon} other {# documents expiring soon}}",
+      "needsReview": "{count, plural, one {# document to review} other {# documents to review}}"
+    },
+    "idleTitle": "Idle vessels",
+    "idleHint": "No trips in the last {days} days.",
+    "idleNone": "Every vessel has worked this week.",
+    "lastTrip": "Last trip {date}",
+    "neverSailed": "No trips yet",
+    "reports": "Reports"
+  },
+  "members": {
+    "title": "Team",
+    "subtitle": "People who can sign in to {org}.",
+    "count": "{count, plural, one {# person} other {# people}}",
+    "inviteTitle": "Invite someone",
+    "inviteBody": "They’ll get a link by WhatsApp (or SMS) to join.",
+    "phoneLabel": "Phone number",
+    "roleLabel": "Role",
+    "invite": "Send invite",
+    "inviting": "Sending…",
+    "invited": "Invite sent to {phone}.",
+    "notDelivered": "We couldn’t deliver the message. Share this link with them yourself:",
+    "copyLink": "Copy link",
+    "copied": "Copied",
+    "columns": {
+      "name": "Name",
+      "phone": "Phone",
+      "role": "Role",
+      "status": "Status",
+      "joined": "Joined"
+    },
+    "you": "You",
+    "unnamed": "No name yet",
+    "statuses": {
+      "active": "Active",
+      "suspended": "Suspended"
+    },
+    "remove": "Remove",
+    "removeConfirm": "Remove {name} from the team?",
+    "pendingTitle": "Pending invitations",
+    "expires": "Expires {date}",
+    "revoke": "Revoke",
+    "noPending": "No pending invitations.",
+    "readOnly": "Only owners and managers can manage the team.",
+    "saved": "Saved.",
+    "inviteMessage": {
+      "sms": "{inviter} invited you to join {org} on Tideline as {role}. Accept here: {link}"
+    },
+    "roleFor": "Role for {name}"
+  },
+  "invite": {
+    "title": "You’re invited",
+    "body": "Join {org} on Tideline as {role}.",
+    "login": "Log in to accept",
+    "loginHint": "Use the phone number this invitation was sent to.",
+    "accept": "Accept invitation",
+    "accepting": "Joining…",
+    "invalid": "This invitation link isn’t valid.",
+    "used": "This invitation has already been used.",
+    "expired": "This invitation has expired. Ask whoever invited you for a new link.",
+    "home": "Go to Tideline"
+  },
+  "documentTypes": {
+    "class_certificate": "Class certificate",
+    "insurance": "Insurance",
+    "load_line": "Load line certificate",
+    "radio_licence": "Radio licence",
+    "stcw": "STCW certificate",
+    "medical": "Medical certificate",
+    "id_document": "ID document",
+    "other": "Other document",
+    "vessel_registration": "Vessel registration",
+    "laswa_licence": "LASWA licence",
+    "nimasa_certificate": "NIMASA certificate",
+    "cabotage_registration": "Cabotage registration",
+    "safety_equipment": "Safety equipment certificate",
+    "crew_competency": "Crew competency certificate"
+  },
+  "tax": {
+    "vat": "VAT"
+  },
+  "compliance": {
+    "eligibility": {
+      "cabotage": "Cabotage registration must be valid for vessels chartered in this country."
+    }
+  },
+  "admin": {
+    "badge": "Admin",
+    "backToApp": "Back to app",
+    "countries": {
+      "title": "Countries",
+      "subtitle": "Countries switch on only when their rule set, currency, language and payment route are ready.",
+      "columns": {
+        "country": "Country",
+        "defaults": "Defaults",
+        "rules": "Rule set",
+        "status": "Availability"
+      },
+      "enabled": "Open for sign-up",
+      "launchStatusFor": "Launch status for {country}",
+      "statuses": {
+        "planned": "Planned",
+        "validating": "Validating",
+        "pilot": "Pilot",
+        "live": "Live"
+      },
+      "ruleSetVersion": "v{version} published",
+      "noRuleSet": "No published rules",
+      "enableHint": "Turning a country on fails until it has a published rule set, an enabled currency and language, and a payment route."
+    },
+    "ruleSets": {
+      "title": "Rule sets",
+      "subtitle": "Each country’s documents, regulators, safety defaults and tax, versioned. Only the published version is used.",
+      "global": "Global",
+      "requirementCount": "{count, plural, one {# requirement} other {# requirements}}",
+      "publishedOn": "published {date}",
+      "statuses": {
+        "draft": "Draft",
+        "published": "Published",
+        "retired": "Retired"
+      },
+      "publish": "Publish",
+      "publishConfirm": "Publish {name}? The current published version for this country will be retired.",
+      "noteLabel": "Legal review note",
+      "notePlaceholder": "Reviewed by … on …",
+      "newVersion": "New version",
+      "sections": {
+        "requirements": "Document requirements",
+        "regulators": "Regulators",
+        "safety": "Safety defaults",
+        "tax": "Tax"
+      },
+      "columns": {
+        "document": "Document",
+        "appliesTo": "Applies to",
+        "modes": "Modes",
+        "regulator": "Regulator",
+        "mandatory": "Mandatory"
+      },
+      "appliesTo": {
+        "vessel": "Vessel",
+        "crew": "Crew",
+        "org": "Company"
+      },
+      "allModes": "All",
+      "yes": "Yes",
+      "no": "No",
+      "safety": {
+        "wind": "Max wind",
+        "gust": "Max gusts",
+        "wave": "Max wave",
+        "hours": "Permitted hours"
+      }
+    },
+    "nav": {}
+  },
+  "vesselTypes": {
+    "ferry": "Ferry",
+    "crew_boat": "Crew boat",
+    "osv": "Offshore supply vessel",
+    "tug": "Tug",
+    "barge": "Barge",
+    "speedboat": "Speedboat",
+    "other": "Other"
+  },
+  "vesselStatuses": {
+    "active": "Active",
+    "maintenance": "In maintenance",
+    "idle": "Idle",
+    "on_charter": "On charter",
+    "laid_up": "Laid up"
+  },
+  "crewRoles": {
+    "captain": "Captain",
+    "engineer": "Engineer",
+    "deckhand": "Deckhand",
+    "ticket_agent": "Ticket agent",
+    "other": "Other"
+  },
+  "documentStatuses": {
+    "needs_review": "Needs review",
+    "valid": "Valid",
+    "expiring": "Expiring soon",
+    "expired": "Expired",
+    "rejected": "Rejected"
+  },
+  "fleet": {
+    "vessels": {
+      "title": "Vessels",
+      "subtitle": "Your fleet and how complete each vessel’s papers are.",
+      "add": "Add vessel",
+      "empty": "No vessels yet. Add your first one to start tracking its documents.",
+      "columns": {
+        "name": "Vessel",
+        "type": "Type",
+        "capacity": "Capacity",
+        "compliance": "Compliance",
+        "status": "Status"
+      },
+      "capacity": "{count, plural, one {# seat} other {# seats}}"
+    },
+    "vesselForm": {
+      "title": "Add a vessel",
+      "editTitle": "Edit vessel",
+      "name": "Vessel name",
+      "namePlaceholder": "MV Lagoon Star",
+      "type": "Type",
+      "registration": "Registration number",
+      "imo": "IMO number",
+      "imoHint": "7 digits, if it has one",
+      "mmsi": "MMSI",
+      "year": "Year built",
+      "length": "Length (m)",
+      "passengers": "Passenger capacity",
+      "cargo": "Deck cargo (tonnes)",
+      "engine": "Engine",
+      "modes": "Use this vessel for",
+      "save": "Save vessel",
+      "saving": "Saving…",
+      "charterProfile": "Charter details",
+      "crewComplement": "Crew complement",
+      "speedKn": "Speed (knots)",
+      "deckSpaceM2": "Deck space (m²)",
+      "dpClass": "DP class (if any)"
+    },
+    "vessel": {
+      "overview": "Overview",
+      "documents": "Documents",
+      "crew": "Crew",
+      "compliance": "Compliance",
+      "scoreLabel": "{valid} of {required} required documents valid",
+      "noRequirements": "No documents are required for this vessel yet.",
+      "required": "Required",
+      "optional": "Optional",
+      "missing": "Missing",
+      "upload": "Add document",
+      "replace": "Renew",
+      "assign": "Assign",
+      "assignLabel": "Crew member",
+      "noCrew": "No crew assigned.",
+      "noCrewToAssign": "Add crew first to assign them.",
+      "end": "Remove",
+      "fields": {
+        "type": "Type",
+        "registration": "Registration",
+        "imo": "IMO",
+        "mmsi": "MMSI",
+        "year": "Built",
+        "length": "Length",
+        "passengers": "Passengers",
+        "cargo": "Deck cargo",
+        "engine": "Engine",
+        "country": "Operating country",
+        "modes": "Modes"
+      },
+      "regulator": "Issued by {regulator}",
+      "otherDocuments": "Other documents",
+      "delete": "Delete vessel",
+      "deleteConfirm": "Delete {name} and its records? This can’t be undone."
+    },
+    "crew": {
+      "title": "Crew",
+      "subtitle": "Captains, engineers, deckhands and ticket agents.",
+      "add": "Add crew member",
+      "empty": "No crew yet.",
+      "columns": {
+        "name": "Name",
+        "role": "Role",
+        "phone": "Phone",
+        "vessels": "Vessels",
+        "app": "App access"
+      },
+      "hasApp": "Uses the app",
+      "noApp": "Record only",
+      "inactive": "Inactive"
+    },
+    "crewForm": {
+      "title": "Add a crew member",
+      "name": "Full name",
+      "role": "Role",
+      "phone": "Phone number",
+      "phoneHint": "Needed to invite them to the app.",
+      "emergencyName": "Emergency contact",
+      "emergencyPhone": "Emergency contact phone",
+      "invite": "Invite them to use the app",
+      "save": "Save",
+      "saving": "Saving…"
+    },
+    "crewMember": {
+      "certificates": "Certificates",
+      "vessels": "Assigned vessels",
+      "contact": "Emergency contact",
+      "none": "—"
+    },
+    "documents": {
+      "title": "Documents",
+      "subtitle": "Certificates and papers for your vessels, crew and company.",
+      "add": "Add document",
+      "tabs": {
+        "all": "All",
+        "expiring": "Expiring",
+        "expired": "Expired",
+        "needs_review": "Needs review"
+      },
+      "empty": "Nothing here.",
+      "columns": {
+        "document": "Document",
+        "for": "For",
+        "number": "Number",
+        "expires": "Expires",
+        "status": "Status"
+      },
+      "daysLeft": "{days, plural, =0 {today} one {in # day} other {in # days}}",
+      "daysAgo": "{days, plural, one {# day ago} other {# days ago}}",
+      "noExpiry": "No expiry"
+    },
+    "upload": {
+      "title": "Add a document",
+      "forLabel": "For",
+      "typeLabel": "Document type",
+      "fileLabel": "Photo or PDF",
+      "takePhoto": "Take a photo or choose a file",
+      "fileHint": "Photos are shrunk on your phone before upload to save data.",
+      "number": "Certificate number",
+      "issuer": "Issued by",
+      "issueDate": "Issue date",
+      "expiryDate": "Expiry date",
+      "datesHint": "Enter the dates from the certificate. Without an expiry date it waits in “Needs review”.",
+      "save": "Save document",
+      "uploading": "Uploading…",
+      "saving": "Saving…",
+      "fileTooLarge": "That file is over 10 MB. Try a photo instead.",
+      "uploadFailed": "The upload didn’t go through. Check your connection and try again."
+    },
+    "document": {
+      "title": "Document",
+      "preview": "Preview",
+      "noFile": "No file attached.",
+      "openFile": "Open file",
+      "linkExpires": "This link expires in 5 minutes.",
+      "reviewTitle": "Review",
+      "reviewBody": "Check the details against the certificate, then confirm.",
+      "confirm": "Confirm",
+      "reject": "Reject",
+      "reviewed": "Reviewed {date}",
+      "fields": {
+        "type": "Type",
+        "for": "For",
+        "number": "Number",
+        "issuer": "Issuer",
+        "issueDate": "Issued",
+        "expiryDate": "Expires",
+        "status": "Status"
+      },
+      "readTitle": "Read from the photo",
+      "readBody": "Checked by AI. Nothing counts until you confirm it.",
+      "lowConfidence": "Check this",
+      "suggestedExpiry": "No expiry date was found. Based on the issue date, it’s usually {date}.",
+      "flags": {
+        "name_mismatch": "The name on the document doesn’t match this vessel or person.",
+        "expired": "The expiry date read from the document has already passed.",
+        "type_mismatch": "This looks like a different type of document than the one selected.",
+        "no_expiry": "No expiry date could be read."
+      },
+      "extractionFailed": "We couldn’t read this document automatically. Please enter the details."
+    }
+  },
+  "alerts": {
+    "sms": {
+      "soon": "Tideline: {document} for {subject} expires on {date} ({days, plural, one {in # day} other {in # days}}). Renew and upload: {link}",
+      "today": "Tideline: {document} for {subject} expires today. Renew and upload: {link}"
+    }
+  },
+  "notifications": {
+    "title": "Notifications",
+    "empty": "No notifications yet.",
+    "templates": {
+      "document_expiry": "{document} for {subject} expires {days, plural, =0 {today} one {tomorrow} other {in # days}} ({date}).",
+      "override_request": "A captain asked to depart despite the safety check: {why}",
+      "incident": "URGENT: incident reported: {text}",
+      "charter_request": "New charter request: {location}, {dates}.",
+      "charter_quote": "You have a quote for {location}: {amount} a day.",
+      "charter_accepted": "Quote accepted: {vessel}, {dates}. Next: the contract."
+    },
+    "markRead": "Mark all as read"
+  },
+  "tripStatuses": {
+    "scheduled": "Scheduled",
+    "boarding": "Boarding",
+    "departed": "Departed",
+    "arrived": "Arrived",
+    "cancelled": "Cancelled"
+  },
+  "weekdays": {
+    "0": "Sun",
+    "1": "Mon",
+    "2": "Tue",
+    "3": "Wed",
+    "4": "Thu",
+    "5": "Fri",
+    "6": "Sat"
+  },
+  "ferry": {
+    "routes": {
+      "title": "Routes and schedules",
+      "subtitle": "Where your boats go and when.",
+      "add": "Add route",
+      "origin": "From",
+      "destination": "To",
+      "duration": "Usual duration (minutes)",
+      "fare": "Base fare ({currency})",
+      "save": "Save route",
+      "empty": "No routes yet.",
+      "inactive": "Paused",
+      "pause": "Pause",
+      "resume": "Resume",
+      "proposedJetty": "Not yet verified",
+      "schedulesTitle": "Departures",
+      "addSchedule": "Add departure",
+      "vessel": "Vessel",
+      "days": "Days",
+      "time": "Departs at",
+      "saveSchedule": "Save departure",
+      "noSchedules": "No regular departures.",
+      "proposeTitle": "Missing a jetty?",
+      "proposeBody": "Suggest it and our team will check the name and location.",
+      "jettyName": "Jetty name",
+      "aliases": "Other names (comma separated)",
+      "lat": "Latitude",
+      "lng": "Longitude",
+      "propose": "Suggest jetty",
+      "proposed": "Thanks — it’s available to your company now and will be checked."
+    },
+    "trips": {
+      "title": "Trips",
+      "subtitle": "Every sailing for the day, with passengers and takings.",
+      "date": "Date",
+      "empty": "No trips on this day.",
+      "columns": {
+        "time": "Departs",
+        "vessel": "Vessel",
+        "route": "Route",
+        "captain": "Captain",
+        "passengers": "Passengers",
+        "takings": "Cash",
+        "status": "Status"
+      },
+      "open": "Open"
+    },
+    "trip": {
+      "manifest": "Manifest",
+      "amendment": "Amendment",
+      "boarded": "Boarded",
+      "noPassengers": "No passengers yet.",
+      "seats": "{count, plural, one {# seat} other {# seats}}",
+      "takings": "Takings",
+      "cash": "Cash",
+      "digital": "Digital",
+      "departed": "Departed",
+      "arrived": "Arrived",
+      "lifejackets": "Life jackets confirmed",
+      "notes": "Notes",
+      "cancel": "Cancel trip"
+    },
+    "report": {
+      "title": "Daily report",
+      "subtitle": "Trips, passengers and takings by vessel.",
+      "date": "Date",
+      "export": "Export CSV",
+      "exportRange": "Last 30 days (CSV)",
+      "columns": {
+        "vessel": "Vessel",
+        "trips": "Trips",
+        "passengers": "Passengers",
+        "cash": "Cash",
+        "digital": "Digital"
+      },
+      "total": "Total",
+      "empty": "No trips on this day.",
+      "weekly": "Weekly report"
+    },
+    "weekly": {
+      "title": "Weekly report",
+      "subtitle": "Seven days of trips, takings and expenses.",
+      "week": "Week starting",
+      "export": "Export trips (CSV)",
+      "daysTitle": "By day",
+      "vesselsTitle": "By vessel",
+      "expensesTitle": "Expenses",
+      "noExpenses": "No expenses logged this week.",
+      "incidentsTitle": "Incidents",
+      "noIncidents": "No incidents.",
+      "columns": {
+        "date": "Day",
+        "vessel": "Vessel",
+        "trips": "Trips",
+        "passengers": "Passengers",
+        "cash": "Cash",
+        "digital": "Digital",
+        "category": "Category",
+        "amount": "Amount"
+      },
+      "totals": {
+        "takings": "Takings",
+        "expenses": "Expenses",
+        "net": "Net"
+      },
+      "categories": {
+        "fuel": "Fuel",
+        "maintenance": "Maintenance",
+        "wages": "Wages",
+        "levy": "Levies",
+        "other": "Other"
+      },
+      "incidentStatus": {
+        "open": "Open",
+        "acknowledged": "Acknowledged",
+        "closed": "Closed"
+      }
+    }
+  },
+  "captain": {
+    "title": "Today",
+    "subtitle": "Your trips for {date}.",
+    "startAdHoc": "Start a trip",
+    "noTrips": "No trips for your boats today.",
+    "noVessels": "You’re not assigned to a vessel yet. Ask your manager to add you to one.",
+    "backToApp": "Office view",
+    "newTrip": {
+      "title": "Start a trip",
+      "vessel": "Vessel",
+      "route": "Route",
+      "orTypeEnds": "Or type where you’re going",
+      "from": "From",
+      "to": "To",
+      "start": "Start trip",
+      "noRoute": "No route"
+    },
+    "trip": {
+      "capacity": "On board",
+      "capacityOf": "{count} of {capacity}",
+      "addPassenger": "Add passenger",
+      "name": "Name",
+      "seats": "Seats",
+      "phone": "Phone (optional)",
+      "add": "Add",
+      "quickAdd": "Walk-ups",
+      "quickAddHint": "Names to follow",
+      "addCount": "Add {count}",
+      "remove": "Remove",
+      "lifejackets": "Life jackets checked for everyone on board",
+      "boarding": "Start boarding",
+      "depart": "Depart",
+      "arrive": "Arrived",
+      "cashLabel": "Cash collected ({currency})",
+      "close": "Close trip",
+      "closed": "Trip closed.",
+      "amendmentNote": "The manifest is locked. People added now are recorded as amendments.",
+      "back": "All trips",
+      "full": "Full",
+      "amendment": "Amendment",
+      "privacyNote": "Tell passengers: names and seats are collected for passenger safety. Phone numbers are optional."
+    },
+    "loading": "Loading your trips…",
+    "notCached": "Open Tideline once with a connection, then it works offline.",
+    "offline": "Offline. {count, plural, =0 {Everything is saved} one {# change saved on phone} other {# changes saved on phone}}.",
+    "pendingOnline": "{count, plural, one {# change} other {# changes}} waiting to sync.",
+    "viewPending": "See",
+    "savedOnPhone": "Saved on phone",
+    "synced": "Synced",
+    "signOutPending": "{count, plural, one {# change hasn’t} other {# changes haven’t}} synced yet. Signing out deletes them from this phone. Sign out anyway?",
+    "pending": {
+      "title": "Pending sync",
+      "intro": "Changes saved on this phone, oldest first. They send by themselves when there is a connection.",
+      "empty": "Nothing waiting. Everything is synced.",
+      "syncNow": "Sync now",
+      "failed": "Not accepted",
+      "dismiss": "Dismiss",
+      "ops": {
+        "tripCreate": "Trip started",
+        "tripStep": "Trip update: {step}",
+        "manifestAdd": "Passenger added",
+        "manifestRemove": "Passenger removed",
+        "safetyCheck": "Safety check",
+        "safetyAck": "Safety warnings accepted"
+      },
+      "steps": {
+        "boarding": "boarding",
+        "lifejackets": "life jackets",
+        "depart": "departed",
+        "arrive": "arrived",
+        "cancel": "cancelled"
+      }
+    }
+  },
+  "pwa": {
+    "name": "Tideline",
+    "shortName": "Tideline",
+    "description": "Trips, manifests and safety for your boats, even with no signal."
+  },
+  "safety": {
+    "title": "Safety",
+    "check": "Run safety check",
+    "recheck": "Check again",
+    "checking": "Checking…",
+    "result": {
+      "pass": "Safe to depart",
+      "warn": "Depart with care",
+      "block": "Departure blocked"
+    },
+    "offlineNote": "Checked on this phone (no connection).",
+    "checkedAt": "Checked {time}",
+    "acknowledge": "I understand. Depart with care",
+    "acknowledged": "Warnings accepted",
+    "requestOverride": "Ask the owner to override",
+    "overrideNote": "Note for the owner (optional)",
+    "overrideNeedsSignal": "Asking for an override needs a connection.",
+    "requested": "Waiting for the owner’s decision.",
+    "approved": "Override approved: {reason}",
+    "declined": "Override declined: {reason}",
+    "cannotOverride": "This can’t be overridden.",
+    "reasons": {
+      "weather_unknown": "No recent weather forecast. Check conditions yourself.",
+      "wind": "Wind {value} km/h is over the {limit} km/h limit.",
+      "wind_near_limit": "Wind {value} km/h is close to the {limit} km/h limit.",
+      "gust": "Gusts {value} km/h are over the {limit} km/h limit.",
+      "gust_near_limit": "Gusts {value} km/h are close to the {limit} km/h limit.",
+      "wave": "Waves {value} m are over the {limit} m limit.",
+      "wave_near_limit": "Waves {value} m are close to the {limit} m limit.",
+      "precipitation": "Rain {value} mm/h is over the {limit} mm/h limit.",
+      "storm": "Thunderstorms are forecast.",
+      "low_visibility": "Visibility is down to {value} m.",
+      "location_unknown": "No route chosen, so daylight can’t be checked.",
+      "night": "The trip ({value}) is outside daylight ({limit}).",
+      "outside_hours": "The trip ({value}) is outside permitted hours ({limit}).",
+      "capacity": "{value} people on board; the licence allows {limit}.",
+      "lifejackets": "Life jackets haven’t been checked.",
+      "documents_expired": "Expired documents: {value}."
+    },
+    "whatsapp": {
+      "request": "Override requested: {why} Decide in Tideline: {link}",
+      "approve": "Approve",
+      "decline": "Decline"
+    },
+    "inbox": {
+      "title": "Override requests",
+      "subtitle": "Captains asking to depart despite the safety check.",
+      "empty": "No requests waiting.",
+      "note": "Captain’s note: {note}",
+      "reason": "Your reason",
+      "approve": "Approve",
+      "decline": "Decline"
+    },
+    "thresholds": {
+      "title": "Safety limits",
+      "subtitle": "Your limits can be stricter than the country defaults, never looser.",
+      "defaults": "Default: {value}",
+      "maxWindKmh": "Max wind (km/h)",
+      "maxGustKmh": "Max gusts (km/h)",
+      "maxWaveM": "Max wave height (m)",
+      "maxPrecipMmH": "Max rain (mm/h)",
+      "nightBlock": "No departures in the dark",
+      "permittedStart": "Earliest departure",
+      "permittedEnd": "Latest arrival",
+      "save": "Save limits",
+      "saved": "Saved.",
+      "placeholderNote": "Defaults are conservative placeholders, not official limits."
+    },
+    "history": "Safety checks"
+  },
+  "booking": {
+    "title": "Book a boat",
+    "subtitle": "Trips with seats in the next two days.",
+    "empty": "No trips open for booking right now.",
+    "seatsLeft": "{count, plural, one {# seat left} other {# seats left}}",
+    "by": "by {operator}",
+    "choose": "Choose",
+    "tripTitle": "{from} → {to}",
+    "departs": "Departs {time}",
+    "fare": "Fare per seat",
+    "seats": "Seats",
+    "name": "Name on the ticket",
+    "phone": "Phone (for your ticket)",
+    "fee": "Booking fee",
+    "total": "Total",
+    "feeIncluded": "Booking fee paid by the operator.",
+    "pay": "Pay {amount}",
+    "paying": "Opening payment…",
+    "findTicket": "Find my ticket",
+    "marketing": "Send me offers from the operator (optional)",
+    "privacy": "Your name and seats go on the passenger manifest, collected for passenger safety. Your number is used for your ticket. <link>Privacy notice</link>"
+  },
+  "ticket": {
+    "title": "Your ticket",
+    "lookupTitle": "Find your ticket",
+    "lookupHint": "Enter the 8-character code from your ticket.",
+    "code": "Ticket code",
+    "find": "Show ticket",
+    "status": {
+      "reserved": "Waiting for payment",
+      "paid": "Paid",
+      "used": "Boarded",
+      "refunded": "Refunded",
+      "cancelled": "Cancelled"
+    },
+    "reservedHint": "We haven’t had confirmation of your payment yet. This page updates when it arrives.",
+    "refresh": "Check again",
+    "cancelledHint": "Payment didn’t go through and your seats were released.",
+    "refundedHint": "The trip had no seats left, so your payment is being refunded.",
+    "showAtJetty": "Show this code at the jetty.",
+    "seats": "{count, plural, one {# seat} other {# seats}}",
+    "paid": "Paid {amount}",
+    "notFound": "No ticket with that code.",
+    "tripStatus": "Follow this trip"
+  },
+  "devPay": {
+    "title": "Test payment",
+    "note": "Local test checkout. No real money moves.",
+    "pay": "Pay with test card",
+    "decline": "Decline"
+  },
+  "sales": {
+    "title": "Sell a ticket",
+    "hint": "Cash or transfer taken at the jetty. The passenger goes on the manifest.",
+    "name": "Passenger name",
+    "phone": "Phone (optional)",
+    "seats": "Seats",
+    "method": "Paid by",
+    "cash": "Cash",
+    "transfer": "Bank transfer",
+    "sell": "Record sale",
+    "sold": "Sold. Ticket code {code}."
+  },
+  "board": {
+    "title": "Board by ticket",
+    "code": "Ticket code",
+    "board": "Board",
+    "scan": "Scan QR",
+    "stopScan": "Stop scanning",
+    "boarded": "{name} boarded ({seats, plural, one {# seat} other {# seats}}).",
+    "needsSignal": "Boarding by ticket needs a connection."
+  },
+  "billing": {
+    "title": "Billing",
+    "subtitle": "Plans are priced in your currency. Trips, manifests, safety checks and alerts never stop.",
+    "perOrg": "per month",
+    "perVessel": "per charter vessel per month",
+    "forVessels": "{count, plural, one {# charter vessel} other {# charter vessels}}: {amount} a month",
+    "subscribe": "Pay for a month",
+    "status": {
+      "trialing": "Trial",
+      "active": "Active until {date}",
+      "past_due": "Overdue since {date}",
+      "read_only": "Read-only since {date}",
+      "cancelled": "Cancelled"
+    },
+    "readOnlyBanner": "Your subscription has lapsed, so fleet, crew and route changes are read-only. Trips, manifests and safety checks still work.",
+    "renew": "Renew",
+    "confirmed": "Payment received. Thank you.",
+    "pending": "Waiting for payment confirmation.",
+    "assumption": "Prices are placeholders while pricing is confirmed."
+  },
+  "plans": {
+    "ferry_basic": "Ferry Basic",
+    "ferry_fleet": "Ferry Fleet",
+    "charter_standard": "Charter Standard",
+    "charter_fleet": "Charter Fleet"
+  },
+  "tracking": {
+    "tracking": "Tracking: your position is shared every 30 seconds.",
+    "paused": "Tracking paused. Keep this screen open and on.",
+    "denied": "Tracking off: allow location for Tideline in your browser settings.",
+    "unavailable": "This phone can’t share its location.",
+    "queued": "{count, plural, one {# point} other {# points}} waiting"
+  },
+  "map": {
+    "title": "Live map",
+    "subtitle": "Where your boats are now. Updates every 15 seconds.",
+    "lastSeen": "Last seen {time}",
+    "never": "No position yet",
+    "noTrip": "Not on a trip",
+    "noToken": "Map tiles appear once a Mapbox token is set (NEXT_PUBLIC_MAPBOX_TOKEN). Positions are listed below.",
+    "track": "Track",
+    "replay": "Replay",
+    "noTrack": "No track recorded for this trip.",
+    "points": "{count, plural, one {# point} other {# points}}"
+  },
+  "tripStatus": {
+    "title": "Trip status",
+    "by": "{vessel} · {operator}",
+    "scheduled": "Due to leave {time}",
+    "departed": "Left {time}",
+    "eta": "Expected about {time}",
+    "arrived": "Arrived {time}",
+    "cancelled": "This trip was cancelled.",
+    "lastSeen": "Last update from the boat {time}",
+    "refresh": "This page refreshes every minute."
+  },
+  "bot": {
+    "signUp": "Hello! This number isn’t linked to a Tideline account yet. Sign up or log in here: {link}",
+    "help": "I can log trips, fuel and expenses, and pass on emergencies. Send a voice note or a message like: Trip 4 CMS to Ikorodu, 18 passengers, 27k cash.",
+    "notUnderstood": "Sorry, I couldn’t read that. Try again, or send it as text.",
+    "ask": {
+      "vessel_id": "Which boat? {options}",
+      "route": "Which route? {options}",
+      "passenger_count": "How many passengers?",
+      "amount": "How much was it?"
+    },
+    "summary": {
+      "trip_log": "Trip {route} on {vessel}: {passengers} passengers{amount}.",
+      "fuel": "Fuel for {vessel}: {amount}.",
+      "expense": "{category} for {vessel}: {amount}.",
+      "amount": ", {amount} {method}"
+    },
+    "confirmQuestion": "Save this?",
+    "confirmSms": "Reply YES to save or NO to cancel.",
+    "buttons": {
+      "confirm": "Confirm",
+      "edit": "Edit",
+      "cancel": "Cancel"
+    },
+    "saved": "Saved. Thank you.",
+    "cancelled": "Cancelled. Nothing was saved.",
+    "edit": "Okay. Send the message again with the changes.",
+    "nothingPending": "There’s nothing waiting to be saved.",
+    "incident": "I have alerted your manager now. If anyone is in danger, call emergency services straight away. This bot does not replace them.",
+    "incidentAlert": "URGENT incident reported by {who}: {text}",
+    "photoQueued": "Got it. The document is in the review queue; someone will check the dates.",
+    "photoFailed": "I couldn’t read that file. Please upload it in the app.",
+    "notAllowed": "You can’t log that for this boat.",
+    "override": {
+      "reason": "Decided by WhatsApp",
+      "approved": "Override approved. The captain can depart.",
+      "declined": "Override declined. The trip stays blocked.",
+      "notAllowed": "Only the owner can decide overrides.",
+      "already": "This request was already decided."
+    },
+    "unknownVessel": "another boat",
+    "cash": "cash",
+    "transfer": "by transfer"
+  },
+  "assistant": {
+    "title": "Assistant",
+    "subtitle": "Ask about your trips, takings, documents and vessels. Answers come from your own records.",
+    "ask": "Ask",
+    "placeholder": "Which certificates expire this month?",
+    "thinking": "Checking…",
+    "checked": "Checked: {tools}",
+    "error": "Sorry, something went wrong. Try again.",
+    "limits": "The assistant can read and prepare drafts. It can’t move money, delete records or approve safety overrides.",
+    "examples": {
+      "expiring": "Which certificates expire this month?",
+      "takings": "What were today’s takings?",
+      "idle": "Which boats are idle?"
+    },
+    "tools": {
+      "list_expiring_documents": "documents",
+      "get_vessel_status": "vessels",
+      "get_daily_report": "daily report",
+      "get_trip": "trip",
+      "list_idle_vessels": "idle vessels",
+      "list_open_invoices": "invoices",
+      "draft_trip_log": "trip draft",
+      "draft_invoice": "invoice draft",
+      "draft_tender_pack": "tender draft",
+      "suggest_price": "pricing"
+    }
+  },
+  "charter": {
+    "board": {
+      "title": "Vessels for charter",
+      "subtitle": "Crew boats, supply vessels and more, from operators on Tideline.",
+      "filters": {
+        "type": "Vessel type",
+        "any": "Any type",
+        "area": "Area",
+        "from": "From",
+        "to": "To",
+        "minCapacity": "Min. passengers",
+        "apply": "Search"
+      },
+      "empty": "No vessels match. Try fewer filters.",
+      "perDay": "{amount} / day",
+      "minDays": "{count, plural, one {Min. # day} other {Min. # days}}",
+      "verified": "Verified operator",
+      "unverified": "Not yet verified",
+      "compliance": "Compliance {score}%",
+      "available": "Available {from} – {to}",
+      "availableAny": "Available now",
+      "view": "View"
+    },
+    "listing": {
+      "specs": "Specifications",
+      "spec": {
+        "type": "Type",
+        "passengerCapacity": "Passengers",
+        "cargoCapacityT": "Cargo (t)",
+        "lengthM": "Length (m)",
+        "yearBuilt": "Built",
+        "crewComplement": "Crew",
+        "speedKn": "Speed (kn)",
+        "deckSpaceM2": "Deck (m²)",
+        "dpClass": "DP class"
+      },
+      "area": "Operating area",
+      "documents": "Documents",
+      "noDocuments": "The operator hasn’t shared documents for this vessel.",
+      "requestTitle": "Request this vessel",
+      "loginToRequest": "Log in to send a request",
+      "notCharterer": "Switch to a charterer company to send requests.",
+      "sent": "Request sent. The owner will reply with a quote.",
+      "fields": {
+        "startDate": "From",
+        "endDate": "To",
+        "location": "Location",
+        "purpose": "Purpose",
+        "crewNeeds": "Crew needs (optional)",
+        "budget": "Budget per day (optional)",
+        "send": "Send request"
+      }
+    },
+    "listings": {
+      "title": "Charter listings",
+      "subtitle": "Put charter-enabled vessels on the public board.",
+      "new": "New listing",
+      "empty": "No listings yet.",
+      "noVessels": "Turn on charter for a vessel first (Vessels → edit).",
+      "fields": {
+        "vessel": "Vessel",
+        "dayRate": "Day rate ({currency})",
+        "minRate": "Lowest you’d accept (private)",
+        "minDays": "Minimum days",
+        "area": "Operating area",
+        "from": "Available from",
+        "to": "Available to",
+        "description": "Description",
+        "status": "Status",
+        "documents": "Documents shown publicly",
+        "save": "Save listing"
+      },
+      "status": {
+        "draft": "Draft",
+        "live": "Live",
+        "paused": "Paused"
+      },
+      "saved": "Saved."
+    },
+    "requests": {
+      "title": "Charter requests",
+      "subtitle": "Requests you’ve sent and received, with quotes.",
+      "empty": "No requests yet.",
+      "received": "Received",
+      "sent": "Sent",
+      "from": "From {org}",
+      "dates": "{from} – {to}",
+      "status": {
+        "open": "Open",
+        "quoted": "Quoted",
+        "accepted": "Accepted",
+        "declined": "Declined",
+        "expired": "Expired"
+      },
+      "quoteStatus": {
+        "sent": "Waiting for reply",
+        "accepted": "Accepted",
+        "declined": "Declined",
+        "expired": "Expired"
+      },
+      "quote": "{vessel}: {rate} / day + {mobilisation} mobilisation, valid until {until}",
+      "accept": "Accept",
+      "decline": "Decline",
+      "accepted": "Accepted. A charter was created; the contract comes next.",
+      "quoteTitle": "Send a quote",
+      "fields": {
+        "vessel": "Vessel",
+        "dayRate": "Day rate ({currency})",
+        "mobilisation": "Mobilisation fee",
+        "fuel": "Fuel terms",
+        "payment": "Payment terms",
+        "validUntil": "Valid until",
+        "send": "Send quote"
+      }
+    },
+    "nav": "Charters",
+    "requestsNav": "Requests",
+    "charters": {
+      "title": "Charters",
+      "empty": "No charters yet.",
+      "offPlatform": "Off platform",
+      "recordTitle": "Record a charter agreed outside Tideline",
+      "recordHint": "For invoicing only; no commission.",
+      "fields": {
+        "vessel": "Vessel",
+        "client": "Client",
+        "from": "From",
+        "to": "To",
+        "dayRate": "Day rate ({currency})",
+        "mobilisation": "Mobilisation",
+        "save": "Record charter"
+      },
+      "status": {
+        "pending_contract": "Waiting for contract",
+        "pending_payment": "Waiting for payment",
+        "active": "Active",
+        "completed": "Completed",
+        "disputed": "Disputed",
+        "cancelled": "Cancelled"
+      },
+      "detailTitle": "{vessel} for {client}",
+      "dates": "{from} – {to}",
+      "total": "Total value {amount}",
+      "commission": "Platform commission {pct}%"
+    },
+    "idleNav": "Idle vessels"
+  },
+  "invoices": {
+    "title": "Invoices",
+    "subtitle": "Invoices from charters and manual invoices, numbered per company.",
+    "new": "New invoice",
+    "empty": "No invoices yet.",
+    "status": {
+      "draft": "Draft",
+      "sent": "Sent",
+      "part_paid": "Part paid",
+      "paid": "Paid",
+      "overdue": "Overdue",
+      "void": "Void"
+    },
+    "columns": {
+      "number": "Number",
+      "client": "Client",
+      "total": "Total",
+      "due": "Due",
+      "status": "Status"
+    },
+    "fields": {
+      "billTo": "Bill to",
+      "address": "Address (optional)",
+      "description": "Description",
+      "quantity": "Qty",
+      "unitPrice": "Unit price ({currency})",
+      "discount": "Discount",
+      "addLine": "Add line",
+      "addVat": "Add VAT ({rate}%)",
+      "noVat": "VAT isn’t available: your country’s tax rules aren’t published yet.",
+      "dueDate": "Due date",
+      "notes": "Notes",
+      "create": "Create invoice"
+    },
+    "detail": {
+      "issued": "Issued {date}",
+      "due": "Due {date}",
+      "subtotal": "Subtotal",
+      "discount": "Discounts",
+      "vat": "VAT ({rate}%)",
+      "total": "Total",
+      "paid": "Paid",
+      "outstanding": "Outstanding",
+      "pdf": "Download PDF",
+      "publicLink": "Client’s invoice page",
+      "send": "Send",
+      "sendTitle": "Send invoice",
+      "whatsapp": "WhatsApp number",
+      "email": "Email",
+      "sent": "Sent.",
+      "recordTitle": "Record a payment",
+      "amount": "Amount",
+      "method": "Paid by",
+      "cash": "Cash",
+      "transfer": "Bank transfer",
+      "record": "Record payment"
+    },
+    "fromCharter": "Invoice this charter",
+    "message": "{org} has sent you invoice {number} for {total}. View and pay: {link}",
+    "subject": "Invoice {number} from {org}",
+    "reminder": "Reminder: invoice {number} from {org} is overdue. {amount} is outstanding. Pay here: {link}",
+    "reminderSubject": "Overdue: invoice {number}",
+    "public": {
+      "title": "Invoice {number}",
+      "from": "From {org}",
+      "pay": "Pay {amount} now",
+      "paid": "Paid in full. Thank you.",
+      "void": "This invoice was cancelled."
+    }
+  },
+  "contracts": {
+    "title": "Contract",
+    "none": "No contract yet.",
+    "generate": "Create contract",
+    "regenerate": "Recreate from template",
+    "template": "Template",
+    "accepted": "{side} accepted: {name}, {date}",
+    "pending": "Waiting for the {side}.",
+    "sides": {
+      "owner": "Owner",
+      "charterer": "Charterer"
+    },
+    "acceptTitle": "Accept this contract",
+    "acceptHint": "Type your full name to accept. Your name, the time and your IP address are recorded.",
+    "name": "Full name",
+    "accept": "Accept contract",
+    "pdf": "Download PDF",
+    "bothAccepted": "Both parties have accepted. Next: payment."
+  },
+  "escrow": {
+    "title": "Payment (escrow)",
+    "disabled": "Escrow payments aren’t available yet. Pay by invoice instead.",
+    "pay": "Pay {amount} into escrow",
+    "payHint": "Tideline holds the money and releases it to the owner as the charter goes ahead: mobilisation at on-hire, the rest at off-hire.",
+    "waitingPayment": "Waiting for the charterer to pay into escrow.",
+    "held": "Held {held} of {total}",
+    "status": {
+      "held": "Held",
+      "partially_released": "Partly released",
+      "released": "Released",
+      "refunded": "Refunded",
+      "disputed": "Under dispute"
+    },
+    "released": "Released to the owner: {amount}",
+    "commission": "Commission {amount}",
+    "onHire": "Confirm on-hire",
+    "offHire": "Confirm off-hire",
+    "onHireDone": "On-hire confirmed by both {date}",
+    "offHireDone": "Off-hire confirmed by both {date}",
+    "waitingOther": "You’ve confirmed. Waiting for the other side.",
+    "release": "Release the rest now",
+    "dispute": "Raise a dispute",
+    "disputeReason": "What’s wrong?",
+    "disputeSent": "Dispute raised. Payments are frozen until Tideline resolves it.",
+    "disputed": "Under dispute: {reason}",
+    "payoutStatus": {
+      "pending": "Payout pending",
+      "success": "Paid out",
+      "failed": "Payout failed",
+      "reversed": "Payout reversed"
+    },
+    "noAccount": "Add a bank account under Payouts to receive this money."
+  },
+  "payouts": {
+    "title": "Payouts",
+    "subtitle": "Bank accounts for charter payouts, and money paid out.",
+    "accounts": "Bank accounts",
+    "noAccounts": "No bank account yet.",
+    "add": "Add bank account",
+    "fields": {
+      "bankCode": "Bank code",
+      "accountNumber": "Account number",
+      "accountName": "Account name",
+      "save": "Add account"
+    },
+    "account": "{name} · ****{last4}",
+    "verified": "Verified",
+    "list": "Payouts",
+    "empty": "No payouts yet.",
+    "row": "{amount} (commission {commission})"
+  },
+  "adminDisputes": {
+    "title": "Escrow disputes",
+    "subtitle": "Frozen charter payments. Release to the owner, refund the charterer, or split.",
+    "empty": "No disputes.",
+    "between": "{owner} ← {charterer}",
+    "remaining": "Still held {amount}",
+    "reason": "Reason: {reason}",
+    "release": "Release to owner",
+    "refund": "Refund charterer",
+    "split": "Split",
+    "ownerShare": "Owner’s share ({currency})",
+    "resolved": "Resolved."
+  },
+  "tenders": {
+    "title": "Tenders",
+    "subtitle": "Turn a tender into a ready pack: a checklist from the tender, your documents attached, and drafted sections to review.",
+    "new": "New tender",
+    "empty": "No tenders yet.",
+    "deadline": "Deadline {date}",
+    "noDeadline": "No deadline",
+    "status": {
+      "new": "Not read yet",
+      "parsed": "Checklist ready",
+      "in_progress": "In progress",
+      "exported": "Exported"
+    },
+    "fields": {
+      "title": "Tender title",
+      "client": "Client",
+      "deadline": "Deadline",
+      "text": "Tender text",
+      "textHint": "Paste the requirements section, or upload the tender below.",
+      "file": "Tender file (PDF or photo)"
+    },
+    "create": "Read tender",
+    "notRead": "The tender couldn’t be read yet.",
+    "readAgain": "Read again",
+    "summary": "Summary",
+    "contractPeriod": "Contract period",
+    "vesselNeeds": "Vessel needs",
+    "dropped": "{count, plural, one {# item was left out because its quote isn’t in the tender.} other {# items were left out because their quotes aren’t in the tender.}}",
+    "vessels": "Vessels in this bid",
+    "vesselsHint": "Documents are matched for these vessels and the company.",
+    "noVessels": "Add a vessel first.",
+    "match": "Match documents",
+    "checklist": "Checklist",
+    "checklistHint": "Every item quotes the tender. Green is attached, amber expires before the deadline, red is missing, grey needs a match.",
+    "mandatory": "Mandatory",
+    "itemStatus": {
+      "valid": "Attached",
+      "expires_before_deadline": "Expires before deadline",
+      "missing": "Missing",
+      "unmatched": "Not matched"
+    },
+    "pickDocument": "Attach a document",
+    "noDocument": "No document",
+    "attach": "Attach",
+    "manual": "Attached by you",
+    "sections": "Drafted sections",
+    "sectionsHint": "Drafted only from your stored records. Replace every [MISSING: …] before exporting.",
+    "draft": "Draft sections",
+    "redraft": "Draft again",
+    "notDrafted": "No sections drafted yet.",
+    "section": {
+      "cover_letter": "Cover letter",
+      "company_profile": "Company profile",
+      "vessel_specification": "Vessel specification",
+      "hse_statement": "HSE statement"
+    },
+    "save": "Save",
+    "saved": "Saved.",
+    "markers": "{count, plural, =0 {No missing items} one {# missing item} other {# missing items}}",
+    "review": "Review and export",
+    "markReviewed": "I’ve reviewed this pack",
+    "reviewed": "Reviewed",
+    "needsReview": "Needs review. AI drafts are never final until you review them.",
+    "submitAnyway": "Submit anyway (I accept the open items)",
+    "submitAnywayOn": "Submitting with open items. This choice is recorded.",
+    "export": "Export pack",
+    "exported": "Exported {date}",
+    "downloadPdf": "Download PDF",
+    "downloadZip": "Download ZIP",
+    "held": "Export is held until these are fixed:",
+    "heldMarkers": "{count, plural, one {# [MISSING] marker in the sections} other {# [MISSING] markers in the sections}}",
+    "heldRed": "Mandatory items without a document: {ids}"
+  },
+  "idle": {
+    "title": "Idle vessels",
+    "subtitle": "Vessels with no work for a few days get a suggested day rate and a list of likely charterers. Check it, then publish to the board in one tap.",
+    "empty": "No vessel has been idle long enough for a suggestion. Suggestions are refreshed every morning.",
+    "idleFor": "{days, plural, one {Idle # day} other {Idle # days}}",
+    "suggested": "Suggested day rate",
+    "noRate": "Not enough past rates to suggest one yet. Enter your rate below.",
+    "howWorkedOut": "How this was worked out",
+    "inputs": {
+      "baseline": "Starting point",
+      "source": {
+        "vessel": "Median of this vessel’s last {count} charters",
+        "org_same_type": "Median of your {count} charters of the same vessel type",
+        "board": "Median of {count} similar board listings",
+        "none": "No past rates"
+      },
+      "board": "Similar board listings (90 days)",
+      "boardNone": "None in this type, size and area",
+      "boardDetail": "{count} listings, median {median}; moved {weight}% of the way toward it",
+      "weeks": "Weeks idle",
+      "weeksDetail": "{weeks} × {step}% = {total}% off",
+      "minimum": "Your minimum",
+      "minimumNone": "Not set",
+      "floored": "Raised to your minimum rate"
+    },
+    "rationale": "Why",
+    "aiNote": "Written by AI from the numbers above. Check it before publishing.",
+    "buyers": "Likely charterers",
+    "buyersNone": "No likely charterers yet.",
+    "reason": {
+      "past_client": "Past client",
+      "similar_requests": "Asked for this vessel type",
+      "similar_searches": "Searched for this vessel type",
+      "area": "Works in your area"
+    },
+    "draftMessage": "Draft a message",
+    "messageNote": "Copy it and send it yourself. Nothing is sent from here.",
+    "copy": "Copy",
+    "copied": "Copied.",
+    "publish": "Publish to the board",
+    "dayRate": "Day rate ({currency})",
+    "area": "Operating area",
+    "description": "Listing description",
+    "published": "Live on the board.",
+    "viewListing": "View listing"
+  },
+  "legal": {
+    "updated": "Last updated {date}",
+    "privacy": {
+      "title": "Privacy notice",
+      "intro": "Tideline helps boat and vessel operators run trips, keep passenger manifests, manage documents and handle charters. This notice explains what we collect, why, where it is kept and your rights.",
+      "sections": [
+        {
+          "title": "What we collect",
+          "body": "Account: your name, phone number, language and time zone. Passengers: name and number of seats; a phone number and next-of-kin number only when the operator or regulator needs them. Crew: name, role, phone and certificates. Trips: departure and arrival times, safety checks and, while a trip is running, the vessel’s position. Payments: amounts and references; card and bank details are handled by the payment provider, and we keep only the last 4 digits of payout accounts. Documents you upload, and messages you send to our WhatsApp assistant."
+        },
+        {
+          "title": "Why we use it",
+          "body": "To provide the service you or your operator signed up for (contract); to keep passengers safe and meet maritime rules: passenger manifests are collected for passenger safety (legal obligation and vital interests); to prevent fraud and abuse and improve the service (legitimate interests); and, only if you agree, to send you offers (consent, which you can withdraw at any time)."
+        },
+        {
+          "title": "Who we share it with",
+          "body": "Your operator or charter counterparty, as the service needs. Service providers who process data for us under contract (see the processor list), and authorities where the law requires. We do not sell personal data. AI features receive only the minimum data needed, and a person checks AI output before it counts."
+        },
+        {
+          "title": "Where it is kept",
+          "body": "Data is stored with our database host in the region shown below, and some providers process it in other countries (see the processor list). Transfers outside your country are made only under a lawful basis, such as adequate protection or contractual safeguards."
+        },
+        {
+          "title": "How long we keep it",
+          "body": "Passenger manifests and trip positions: {months} months, then names and numbers are removed and positions deleted. Documents: while the account is active, then for a set period. Payment and invoice records: as long as tax and accounting law requires. Audit records of safety decisions are kept without personal details."
+        },
+        {
+          "title": "Your rights",
+          "body": "You can ask for a copy of your data, ask us to correct or delete it, object to some uses, and withdraw consent. Signed in, go to Settings → Privacy; we answer within 30 days. Deletion can’t remove records the law requires us to keep, but your details are taken out of them. You can also complain to your data protection authority (in Nigeria, the Nigeria Data Protection Commission)."
+        },
+        {
+          "title": "Security",
+          "body": "Encrypted connections everywhere, encryption at rest, private file storage with short-lived links, strict access rules per company, and an audit trail of changes. Staff access to passenger data needs a recorded reason."
+        }
+      ],
+      "hosting": "Database hosting: {hosting}",
+      "hostingUnset": "Database hosting: to be confirmed before launch.",
+      "processorsLink": "See the processor list",
+      "requestLink": "Ask for your data or deletion"
+    },
+    "processors": {
+      "title": "Processors",
+      "intro": "Companies that process personal data on our behalf, what for, and where. “When switched on” means the provider is used only once that feature goes live.",
+      "name": "Provider",
+      "purpose": "Purpose",
+      "data": "Data",
+      "location": "Location",
+      "status": "Status",
+      "purposes": {
+        "hosting_db": "Database and file storage",
+        "hosting_web": "Web hosting",
+        "payments": "Payments and payouts",
+        "messaging": "WhatsApp messages",
+        "sms": "SMS and sign-in codes",
+        "maps": "Maps",
+        "ai": "Document reading, voice and drafting",
+        "monitoring": "Error monitoring",
+        "analytics": "Product analytics",
+        "email": "Email",
+        "weather": "Weather forecasts"
+      },
+      "dataKinds": {
+        "all_app_data": "All app data",
+        "requests": "Web requests",
+        "payment": "Payment details",
+        "phone_messages": "Phone number and messages",
+        "location": "Map views and positions",
+        "documents_voice": "Documents, voice notes, text",
+        "errors": "Error reports (no personal data)",
+        "usage": "Usage events (no personal data)",
+        "email": "Email address and messages",
+        "none_personal": "No personal data"
+      },
+      "statuses": {
+        "in_use": "In use",
+        "when_enabled": "When switched on"
+      }
+    },
+    "terms": {
+      "title": "Terms of use",
+      "intro": "These short terms sit alongside your subscription or charter agreement.",
+      "sections": [
+        {
+          "title": "The safety lock supports, it does not replace",
+          "body": "Tideline’s safety lock checks weather, daylight, passenger numbers, life jackets and certificates before departure. It supports, and does not replace, the captain’s and owner’s responsibility for safe operation. Every override records who approved it and why."
+        },
+        {
+          "title": "AI output is checked by a person",
+          "body": "Dates read from documents, drafted invoices, tender sections and price suggestions are proposals until a person confirms them."
+        },
+        {
+          "title": "Payments",
+          "body": "Payments are processed by licensed providers. Escrow, where offered, is held and released under the rules shown on the charter page."
+        },
+        {
+          "title": "Your data",
+          "body": "How we handle personal data is set out in the privacy notice."
+        }
+      ]
+    }
+  },
+  "settingsPrivacy": {
+    "title": "Privacy",
+    "subtitle": "Your choices and your data.",
+    "notice": "Read the privacy notice",
+    "marketing": "Send me news and offers",
+    "marketingHint": "Optional. You can change this any time.",
+    "save": "Save",
+    "saved": "Saved.",
+    "export": "Get a copy of my data",
+    "exportHint": "We prepare a file with everything we hold about you, within 30 days.",
+    "requestExport": "Request a copy",
+    "delete": "Delete my account",
+    "deleteHint": "Your name and number are removed from trips, tickets and records. Payment and safety records the law requires stay, without your details. If you are the only owner of a company, hand it over first.",
+    "confirmDelete": "I understand this can’t be undone",
+    "requestDelete": "Request deletion",
+    "requested": {
+      "export": "Request received. We’ll prepare your file within 30 days.",
+      "delete": "Request received. We’ll delete your account within 30 days."
+    },
+    "requests": "Your requests",
+    "kind": {
+      "export": "Copy of data",
+      "delete": "Deletion"
+    },
+    "status": {
+      "pending": "In progress",
+      "completed": "Done",
+      "rejected": "Not done"
+    },
+    "due": "Due {date}",
+    "download": "Download",
+    "notes": {
+      "sole_owner": "You’re the only owner of a company. Hand ownership to someone else first."
+    },
+    "sessions": "Signed-in devices",
+    "sessionsHint": "Lost a phone? Sign out on every device at once.",
+    "signOutEverywhere": "Sign out everywhere"
+  },
+  "console": {
+    "nav": {
+      "orgs": "Organisations",
+      "documents": "Document review",
+      "escrow": "Escrow holds",
+      "fees": "Fees",
+      "safety": "Safety defaults",
+      "jetties": "Jetties",
+      "audit": "Audit log",
+      "flags": "Feature flags",
+      "privacy": "Privacy requests",
+      "passengers": "Passenger data"
+    },
+    "orgs": {
+      "title": "Organisations",
+      "subtitle": "Verification queue: pending first.",
+      "status": {
+        "unverified": "Unverified",
+        "pending": "Pending",
+        "verified": "Verified"
+      },
+      "verify": "Verify",
+      "unverify": "Remove verification",
+      "empty": "No organisations."
+    },
+    "documents": {
+      "title": "Document review",
+      "subtitle": "Documents waiting for review where the reader was unsure (confidence under 80%), across all companies.",
+      "confidence": "{value}% sure",
+      "empty": "Nothing flagged."
+    },
+    "escrow": {
+      "title": "Escrow holds",
+      "subtitle": "All holds, newest first. Disputes are resolved under Escrow disputes.",
+      "held": "{amount} held · {released} released · {refunded} refunded",
+      "empty": "No holds.",
+      "status": {
+        "held": "Held",
+        "partially_released": "Partly released",
+        "released": "Released",
+        "refunded": "Refunded",
+        "disputed": "Disputed"
+      }
+    },
+    "fees": {
+      "title": "Fees",
+      "subtitle": "Each change adds a row from its start date, so history is kept. Values are basis points (100 = 1%).",
+      "key": "Fee",
+      "country": "Country (blank = default)",
+      "value": "Basis points",
+      "from": "Starts",
+      "add": "Add",
+      "keys": {
+        "ticket_fee_bps": "Ticket fee",
+        "charter_commission_bps": "Charter commission",
+        "charter_inapp_discount_bps": "In-app payment discount"
+      },
+      "default": "Default"
+    },
+    "jetties": {
+      "title": "Jetties",
+      "subtitle": "Jetties proposed by operators appear here for approval.",
+      "approve": "Approve",
+      "status": {
+        "proposed": "Proposed",
+        "active": "Active"
+      },
+      "empty": "No jetties."
+    },
+    "audit": {
+      "title": "Audit log",
+      "subtitle": "Latest 200 changes. Personal details are not shown here; changed fields are listed by name.",
+      "entity": "Entity",
+      "org": "Organisation id",
+      "filter": "Filter",
+      "changed": "Changed: {fields}",
+      "actor": "by {actor}",
+      "system": "system"
+    },
+    "flags": {
+      "title": "Feature flags",
+      "subtitle": "Switch features on or off for everyone. Every change is audited.",
+      "on": "On",
+      "save": "Save",
+      "envNote": "In production, escrow also needs ESCROW_ENABLED=on (legal sign-off)."
+    },
+    "privacy": {
+      "title": "Privacy requests",
+      "subtitle": "Export and deletion requests, due within 30 days. Overdue requests are reported every morning.",
+      "prepare": "Prepare export",
+      "erase": "Delete account",
+      "reject": "Reject",
+      "overdue": "Overdue",
+      "due": "Due {date}",
+      "kind": {
+        "export": "Export",
+        "delete": "Deletion"
+      },
+      "status": {
+        "pending": "Pending",
+        "completed": "Done",
+        "rejected": "Rejected"
+      },
+      "empty": "No requests."
+    },
+    "passengers": {
+      "title": "Passenger data",
+      "subtitle": "Opening a manifest needs a reason. Every read is recorded with your name and reason.",
+      "tripId": "Trip id",
+      "reason": "Reason",
+      "reasonHint": "At least 10 characters, e.g. “Police request ref 123 about missing passenger”.",
+      "open": "Open manifest",
+      "seats": "{count, plural, one {# seat} other {# seats}}",
+      "empty": "No passengers on this trip.",
+      "log": "Recent access",
+      "logRow": "{reason} · {rows} rows"
+    }
   }
 }

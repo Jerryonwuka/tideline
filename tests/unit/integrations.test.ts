@@ -10,10 +10,7 @@ import { FakeSttClient } from "@/server/integrations/stt/fake";
 import { FakeWeatherClient } from "@/server/integrations/weather/fake";
 
 /** A fake that reports itself under another provider id, to test routing by config. */
-function fakeAs(id: "paystack" | "flutterwave"): PaymentProvider {
-  const fake = new FakePaymentProvider();
-  return Object.assign(Object.create(Object.getPrototypeOf(fake)), fake, { id });
-}
+const fakeAs = (id: "paystack" | "flutterwave"): PaymentProvider => new FakePaymentProvider(undefined, id);
 
 const routes: PaymentRoute[] = [
   { countryCode: "NG", currency: "NGN", purpose: "ticket", provider: "flutterwave", priority: 2, enabled: true },
