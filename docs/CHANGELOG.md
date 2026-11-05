@@ -231,7 +231,7 @@
 - Tests: database (no TRUNCATE grants, RLS everywhere, server-only functions, redaction bypass can't be forged, rate limit window, retention and erasure incl. audit redaction, consents private and append-only, data requests rules, flags admin-only and audited, manifest reads need a reason and are logged); unit (redaction, reported errors redacted, no stray console logging, Sentry envelope and failure tolerance, config); e2e (privacy pages; export → download JSON → deletion → account gone; manifest read refused without a reason, shown and logged with one). Full suite 46/46 on the production build.
 - **Not done (needs people or accounts):** legal review of the notice, terms and retention period; hosting region and DPAs; Sentry project and `HEALTH_URLS`; a restore test from a real production backup; running the e2e suite against staging (the tests read sign-in codes from the local fake outbox — staging needs Supabase test phone numbers and a staging test variant); optional 2FA for owners and a device list.
 
-## M17 — Go-live: live integrations and hosting setup
+## M17 — Go-live: live integrations and hosting setup (2026-11-05)
 
 - **Live vendors** behind the existing interfaces, used when `INTEGRATIONS_MODE=live` (fakes stay for local and tests):
   - Claude (`@anthropic-ai/sdk`, `LLM_MODEL`, default `claude-sonnet-5-5`): JSON-schema output for extraction, tenders and pricing (falls back to a JSON instruction if a schema can't be expressed), streamed tool-calling for the assistant, and the server-side refusal fallback (`LLM_FALLBACKS`).
