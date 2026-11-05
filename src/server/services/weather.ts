@@ -25,20 +25,25 @@ function toPoints(forecast: Forecast): WeatherPoint[] {
   return forecast.points.map((p) => ({ ...p, time: p.time.toISOString() }));
 }
 
-async function store(db: AdminDb, place: Place, forecast: Forecast) {
+/**
+ * `now` is the app clock, not the provider's: they agree in production, and when local tests pin the
+ * clock the cache age must be measured on the same clock the safety rules use.
+ */
+async function store(db: AdminDb, place: Place, forecast: Forecast, now: Date) {
   const points = toPoints(forecast);
+  const fetchedAt = now.toISOString();
   const { error } = await db.from("weather_cache").upsert({
     key: cacheKey(place),
     lat: place.lat,
     lng: place.lng,
-    fetched_at: forecast.fetchedAt.toISOString(),
-    valid_from: points[0]?.time ?? forecast.fetchedAt.toISOString(),
-    valid_to: points[points.length - 1]?.time ?? forecast.fetchedAt.toISOString(),
+    fetched_at: fetchedAt,
+    valid_from: points[0]?.time ?? fetchedAt,
+    valid_to: points[points.length - 1]?.time ?? fetchedAt,
     source: forecast.source,
     data: points as unknown as NonNullable<Json>,
   });
   if (error) throw new Error(`weather_cache: ${error.code}`);
-  return { fetchedAt: forecast.fetchedAt.toISOString(), points };
+  return { fetchedAt, points };
 }
 
 /**
@@ -74,7 +79,7 @@ export async function weatherFor(
     }
     try {
       const start = new Date(Math.min(from.getTime(), now.getTime()));
-      parts.push(await store(db, place, await client.getForecast({ ...place, from: start, to })));
+      parts.push(await store(db, place, await client.getForecast({ ...place, from: start, to }), now));
     } catch {
       if (hit) parts.push({ fetchedAt: hit.fetched_at, points: hit.data as unknown as WeatherPoint[] });
     }
@@ -104,7 +109,7 @@ export async function pollWeather(db: AdminDb, client: WeatherClient, now: Date)
   let failed = 0;
   for (const place of places.values()) {
     try {
-      await store(db, place, await client.getForecast({ ...place, from: now, to }));
+      await store(db, place, await client.getForecast({ ...place, from: now, to }), now);
       fetched += 1;
     } catch {
       failed += 1;

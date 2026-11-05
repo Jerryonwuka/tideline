@@ -245,3 +245,9 @@
 - **Docs:** `docs/GO_LIVE.md` covers what to start now (approvals), accounts and plans, Supabase setup (phone auth, send-SMS hook, job config, PITR, first admin), Vercel variables per environment, webhooks, the two WhatsApp templates and the launch test list. The runbook's deploy section now matches.
 - **Tests:** 13 unit tests with stubbed HTTP: Termii routes, WhatsApp→SMS fallback, button limits, template language codes, Resend attachments, Whisper upload, Claude request shape, refusal handling, tool-result grouping, and missing-config errors. Unit 233/233; production build passes; captain bundle 169.4 KB.
 - **Not verified:** real calls to any vendor (no keys yet: run `pnpm check:live` once they exist). Locally, the e2e suite passed 31/46 on the first run and 43/46 after re-runs. The rest failed because the Mac slept and the local stack stalled (sign-in codes stopped arriving), so CI is the record.
+
+## Fix — safety e2e tests failing at some hours (2026-11-05)
+
+- The weather cache was stamped with the fake provider's real time while local tests pin the app clock to midday in Lagos. When CI ran more than 3 hours before that midday, cached weather looked out of date, and the safety lock correctly answered "Depart with care". `ferry`, `safety` and `tracking` failed on `main` that way (run at 06:14 UTC).
+- `fetched_at` now comes from the app clock, which is the clock the safety rules use. In production it's the same as real time, so behaviour there doesn't change.
+- Verified by pinning the test clock to tomorrow's midday: before the fix, all three tests failed with "Depart with care"; after it, all three pass.
