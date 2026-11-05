@@ -11,7 +11,8 @@ environment each. Never copy keys between environments.
 
 ## 1. Launch checklist (before the first production release)
 
-Items marked ☐ are not done in code and need a person.
+Items marked ☐ are not done in code and need a person. The step-by-step setup (accounts, Supabase,
+Vercel variables, webhooks, WhatsApp templates) is in [GO_LIVE.md](GO_LIVE.md).
 
 - ☐ **Legal review** of `/privacy`, `/terms` and the processor list (`src/config/privacy.ts`):
   lawful bases, retention period (placeholder 24 months, confirm against LASWA), the NDPA transfer
@@ -38,25 +39,26 @@ Items marked ☐ are not done in code and need a person.
 
 1. Open a PR. CI runs lint, typecheck, unit, RLS/database tests and the Playwright suite
    (desktop + Android, offline included) against a fresh local Supabase. Merges are blocked on failure.
+   Vercel builds a **preview** on the staging environment; if the PR has migrations, the "Deploy
+   database" workflow applies them to the **staging** database.
 2. Review migrations by hand: RLS on every new table, `revoke … from anon, authenticated` first,
    then explicit grants; no `truncate` grants (a test enforces this); append-only tables have the
-   `reject_mutation` trigger.
-3. Merge to `main` → Vercel deploys staging. Apply migrations to staging:
-   `supabase link --project-ref <staging-ref> && supabase db push`.
-4. Check staging by hand (sign in, a ferry trip with a safety check, a test-card ticket, a charter
+   `reject_mutation` trigger. Migrations must be backwards compatible (add first, remove in a later
+   release): the app and the migration go live within minutes of each other.
+3. Check the preview by hand (sign in, a ferry trip with a safety check, a test-card ticket, a charter
    quote). **Gap:** the Playwright suite signs in by reading codes from the local fake outbox and
    uses dev-only endpoints, so today it runs only against local (CI). Running it against staging
    needs Supabase Auth test phone numbers with fixed codes and a staging variant of the tests that
    avoids the dev endpoints; not built yet.
-5. Tag a release (`vX.Y.Z`). Apply migrations to production with `supabase db push` against the
-   production project, **then** promote the Vercel deployment. Migrations must be backwards
-   compatible with the previous app version (add first, remove in a later release).
-6. Watch Sentry and the Uptime workflow for 30 minutes.
+4. Merge to `main`. The "Deploy database" workflow waits for approval on the `production` GitHub
+   environment, then applies migrations to production; Vercel deploys production at the same time.
+5. Tag the release (`vX.Y.Z`) for the record.
+6. Check `/api/health?deep=1`, then watch Sentry and the Uptime workflow for 30 minutes.
 
 ## 3. Rollback
 
 - **App:** in Vercel, promote the previous production deployment ("Instant rollback"). Safe because
-  migrations are backwards compatible (section 2.5).
+  migrations are backwards compatible (section 2.2).
 - **Database:** never edit applied migrations. Write a new forward migration that undoes the change
   and deploy it like any other. For data damage, restore (section 5) into a scratch project, verify,
   then copy back only the affected rows.

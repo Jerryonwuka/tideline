@@ -555,7 +555,8 @@
     "resend": "Send a new code",
     "devHint": "Local development: the code is printed in the dev server console.",
     "terms": "By continuing you agree to Tideline’s terms and privacy notice.",
-    "back": "Back to home"
+    "back": "Back to home",
+    "smsCode": "Your Tideline code is {code}. Never share it with anyone, not even Tideline staff."
   },
   "onboarding": {
     "step": "Step {current} of {total}",

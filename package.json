@@ -23,9 +23,11 @@
     "db:check": "tsx scripts/db-check.mts",
     "db:types": "supabase gen types typescript --local --schema public > src/lib/database.types.ts && prettier --write src/lib/database.types.ts",
     "test:rls": "vitest run --config vitest.rls.config.mts",
-    "db:restore-test": "./scripts/restore-test.sh"
+    "db:restore-test": "./scripts/restore-test.sh",
+    "check:live": "tsx scripts/check-live.mts"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^1.5.0",
     "@base-ui/react": "^1.9.0",
     "@react-three/drei": "^10.7.9",
     "@react-three/fiber": "^9.8.2",

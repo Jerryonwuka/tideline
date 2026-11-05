@@ -1,5 +1,8 @@
 import { z } from "zod";
 
+/** Vercel and .env files often hold empty strings for unset values. */
+const blankIsUnset = <T extends z.ZodType>(inner: T) => z.preprocess((v) => (v === "" ? undefined : v), inner);
+
 const schema = z
   .object({
     NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
@@ -26,6 +29,24 @@ const schema = z
     SMS_WEBHOOK_TOKEN: z.string().optional(),
     /** Escrow is off in production unless this is "on" (legal structure first, §11). */
     ESCROW_ENABLED: z.enum(["on", "off"]).optional(),
+    /** Live integrations (INTEGRATIONS_MODE=live). Vendors chosen for launch: see docs/GO_LIVE.md. */
+    ANTHROPIC_API_KEY: blankIsUnset(z.string().optional()),
+    /** Claude model for every AI job; one model keeps one prompt cache. */
+    LLM_MODEL: blankIsUnset(z.string().default("claude-sonnet-5-5")),
+    /** Server-side refusal fallback (Claude API only). Set "off" on Bedrock/Vertex. */
+    LLM_FALLBACKS: blankIsUnset(z.enum(["on", "off"]).default("on")),
+    OPENAI_API_KEY: blankIsUnset(z.string().optional()),
+    STT_MODEL: blankIsUnset(z.string().default("whisper-1")),
+    TERMII_API_KEY: blankIsUnset(z.string().optional()),
+    TERMII_SENDER_ID: blankIsUnset(z.string().optional()),
+    TERMII_BASE_URL: blankIsUnset(z.string().url().default("https://api.ng.termii.com")),
+    /** WhatsApp is optional at first: until Meta approves, everything goes by SMS. */
+    WHATSAPP_ACCESS_TOKEN: blankIsUnset(z.string().optional()),
+    WHATSAPP_PHONE_NUMBER_ID: blankIsUnset(z.string().optional()),
+    WHATSAPP_API_VERSION: blankIsUnset(z.string().default("v23.0")),
+    RESEND_API_KEY: blankIsUnset(z.string().optional()),
+    /** e.g. "Tideline <no-reply@mail.tideline.ng>"; the domain must be verified in Resend. */
+    EMAIL_FROM: blankIsUnset(z.string().optional()),
     /** Error reporting (Sentry). Unset: errors are recorded in memory (local) and logged. */
     SENTRY_DSN: z.preprocess((v) => (v === "" ? undefined : v), z.string().url().optional()),
   })
