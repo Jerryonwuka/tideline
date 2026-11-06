@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { isoDate, logIn, makePng, randomPhone } from "./helpers";
+import { isoDate, logIn, makePng, randomPhone, openNav } from "./helpers";
 
 // M2 acceptance: an owner adds a vessel and crew, uploads a certificate photo, enters dates and
 // sees valid / expiring / expired; compliance shows on the vessel page and dashboard; files are
@@ -41,6 +41,7 @@ test("owner sets up a vessel, crew and documents with live statuses", async ({ p
   await expect(page.getByRole("meter", { name: "MV Test Star" })).toHaveAttribute("aria-valuenow", "100");
 
   // Two more documents for the vessel: one expiring soon, one expired.
+  await openNav(page);
   await page.getByRole("link", { name: "Vessels" }).click();
   await expect(page).toHaveURL(/\/vessels$/);
   await page.getByRole("link", { name: "MV Test Star" }).click();
@@ -62,11 +63,13 @@ test("owner sets up a vessel, crew and documents with live statuses", async ({ p
   await expect(page.getByRole("meter", { name: "Compliance" })).toHaveAttribute("aria-valuenow", "100");
 
   // Crew: the invited captain is on the crew list.
+  await openNav(page);
   await page.getByRole("link", { name: "Crew", exact: true }).click();
   await expect(page).toHaveURL(/\/crew$/);
   await expect(page.getByRole("link", { name: "Emeka Obi" })).toBeVisible();
 
   // The stored photo was shrunk to ≤1600 px and is served by a short-lived signed URL only.
+  await openNav(page);
   await page.getByRole("link", { name: "Documents", exact: true }).click();
   await expect(page).toHaveURL(/\/documents$/);
   await page.getByRole("link", { name: "Insurance" }).click();

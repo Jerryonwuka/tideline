@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { logIn, randomPhone } from "./helpers";
+import { logIn, randomPhone, openNav } from "./helpers";
 
 // M7 acceptance: a test-mode card payment gives a paid ticket with a QR code; boarding by its code
 // marks the passenger on the manifest; the same webhook twice changes state once. Payments go
@@ -104,6 +104,7 @@ test("passenger buys a ticket online, boards by code; agent sells for cash; owne
   expect((await manifest()).map((m) => m.full_name).sort()).toEqual(["Funmi Ade", "Tunde Cash"]);
 
   // Billing: pay a month of Ferry Basic in the org's currency.
+  await openNav(page);
   await page.getByRole("link", { name: "Billing", exact: true }).click();
   await expect(page).toHaveURL(/\/billing$/);
   const basic = page.getByTestId("plan-ferry_basic");

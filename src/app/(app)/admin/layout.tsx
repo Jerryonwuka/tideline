@@ -2,7 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
-import { AppNav } from "@/components/app/app-nav";
+import { ArrowLeft } from "lucide-react";
+import { SideNav, type NavGroup } from "@/components/app/side-nav";
 import { Logo } from "@/components/brand/logo";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { requireMe } from "@/server/auth/session";
@@ -14,42 +15,68 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   const t = await getTranslations("admin");
   const tDisputes = await getTranslations("adminDisputes");
   const tc = await getTranslations("console.nav");
+  const tShell = await getTranslations("shell");
+
+  const groups: NavGroup[] = [
+    {
+      label: tShell("groups.platform"),
+      items: [
+        { href: "/admin/countries", label: t("countries.title"), icon: "countries" },
+        { href: "/admin/rule-sets", label: t("ruleSets.title"), icon: "ruleSets" },
+        { href: "/admin/flags", label: tc("flags"), icon: "flags" },
+        { href: "/admin/fees", label: tc("fees"), icon: "fees" },
+        { href: "/admin/jetties", label: tc("jetties"), icon: "jetties" },
+      ],
+    },
+    {
+      label: tShell("groups.review"),
+      items: [
+        { href: "/admin/orgs", label: tc("orgs"), icon: "orgs" },
+        { href: "/admin/documents", label: tc("documents"), icon: "reviewDocuments" },
+        { href: "/admin/disputes", label: tDisputes("title"), icon: "disputes" },
+        { href: "/admin/escrow", label: tc("escrow"), icon: "escrow" },
+      ],
+    },
+    {
+      label: tShell("groups.console"),
+      items: [
+        { href: "/admin/audit", label: tc("audit"), icon: "audit" },
+        { href: "/admin/privacy", label: tc("privacy"), icon: "privacy" },
+        { href: "/admin/passengers", label: tc("passengers"), icon: "passengers" },
+      ],
+    },
+  ];
+
   return (
-    <div className="flex min-h-dvh flex-col">
-      <header className="sticky top-0 z-40 border-b border-hairline bg-background/80 backdrop-blur-xl">
-        <div className="mx-auto flex h-14 max-w-[84rem] items-center gap-4 px-4 sm:px-8">
-          <Link href="/admin/countries" className="shrink-0">
-            <Logo size={20} />
-          </Link>
-          <span className="rounded-xs border border-accent/50 px-2 py-0.5 label-mono-sm text-accent">{t("badge")}</span>
-          <AppNav
-            label={t("badge")}
-            links={[
-              { href: "/admin/countries", label: t("countries.title") },
-              { href: "/admin/rule-sets", label: t("ruleSets.title") },
-              { href: "/admin/orgs", label: tc("orgs") },
-              { href: "/admin/documents", label: tc("documents") },
-              { href: "/admin/disputes", label: tDisputes("title") },
-              { href: "/admin/escrow", label: tc("escrow") },
-              { href: "/admin/fees", label: tc("fees") },
-              { href: "/admin/jetties", label: tc("jetties") },
-              { href: "/admin/audit", label: tc("audit") },
-              { href: "/admin/flags", label: tc("flags") },
-              { href: "/admin/privacy", label: tc("privacy") },
-              { href: "/admin/passengers", label: tc("passengers") },
-            ]}
-          />
-          <div className="ml-auto flex items-center gap-3">
-            <ThemeToggle className="hidden sm:inline-flex" />
+    <div className="min-h-dvh lg:pl-64">
+      <SideNav
+        groups={groups}
+        home="/admin/countries"
+        logo={<Logo size={20} />}
+        top={
+          <span className="w-fit rounded-xs border border-accent/50 px-2 py-0.5 label-mono-sm text-accent">
+            {t("badge")}
+          </span>
+        }
+        bottom={
+          <div className="flex flex-col gap-3">
+            <ThemeToggle className="w-fit" />
             {me.memberships.length > 0 && (
-              <Link href="/dashboard" className="text-sm text-body hover:text-foreground">
+              <Link
+                href="/dashboard"
+                className="flex h-9 items-center gap-2 rounded-sm px-2 text-sm text-body hover:bg-surface-raised hover:text-foreground"
+              >
+                <ArrowLeft aria-hidden className="size-4" />
                 {t("backToApp")}
               </Link>
             )}
           </div>
-        </div>
-      </header>
-      <main className="mx-auto w-full max-w-[84rem] flex-1 px-4 py-10 sm:px-8">{children}</main>
+        }
+        label={t("badge")}
+        menuLabel={tShell("menu")}
+        closeLabel={tShell("closeMenu")}
+      />
+      <main className="mx-auto w-full max-w-[84rem] px-4 py-8 sm:px-8 lg:py-10">{children}</main>
     </div>
   );
 }

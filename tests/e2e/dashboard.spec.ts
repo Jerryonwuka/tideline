@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { logIn, randomPhone } from "./helpers";
+import { logIn, randomPhone, openNav } from "./helpers";
 
 // M10: the owner's dashboard (today's figures, alerts, idle vessels), the weekly report and the
 // assistant (answers from tools, streamed; declines to move money).
@@ -26,6 +26,7 @@ test("owner sees the dashboard and weekly report, and asks the assistant", async
   await expect(page.getByRole("heading", { name: "Weekly report" })).toBeVisible();
   await expect(page.getByTestId("week-net")).toContainText("0.00");
 
+  await openNav(page);
   await page.getByRole("link", { name: "Assistant", exact: true }).click();
   await expect(page).toHaveURL(/\/assistant$/);
   await page.getByRole("button", { name: "Which boats are idle?" }).click();

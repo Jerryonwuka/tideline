@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { logIn, outbox, pinMidday, randomPhone } from "./helpers";
+import { logIn, outbox, pinMidday, randomPhone, openNav } from "./helpers";
 
 // M4 acceptance: a captain runs a scheduled trip end to end and the owner sees it in the daily
 // report; the manifest can't exceed capacity; after departure additions are amendments.
@@ -25,6 +25,7 @@ test("captain runs a scheduled trip; owner sees it in the daily report", async (
   await expect(page).toHaveURL(/\/dashboard$/);
 
   // Assign the captain to the vessel.
+  await openNav(page);
   await page.getByRole("link", { name: "Vessels", exact: true }).click();
   await expect(page).toHaveURL(/\/vessels$/);
   await page.getByRole("link", { name: "MV Lagos One" }).click();
@@ -33,6 +34,7 @@ test("captain runs a scheduled trip; owner sees it in the daily report", async (
   await expect(page.getByText("Kunle Bello")).toBeVisible();
 
   // Route CMS → Ikorodu with a daily departure.
+  await openNav(page);
   await page.getByRole("link", { name: "Routes", exact: true }).click();
   await expect(page).toHaveURL(/\/routes$/);
   await page.getByLabel("From", { exact: true }).selectOption({ label: "CMS Marina · Not yet verified" });
@@ -104,6 +106,7 @@ test("captain runs a scheduled trip; owner sees it in the daily report", async (
   await ctx.close();
 
   // Owner's daily report.
+  await openNav(page);
   await page.getByRole("link", { name: "Reports", exact: true }).click();
   await expect(page).toHaveURL(/\/reports\/daily$/);
   await expect(page.getByTestId("total-passengers")).toHaveText("5");

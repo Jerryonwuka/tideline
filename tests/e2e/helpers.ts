@@ -83,3 +83,12 @@ export async function pinMidday(page: Page) {
   expect(res.ok(), "dev clock must be enabled (APP_ENV=local, INTEGRATIONS_MODE=fake)").toBe(true);
   await page.clock.setSystemTime(at);
 }
+
+/** On phones the sections sit in a drawer behind the Menu button; open it before clicking one. */
+export async function openNav(page: Page) {
+  const menu = page.getByRole("button", { name: "Menu", exact: true });
+  if (await menu.isVisible()) {
+    await menu.click();
+    await expect(page.getByRole("navigation", { name: /Menu|Admin/ })).toBeVisible();
+  }
+}
