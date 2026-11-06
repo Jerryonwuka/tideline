@@ -630,7 +630,18 @@
     "invoices": "Invoices",
     "payouts": "Payouts",
     "tenders": "Tenders",
-    "privacy": "Privacy"
+    "privacy": "Privacy",
+    "closeMenu": "Close menu",
+    "groups": {
+      "operations": "Operations",
+      "fleet": "Fleet",
+      "charter": "Charter",
+      "money": "Money",
+      "company": "Company",
+      "console": "Console",
+      "review": "Review",
+      "platform": "Platform"
+    }
   },
   "dashboard": {
     "title": "Welcome, {name}",

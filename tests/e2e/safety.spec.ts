@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { logIn, pinMidday, randomPhone } from "./helpers";
+import { logIn, pinMidday, randomPhone, openNav } from "./helpers";
 
 // M6 acceptance (BUILD_SPEC §4.2, F2): a blocked departure is impossible in the UI and the API until
 // the owner approves an override; limits can only be tightened. The fake forecast is calm (wind
@@ -29,6 +29,7 @@ test("a blocked trip departs only after the owner approves an override", async (
   await expect(page.getByText("CMS Marina → Ikorodu")).toBeVisible();
 
   // Limits: looser than the defaults is refused; stricter is saved.
+  await openNav(page);
   await page.getByRole("link", { name: "Safety", exact: true }).click();
   await expect(page).toHaveURL(/\/safety$/);
   await page.getByLabel("Max wind (km/h)").fill("80");
