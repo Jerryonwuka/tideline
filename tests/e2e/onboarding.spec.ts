@@ -1,5 +1,5 @@
 import { expect, test } from "@playwright/test";
-import { logIn, outbox, randomPhone } from "./helpers";
+import { logIn, outbox, randomPhone, openNav } from "./helpers";
 
 // M1 acceptance: a new user signs up by OTP, creates an org and invites a captain by phone; the
 // captain accepts and logs in. Needs local Supabase (pnpm db:start) and the fake integrations.
@@ -29,6 +29,7 @@ test("owner signs up, creates an org and invites a captain who joins", async ({ 
   // The company form showed the country's defaults before submitting.
 
   // Invite a captain.
+  await openNav(page);
   await page.getByRole("link", { name: "Team" }).click();
   const inviteForm = page.getByRole("region", { name: "Invite someone" });
   await inviteForm.getByLabel("Phone number").fill(captainPhone);
@@ -56,6 +57,7 @@ test("owner signs up, creates an org and invites a captain who joins", async ({ 
   await expect(captain).toHaveURL(/\/dashboard$/);
   await expect(captain.getByText("as Captain")).toBeVisible();
   // Captains don't manage the team.
+  await openNav(captain);
   await expect(captain.getByRole("link", { name: "Team" })).toHaveCount(0);
   await captainContext.close();
 

@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 import postgres from "postgres";
-import { e164, logIn, randomPhone } from "./helpers";
+import { e164, logIn, randomPhone, openNav } from "./helpers";
 
 // M1b: platform admins see countries and versioned rule sets; everyone else gets a 404.
 // Read-only on purpose: publishing would change the shared local database for other tests.
@@ -32,6 +32,7 @@ test("platform admin reviews countries and the draft Nigeria rule set", async ({
   await expect(page.getByRole("cell", { name: /NG\s*Nigeria/ })).toBeVisible();
   await expect(page.getByRole("cell", { name: /ZZ\s*Testland/ })).toBeVisible();
 
+  await openNav(page);
   await page.getByRole("link", { name: "Rule sets" }).click();
   await page.getByRole("link", { name: "Nigeria · v1" }).click();
   await expect(page.getByText("Draft")).toBeVisible();

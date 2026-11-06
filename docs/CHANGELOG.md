@@ -251,3 +251,10 @@
 - The weather cache was stamped with the fake provider's real time while local tests pin the app clock to midday in Lagos. When CI ran more than 3 hours before that midday, cached weather looked out of date, and the safety lock correctly answered "Depart with care". `ferry`, `safety` and `tracking` failed on `main` that way (run at 06:14 UTC).
 - `fetched_at` now comes from the app clock, which is the clock the safety rules use. In production it's the same as real time, so behaviour there doesn't change.
 - Verified by pinning the test clock to tomorrow's midday: before the fix, all three tests failed with "Depart with care"; after it, all three pass.
+
+## App navigation: sidebar (2026-11-06)
+
+- The signed-in app and the admin console now use a left sidebar instead of one long row of links in the top bar. Sections are grouped (Operations, Fleet, Charter, Money, Company; admin: Platform, Review, Console), each with an icon, and the current page is highlighted.
+- Company name, switcher and role sit at the top of the sidebar; theme, name and log out at the bottom. Notifications show an unread count in the sidebar.
+- On phones the sidebar is a drawer behind a Menu button (closes on Escape, on tapping outside and after following a link); the top bar keeps the logo and the notifications bell.
+- Playwright: `openNav()` helper opens the drawer on the Android profile before clicking a section.
