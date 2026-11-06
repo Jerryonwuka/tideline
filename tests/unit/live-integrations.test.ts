@@ -8,6 +8,7 @@ import { TermiiSms } from "@/server/integrations/messaging/termii";
 import { templateLanguage, WhatsAppCloud } from "@/server/integrations/messaging/whatsapp";
 import { OpenAiSttClient } from "@/server/integrations/stt/openai";
 import { createLiveIntegrations, missingLiveConfig } from "@/server/integrations";
+import { checkLiveIntegrations } from "@/server/integrations/live-check";
 import type { ServerEnv } from "@/server/env";
 
 type Call = { url: string; init: RequestInit | undefined };
@@ -235,5 +236,41 @@ describe("Live configuration", () => {
       "EMAIL_FROM",
     ]);
     expect(() => createLiveIntegrations(env)).toThrow(/missing: ANTHROPIC_API_KEY/);
+  });
+});
+
+describe("Live key check", () => {
+  const env = {
+    PAYMENTS_MODE: "live",
+    PAYSTACK_SECRET_KEY: "sk_test_x",
+    NEXT_PUBLIC_SUPABASE_URL: "https://ref.supabase.co",
+    NEXT_PUBLIC_SUPABASE_ANON_KEY: "anon",
+    RESEND_API_KEY: "re_x",
+    TERMII_BASE_URL: "https://api.ng.termii.com",
+    LLM_MODEL: "claude-sonnet-5-5",
+    WHATSAPP_API_VERSION: "v23.0",
+  } as unknown as ServerEnv;
+  const byService = (rs: { service: string; ok: boolean; detail: string }[], s: string) =>
+    rs.find((r) => r.service === s)!;
+
+  it("accepts a sending-only Resend key but not a wrong one", async () => {
+    const restricted = stubFetch((url) =>
+      url.includes("resend") ? { status: 401, json: { name: "restricted_api_key" } } : { json: {} },
+    );
+    const ok = byService(await checkLiveIntegrations(env, restricted.impl), "Resend (email)");
+    expect(ok).toMatchObject({ ok: true, detail: "sending-only key" });
+
+    const wrong = stubFetch((url) =>
+      url.includes("resend") ? { status: 400, json: { name: "validation_error" } } : { json: {} },
+    );
+    expect(byService(await checkLiveIntegrations(env, wrong.impl), "Resend (email)").ok).toBe(false);
+  });
+
+  it("checks Paystack and the Supabase public key, and says when Paystack is a test key", async () => {
+    const f = stubFetch(() => ({ json: {} }));
+    const rs = await checkLiveIntegrations(env, f.impl);
+    expect(byService(rs, "Paystack")).toMatchObject({ ok: true, detail: "HTTP 200, test key" });
+    expect(byService(rs, "Supabase (public key)").ok).toBe(true);
+    expect(f.calls.some((c) => c.url === "https://ref.supabase.co/auth/v1/settings")).toBe(true);
   });
 });

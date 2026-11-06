@@ -52,11 +52,26 @@ export async function checkLiveIntegrations(env: ServerEnv, fetchImpl: typeof fe
       : missing("Termii (SMS)", "TERMII_API_KEY"),
   );
   checks.push(
-    env.RESEND_API_KEY
-      ? http("Resend (email)", "https://api.resend.com/domains", {
-          headers: { authorization: `Bearer ${env.RESEND_API_KEY}` },
+    env.RESEND_API_KEY ? resendCheck(env.RESEND_API_KEY, fetchImpl) : missing("Resend (email)", "RESEND_API_KEY"),
+  );
+  checks.push(
+    env.PAYMENTS_MODE !== "live"
+      ? Promise.resolve({ service: "Paystack", ok: true, detail: "payments are fake (PAYMENTS_MODE)" })
+      : env.PAYSTACK_SECRET_KEY
+        ? http("Paystack", "https://api.paystack.co/transaction?perPage=1", {
+            headers: { authorization: `Bearer ${env.PAYSTACK_SECRET_KEY}` },
+          }).then((r) => ({
+            ...r,
+            detail: `${r.detail}${r.ok ? (env.PAYSTACK_SECRET_KEY!.startsWith("sk_test_") ? ", test key" : ", live key") : ""}`,
+          }))
+        : missing("Paystack", "PAYSTACK_SECRET_KEY"),
+  );
+  checks.push(
+    env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+      ? http("Supabase (public key)", `${env.NEXT_PUBLIC_SUPABASE_URL.replace(/\/$/, "")}/auth/v1/settings`, {
+          headers: { apikey: env.NEXT_PUBLIC_SUPABASE_ANON_KEY },
         })
-      : missing("Resend (email)", "RESEND_API_KEY"),
+      : missing("Supabase (public key)", "NEXT_PUBLIC_SUPABASE_ANON_KEY"),
   );
   checks.push(
     env.WHATSAPP_ACCESS_TOKEN && env.WHATSAPP_PHONE_NUMBER_ID
@@ -68,4 +83,23 @@ export async function checkLiveIntegrations(env: ServerEnv, fetchImpl: typeof fe
       : Promise.resolve({ service: "WhatsApp Cloud API", ok: true, detail: "not set up yet: messages go by SMS" }),
   );
   return Promise.all(checks);
+}
+
+/**
+ * A sending-only Resend key (the safe choice) can't list domains: Resend answers 401
+ * `restricted_api_key`, which still proves the key is real. A wrong key gets `validation_error`.
+ */
+async function resendCheck(apiKey: string, fetchImpl: typeof fetch): Promise<LiveCheck> {
+  const service = "Resend (email)";
+  try {
+    const res = await fetchImpl("https://api.resend.com/domains", { headers: { authorization: `Bearer ${apiKey}` } });
+    if (res.ok) return { service, ok: true, detail: `HTTP ${res.status}` };
+    const body = (await res.json().catch(() => ({}))) as { name?: string };
+    if (res.status === 401 && body.name === "restricted_api_key") {
+      return { service, ok: true, detail: "sending-only key" };
+    }
+    return { service, ok: false, detail: `HTTP ${res.status}${body.name ? ` ${body.name}` : ""}` };
+  } catch (err) {
+    return { service, ok: false, detail: err instanceof Error ? err.name : "error" };
+  }
 }

@@ -251,3 +251,8 @@
 - The weather cache was stamped with the fake provider's real time while local tests pin the app clock to midday in Lagos. When CI ran more than 3 hours before that midday, cached weather looked out of date, and the safety lock correctly answered "Depart with care". `ferry`, `safety` and `tracking` failed on `main` that way (run at 06:14 UTC).
 - `fetched_at` now comes from the app clock, which is the clock the safety rules use. In production it's the same as real time, so behaviour there doesn't change.
 - Verified by pinning the test clock to tomorrow's midday: before the fix, all three tests failed with "Depart with care"; after it, all three pass.
+
+## Fix: live key check (2026-11-06)
+
+- `pnpm check:live` accepts a sending-only Resend key (Resend answers `restricted_api_key`, which proves the key is real) and still fails a wrong one.
+- It now also checks the Paystack secret key (and says whether it is a test or live key) and the Supabase public key.
